@@ -20,7 +20,7 @@ public class InGameCenter : MonoBehaviour
     private ChapterData chapterData;
 
     [SerializeField]
-    private CharacterData characterData;
+    private RLCharacterData characterData;
 
     private ItemData[] spawnableItemDatas;
     private Dictionary<ItemData, int> gainItem = new Dictionary<ItemData, int>();

@@ -59,6 +59,7 @@ public abstract class BaseScrollAblePanel : MonoBehaviour
 
             RectTransform rect = contentParent.GetComponent<RectTransform>();
 
+
             switch (layout)
             {
                 case LayoutDirection.Vertical:

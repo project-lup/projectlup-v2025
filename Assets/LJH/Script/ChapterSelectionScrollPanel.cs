@@ -43,6 +43,7 @@ public class ChapterSelectionScrollPanel : BaseScrollAblePanel
             int index = i;
 
             GameObject button = Instantiate(displayedPrefab, contentParent);
+
             DisplayableButton displayableDataButton = button.GetComponent<DisplayableButton>();
 
             if (displayableDataButton == null)

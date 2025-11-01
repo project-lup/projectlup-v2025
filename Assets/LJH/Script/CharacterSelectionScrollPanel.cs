@@ -8,11 +8,11 @@ public class CharacterSelectionScrollPanel : BaseScrollAblePanel
 {
     private CharacterPriveiwPanel characterPriveiw;
     private CharacterSelectionButtonPanel characterSelectionButton;
-    private List<CharacterData> displayedCharacterData = new List<CharacterData>();
+    private List<RLCharacterData> displayedCharacterData = new List<RLCharacterData>();
 
     private CharacterType characterTypeFilter = CharacterType.None;
 
-    private CharacterData previewCharacterData = null;
+    private RLCharacterData previewCharacterData = null;
 
     private void Awake()
     {
@@ -26,7 +26,7 @@ public class CharacterSelectionScrollPanel : BaseScrollAblePanel
 
     }
 
-    public void InitPreviewData(CharacterData characterData)
+    public void InitPreviewData(RLCharacterData characterData)
     {
         previewCharacterData = characterData;
         characterPriveiw.SetCharacterPreview(previewCharacterData);
@@ -52,7 +52,7 @@ public class CharacterSelectionScrollPanel : BaseScrollAblePanel
         int index = 0;
         for(; index < displayedData.Length; index++)
         {
-            if ((CharacterData)displayedData[index] == previewCharacterData)
+            if ((RLCharacterData)displayedData[index] == previewCharacterData)
                 break;
         }
 
@@ -82,7 +82,7 @@ public class CharacterSelectionScrollPanel : BaseScrollAblePanel
 
         for (int i = 0; i < displayedData.Length; i++)
         {
-            CharacterData characterData = (CharacterData)displayedData[i];
+            RLCharacterData characterData = (RLCharacterData)displayedData[i];
 
             if (characterTypeFilter == CharacterType.None || characterData.characterType == characterTypeFilter)
                 displayedCharacterData.Add(characterData);

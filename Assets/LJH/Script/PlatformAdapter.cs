@@ -9,7 +9,7 @@ public class PlatformAdapter
     private Test_Flatform platform;
 
     public ChapterData[] chapterDatas { get; private set; }
-    public CharacterData[] characterDatas { get; private set; }
+    public RLCharacterData[] characterDatas { get; private set; }
 
     public ItemData[] spawnableItemDatas { get; private set; }
 
@@ -18,7 +18,7 @@ public class PlatformAdapter
     public BuffData[] gainableBuffDatas { get; private set; }
 
     public ChapterData selectedChapter { get; set; }
-    public CharacterData selectedCharacter { get; set; }
+    public RLCharacterData selectedCharacter { get; set; }
 
     public int LastSeletedChapter { get; set; }
     public int LastSeletedCharacter { get; set; }
@@ -64,7 +64,7 @@ public class PlatformAdapter
         return true;
     }
 
-    public void UploadSelectionData(ChapterData selectedChapter, CharacterData selectedCharacter)
+    public void UploadSelectionData(ChapterData selectedChapter, RLCharacterData selectedCharacter)
     {
         platform.UploadSelectionDataToFlatform(selectedChapter, selectedCharacter);
     }
@@ -106,7 +106,7 @@ public class PlatformAdapter
         return true;
     }
 
-    public void ApplyGameResult(Dictionary<ItemData, int> gainItem, ChapterData resultCapter, CharacterData resultCharacter, bool stageCleared = true)
+    public void ApplyGameResult(Dictionary<ItemData, int> gainItem, ChapterData resultCapter, RLCharacterData resultCharacter, bool stageCleared = true)
     {
         int chapterIndex = -1;
         int characterIndex = -1;

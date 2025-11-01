@@ -2,10 +2,11 @@ using Roguelike.Define;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+
 public class Archer : MonoBehaviour
 {
     [Header("캐릭터 데이터")]
-    [SerializeField] public CharacterData CData;
+    [SerializeField] public RLCharacterData CData;
     [SerializeField] public ArcherData Adata;
     [SerializeField] public LevelDataTable levelTable;
     //public BaseStats stats;

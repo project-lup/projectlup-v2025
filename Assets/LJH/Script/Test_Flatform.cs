@@ -9,7 +9,7 @@ public class Test_Flatform : MonoBehaviour
     private ChapterData[] rogueLikeChapterDatas;
 
     [SerializeField]
-    private CharacterData[] rogueLikecharacterDatas;
+    private RLCharacterData[] rogueLikecharacterDatas;
 
     [SerializeField]
     private ItemData[] rogueLikespawnableItemDatas;
@@ -21,7 +21,7 @@ public class Test_Flatform : MonoBehaviour
     private BuffData[] rogueLikeBuffDatas;
 
     public ChapterData[] chapterDatas => (ChapterData[])rogueLikeChapterDatas.Clone();
-    public CharacterData[] characterDatas => (CharacterData[])rogueLikecharacterDatas.Clone();
+    public RLCharacterData[] characterDatas => (RLCharacterData[])rogueLikecharacterDatas.Clone();
 
     public ItemData[] spawnableItemDatas => (ItemData[])rogueLikespawnableItemDatas.Clone();
     public BuffData[] buffDatas => (BuffData[])rogueLikeBuffDatas.Clone();
@@ -29,7 +29,7 @@ public class Test_Flatform : MonoBehaviour
     public ItemData[] inventoryItmeDatas => (ItemData[])rogueLikeInventoryItmeDatas.Clone();
 
     public ChapterData selectedChapter;
-    public CharacterData selectedCharacter;
+    public RLCharacterData selectedCharacter;
 
     public int LastSeletedChapter { get; private set; } = -1;
     public int LastSeletedCharacter { get; private set; } = -1;
@@ -60,13 +60,13 @@ public class Test_Flatform : MonoBehaviour
         SceneManager.LoadScene(lobbySceneName);
     }
 
-    public void UploadSelectionDataToFlatform(ChapterData selectChapter, CharacterData selectCharacter)
+    public void UploadSelectionDataToFlatform(ChapterData selectChapter, RLCharacterData selectCharacter)
     {
         selectedChapter = selectChapter;
         selectedCharacter = selectCharacter;
     }
 
-    public (ChapterData, CharacterData) GetSelectionData()
+    public (ChapterData, RLCharacterData) GetSelectionData()
     {
         return (selectedChapter, selectedCharacter);
     }

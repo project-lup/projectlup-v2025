@@ -13,7 +13,7 @@ public struct BaseStats
 
 }
 [CreateAssetMenu(fileName = "CharacterData", menuName = "Scriptable Objects/CharacterData")]
-public class CharacterData : ScriptableObject, IDisplayable
+public class RLCharacterData : ScriptableObject, IDisplayable
 {
     [SerializeField] private string characterName;
     [SerializeField] private Sprite characterPreviewImage;

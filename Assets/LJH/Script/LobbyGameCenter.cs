@@ -24,13 +24,13 @@ public class LobbyGameCenter : MonoBehaviour
     public GameObject ChapterInfoText;
     public ChapterData[] chapterDatas { get; private set; }
 
-    public CharacterData[] characterDatas { get; private set; }
+    public RLCharacterData[] characterDatas { get; private set; }
 
     [SerializeField]
     private ChapterData selectedChapter;
 
     [SerializeField]
-    private CharacterData selectedCharacter;
+    private RLCharacterData selectedCharacter;
 
     [HideInInspector]
 
@@ -230,7 +230,7 @@ public class LobbyGameCenter : MonoBehaviour
         return selectedChapter;
     }
 
-    public CharacterData GetselectedCharacter()
+    public RLCharacterData GetselectedCharacter()
     {
         return selectedCharacter;
     }

@@ -10,7 +10,7 @@ public class CharacterStatBox : MonoBehaviour
 
     public TextMeshProUGUI SkillText;
 
-    public void UpdateStatBox(CharacterData characterData)
+    public void UpdateStatBox(RLCharacterData characterData)
     {
         LevelIconBox.SetLevel(1, 5);
         AtkIconBox.SetAtk(characterData.stats.Attack);

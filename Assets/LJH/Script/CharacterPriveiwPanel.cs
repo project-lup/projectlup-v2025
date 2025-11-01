@@ -28,7 +28,7 @@ public class CharacterPriveiwPanel : MonoBehaviour
         
     }
 
-    public void SetCharacterPreview(CharacterData characterData)
+    public void SetCharacterPreview(RLCharacterData characterData)
     {
         previewCharacterImage.sprite = characterData.GetDisplayableImage();
         previewCharacaterNameText.SetText(characterData.GetDisplayableName());

@@ -8,7 +8,7 @@ public class ArcherData
     public int level;
 
 
-    public ArcherData(CharacterData data, int customHp, int CustomAttack)
+    public ArcherData(RLCharacterData data, int customHp, int CustomAttack)
     {
         intrinscData = data.stats;
         currentData = data.stats;
