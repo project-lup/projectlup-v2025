@@ -1,0 +1,90 @@
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Manager
+{
+    public abstract class BaseStage : MonoBehaviour
+    {
+        public Define.StageKind StageKind = Define.StageKind.Main;
+
+        protected virtual void Awake()
+        {
+
+        }
+
+        void Update()
+        {
+
+        }
+
+        /*
+        UnKnown = 0,    // 이상한 씬
+        Debug = 1,      // 디버그 씬 (개발용)
+        Main = 2,       // 메인 화면
+        Intro = 3,      // 인트로
+        Roguelike = 4,  // 로그라이크
+        Shooting = 5,   // 슈팅
+        ExtractionShooter = 6, // 익스트랙션 슈터
+        Production = 7,  // 생산/건설/강화
+        DeckStrategy = 8, // 덱 전략
+         */
+
+        public void LoadStage(Define.StageKind stage)
+        {
+            StageManager.Instance.LoadStage(stage);
+        }
+
+        protected abstract void LoadResources();
+
+        // 자식 클래스에서 각 게임에 걸맞는 변수에 데이터 삽입
+        protected abstract void GetDatas();
+
+        protected abstract void SaveDatas();
+
+        public virtual IEnumerator OnStageEnter()
+        {
+            LoadResources();
+            GetDatas();
+
+            yield return null;
+        }
+        public virtual IEnumerator OnStageStay()
+        {
+            yield return null;
+        }
+
+        public virtual IEnumerator OnStageExit()
+        {
+            SaveDatas();
+
+            yield return null;
+        }
+
+        protected void SaveRuntimeData(BaseRuntimeData runtimeData)
+        {
+            DataManager.Instance.SaveRuntimeData(runtimeData);
+        }
+
+        protected BaseStaticData GetStaticData(BaseStage stage)
+        {
+            BaseStaticData data = null;
+
+            data = Manager.DataManager.Instance.GetStaticData(stage.StageKind, (int)Define.StageType.Lobby);
+
+            return data;
+        }
+
+        protected BaseRuntimeData GetRuntimeData(BaseStage stage)
+        {
+            BaseRuntimeData data = null;
+
+            data = Manager.DataManager.Instance.GetRuntimeData(stage.StageKind, (int)Define.StageType.Lobby);
+
+            return data;
+        }
+    }
+}
+
