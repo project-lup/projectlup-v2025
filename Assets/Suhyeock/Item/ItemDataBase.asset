@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e60f562924dcfa448fbe697acf1ad14, type: 3}
+  m_Name: ItemDataBase
+  m_EditorClassIdentifier: 
+  items:
+  - rid: 8781106269726965861
+  - rid: 8781106269726965862
+  - rid: 8781106269726965863
+  - rid: 8781106269726965864
+  - rid: 8781106269726965865
+  - rid: 8781106269726965866
+  - rid: 8781106269726965867
+  - rid: 8781106269726965868
+  references:
+    version: 2
+    RefIds:
+    - rid: 8781106269726965861
+      type: {class: WeaponItemData, ns: , asm: Assembly-CSharp}
+      data:
+        id: 1
+        name: Pistol
+        type: 1
+        iconName: Pistol
+        bulletSpeed: 10
+        damage: 5
+        range: 10
+        magCapacity: 8
+        timeBetFire: 0.3
+        reloadTime: 1.2
+    - rid: 8781106269726965862
+      type: {class: WeaponItemData, ns: , asm: Assembly-CSharp}
+      data:
+        id: 2
+        name: SMG
+        type: 1
+        iconName: SMG
+        bulletSpeed: 25
+        damage: 15
+        range: 7
+        magCapacity: 20
+        timeBetFire: 0.1
+        reloadTime: 1.3
+    - rid: 8781106269726965863
+      type: {class: WeaponItemData, ns: , asm: Assembly-CSharp}
+      data:
+        id: 3
+        name: AR
+        type: 1
+        iconName: AR
+        bulletSpeed: 20
+        damage: 20
+        range: 10
+        magCapacity: 30
+        timeBetFire: 0.15
+        reloadTime: 2
+    - rid: 8781106269726965864
+      type: {class: WeaponItemData, ns: , asm: Assembly-CSharp}
+      data:
+        id: 4
+        name: LMG
+        type: 1
+        iconName: LMG
+        bulletSpeed: 25
+        damage: 17
+        range: 20
+        magCapacity: 100
+        timeBetFire: 0.12
+        reloadTime: 4
+    - rid: 8781106269726965865
+      type: {class: ArmorItemData, ns: , asm: Assembly-CSharp}
+      data:
+        id: 5
+        name: Helmet
+        type: 2
+        iconName: Helmet
+        defense: 5
+        armorSlot: 0
+    - rid: 8781106269726965866
+      type: {class: ArmorItemData, ns: , asm: Assembly-CSharp}
+      data:
+        id: 6
+        name: BodyArmor
+        type: 2
+        iconName: BodyArmor
+        defense: 5
+        armorSlot: 1
+    - rid: 8781106269726965867
+      type: {class: ConsumableItemData, ns: , asm: Assembly-CSharp}
+      data:
+        id: 7
+        name: Bandage
+        type: 3
+        iconName: Bandage
+        effectDuration: 5
+        useTime: 5
+        effectType: 0
+        effectValue: 30
+        stackSize: 3
+    - rid: 8781106269726965868
+      type: {class: MaterialItemData, ns: , asm: Assembly-CSharp}
+      data:
+        id: 8
+        name: Key
+        type: 4
+        iconName: Key
+        tier: 0
+        stackSize: 5
