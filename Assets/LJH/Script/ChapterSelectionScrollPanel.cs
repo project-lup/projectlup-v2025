@@ -41,13 +41,14 @@ namespace RL
             base.EraseContents();
 
             Vector2 contentSize = new Vector2(scrollRect.viewport.rect.width, scrollRect.viewport.rect.height);
+            Vector2 viewportSize = contentParent.transform.gameObject.GetComponent<RectTransform>().sizeDelta;
 
             for (int i = 0; i < displayedData.Length; i++)
             {
                 int index = i;
 
                 GameObject button = Instantiate(displayedPrefab, contentParent);
-                button.GetComponent<RectTransform>().sizeDelta = new Vector2(contentSize.x * 0.6f, contentSize.y * 0.5f);
+                button.GetComponent<RectTransform>().sizeDelta = viewportSize;
                 DisplayableButton displayableDataButton = button.GetComponent<DisplayableButton>();
 
                 if (displayableDataButton == null)
