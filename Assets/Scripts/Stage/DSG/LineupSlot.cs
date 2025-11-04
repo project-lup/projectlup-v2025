@@ -16,6 +16,7 @@ namespace DSG
         public Transform AttackedPosition;
 
         public event System.Action OnCPUpdated;
+        public OwnedCharacterInfo characterInfo { get; private set; }
 
         void Awake()
         {
@@ -28,6 +29,7 @@ namespace DSG
         public void SetSelectedCharacter(OwnedCharacterInfo info, bool isEnemy)
         {
             isPlaced = true;
+            characterInfo = info;
             character.isEnemy = isEnemy;
             character.SetCharacterData(info);
             OnCPUpdated?.Invoke();
@@ -36,7 +38,7 @@ namespace DSG
         public void DeselectCharacter()
         {
             isPlaced = false;
-
+            characterInfo = null;
             character.ClearCharacterInfo();
             OnCPUpdated?.Invoke();
         }
@@ -44,6 +46,11 @@ namespace DSG
         public void ActivateBattleUI()
         {
             character.ActiveBattleUI();
+        }
+
+        public void ClearCharacter()
+        {
+            character = null;
         }
     }
 

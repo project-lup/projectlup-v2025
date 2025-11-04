@@ -49,6 +49,8 @@ public class BattleSystem : MonoBehaviour
 
     private bool isBattleStart = false;
 
+    [SerializeField]
+    private DataCenter dataCenter;
     private void Start()
     {
         for (int i = 0; i < enemySlots.Length; i++)
@@ -133,22 +135,30 @@ public class BattleSystem : MonoBehaviour
 
         for (int i = 0; i < battleSequence.Count;)
         {
-            if (!battleSequence[i].BattleComp.isAlive)
+            var c = battleSequence[i];
+            if (c == null)
             {
-                Character character = battleSequence[i];
-                battleSequence.Remove(character);
-                Destroy(character.gameObject);
+                battleSequence.RemoveAt(i);
+                continue;
             }
-            else
+            if (c.BattleComp == null)
             {
-                i++;
+                Debug.LogWarning($"[InitSequence] {c.name}의 BattleComp가 없습니다.");
+                battleSequence.RemoveAt(i);
+                continue;
             }
+            if (!c.BattleComp.isAlive)
+            {
+                string name = c.characterData != null ? c.characterData.characterName : c.name;
+                Debug.Log($"[InitSequence] {name} 사망, 리스트에서 제거됨.");
+                battleSequence.RemoveAt(i);
+                continue;
+            }
+            i++;
         }
 
         Resort();
-
         currentTurnIndex = 0;
-
         UpdateUI();
     }
 
@@ -217,48 +227,70 @@ public class BattleSystem : MonoBehaviour
 
     public void EndBattle()
     {
-        DataCenter dataCenter = FindFirstObjectByType<DataCenter>();
-
+        if (dataCenter == null)
+            dataCenter = FindFirstObjectByType<DataCenter>();
         if (dataCenter == null || dataCenter.mvpData == null)
         {
+            Debug.LogError("DataCenter 또는 MVPData 누락!");
             return;
         }
 
         var mvp = dataCenter.mvpData;
+        mvp.char1Score = mvp.char2Score = mvp.char3Score = mvp.char4Score = mvp.char5Score = 0f;
+        mvp.char1Name = mvp.char2Name = mvp.char3Name = mvp.char4Name = mvp.char5Name = string.Empty;
+        mvp.char1Color = mvp.char2Color = mvp.char3Color = mvp.char4Color = mvp.char5Color = Color.white;
 
-        mvp.char1Score = mvp.char2Score = mvp.char3Score = mvp.char4Score = mvp.char5Score = 0;
+        List<Character> friendlyChars = new();
 
-        var friendlyChars = new List<Character>();
         foreach (var slotObj in friendlySlots)
         {
+            if (slotObj == null) continue;
             var slot = slotObj.GetComponent<LineupSlot>();
-            if (slot != null && slot.character != null)
-                friendlyChars.Add(slot.character);
+            if (slot == null) continue;
+
+            var c = slot.character;
+            if (c == null)
+                continue;
+
+            if (c.characterData == null && slot.characterInfo != null)
+            {
+                var info = slot.characterInfo;
+                var data = dataCenter.FindCharacterData(info.characterID);
+                var model = dataCenter.FindCharacterModel(info.characterModelID);
+                if (data != null && model != null)
+                {
+                    c.SetCharacterData(info);
+                }
+            }
+
+            if (c.characterData == null || c.characterModelData == null)
+                continue;
+
+            if (c.ScoreComp == null)
+                c.gameObject.AddComponent<ScoreComponent>();
+
+            friendlyChars.Add(c);
         }
 
         var ranked = friendlyChars
-            .Where(fchar => fchar != null && fchar.ScoreComp != null)
-            .Select(fchar => new
-            {
-                Char = fchar,
-                Score = fchar.ScoreComp.CalculateMVPScore()
-            })
-            .OrderByDescending(x => x.Score)
+            .OrderByDescending(c => c.ScoreComp.CalculateMVPScore())
             .ToList();
 
         if (ranked.Count == 0)
         {
+            Debug.LogWarning("MVP 계산할 캐릭터가 없습니다.");
             return;
         }
 
-        if (ranked.Count > 0) ApplyMVP(mvp, 1, ranked[0].Char, ranked[0].Score);
-        if (ranked.Count > 1) ApplyMVP(mvp, 2, ranked[1].Char, ranked[1].Score);
-        if (ranked.Count > 2) ApplyMVP(mvp, 3, ranked[2].Char, ranked[2].Score);
-        if (ranked.Count > 3) ApplyMVP(mvp, 4, ranked[3].Char, ranked[3].Score);
-        if (ranked.Count > 4) ApplyMVP(mvp, 5, ranked[4].Char, ranked[4].Score);
+        for (int i = 0; i < Mathf.Min(5, ranked.Count); i++)
+        {
+            var c = ranked[i];
+            float score = c.ScoreComp.CalculateMVPScore();
+            ApplyMVP(mvp, i + 1, c, score);
+            Debug.Log($"MVP{i + 1}: {c.characterData.characterName} ({score:F1})");
+        }
 
         DontDestroyOnLoad(dataCenter.gameObject);
-
         SceneManager.LoadScene("DeckBattleResultScene");
     }
 
@@ -266,8 +298,8 @@ public class BattleSystem : MonoBehaviour
     {
         if (character == null) return;
 
-        var color = character.characterModelData.material.GetColor("_BaseColor");
-        var name = character.characterData.characterName;
+        Color color = character.characterModelData.material.GetColor("_BaseColor");
+        String name = character.characterData.characterName;
 
         switch (index)
         {

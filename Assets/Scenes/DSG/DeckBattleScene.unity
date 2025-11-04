@@ -3498,6 +3498,7 @@ MonoBehaviour:
   turnText: {fileID: 672804684}
   playerCP: {fileID: 50297711}
   enemyCP: {fileID: 1365322796}
+  dataCenter: {fileID: 1074448246}
 --- !u!4 &888336117
 Transform:
   m_ObjectHideFlags: 0
