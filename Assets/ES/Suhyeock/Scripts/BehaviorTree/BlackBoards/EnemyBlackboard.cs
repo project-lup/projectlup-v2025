@@ -1,11 +1,22 @@
 using UnityEngine;
+using UnityEngine.AI;
 
-public class EnemyBlackboard : MonoBehaviour
+namespace ES
 {
-    public float HP = 0;
-    public float maxHP = 100f;
-    public float damage = 10f;
-    public float AttackRange = 5f;
-    public float detectionRange = 10f;
-    public float speed = 3f;
+    public class EnemyBlackboard : BaseBlackboard
+    {
+        public float damage = 10f;
+        public float attackRange = 2f;
+        public float detectionRange = 10f;
+        public Transform playerTransform;
+
+        public NavMeshAgent navMeshAgent;
+
+
+        public void Start()
+        {
+            navMeshAgent = GetComponent<NavMeshAgent>();
+            navMeshAgent.speed = speed;
+        }
+    }
 }

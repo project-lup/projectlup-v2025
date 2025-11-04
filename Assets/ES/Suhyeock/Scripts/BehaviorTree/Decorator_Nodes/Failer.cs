@@ -1,15 +1,18 @@
 using UnityEngine;
 
-public class Failer : BTNode
+namespace ES
 {
-    public BTNode node;
-    public Failer(BTNode node)
+    public class Failer : BTNode
     {
-        this.node = node;
-    }
-    public override NodeState Evaluate()
-    {
-        node.Evaluate();
-        return NodeState.Failure;
+        public BTNode node;
+        public Failer(BTNode node)
+        {
+            this.node = node;
+        }
+        public override NodeState Evaluate()
+        {
+            node.Evaluate();
+            return NodeState.Failure;
+        }
     }
 }

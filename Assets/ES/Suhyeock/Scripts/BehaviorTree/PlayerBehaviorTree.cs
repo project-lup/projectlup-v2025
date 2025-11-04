@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace ES
+{
 public class PlayerBehaviorTree : MonoBehaviour
 {   
     private BTNode rootNode;
@@ -18,7 +20,6 @@ public class PlayerBehaviorTree : MonoBehaviour
     }
     void Start()
     {
-        
         SetupBehaviorTree();
     }
 
@@ -34,7 +35,7 @@ public class PlayerBehaviorTree : MonoBehaviour
         DeadCondition deadCondition = new DeadCondition(blackboard);
         DeathAction deathAction = new DeathAction(blackboard);
 
-        Sequence checkIsDeadSequence = new Sequence(new List<BTNode> {
+        Sequence handleDeathSequence = new Sequence(new List<BTNode> {
             deadCondition,
             deathAction,
         });
@@ -94,7 +95,7 @@ public class PlayerBehaviorTree : MonoBehaviour
 
         rootNode = new Selector(new List<BTNode>
         {
-            checkIsDeadSequence,
+            handleDeathSequence,
             handleHitSequence,
             handleReloadSequenceFailer,
             handleMovementAndAttackSequence,
@@ -102,4 +103,5 @@ public class PlayerBehaviorTree : MonoBehaviour
             performInteractionCastingSequence,
         });
     }
+}
 }

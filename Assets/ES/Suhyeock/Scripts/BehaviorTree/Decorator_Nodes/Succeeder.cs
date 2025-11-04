@@ -1,15 +1,18 @@
 using UnityEngine;
 
-public class Succeeder : BTNode
+namespace ES
 {
-    public BTNode node;
-    public Succeeder(BTNode node)
+    public class Succeeder : BTNode
     {
-        this.node = node;
-    }
-    public override NodeState Evaluate()
-    {
-        node.Evaluate();
-        return NodeState.Success;
+        public BTNode node;
+        public Succeeder(BTNode node)
+        {
+            this.node = node;
+        }
+        public override NodeState Evaluate()
+        {
+            node.Evaluate();
+            return NodeState.Success;
+        }
     }
 }

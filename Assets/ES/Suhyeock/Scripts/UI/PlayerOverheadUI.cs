@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
+namespace ES
+{
 public class PlayerOverheadUI : MonoBehaviour
 {
     public EventBroker eventBroker;
@@ -91,4 +92,5 @@ public class PlayerOverheadUI : MonoBehaviour
         float reloadRatio = time / reloadTime;
         ammoSlider.value = reloadRatio;
     }
+}
 }
