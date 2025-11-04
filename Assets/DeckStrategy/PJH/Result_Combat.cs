@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using DSG;
 public class Result_Combat : MonoBehaviour
 {
     [SerializeField]

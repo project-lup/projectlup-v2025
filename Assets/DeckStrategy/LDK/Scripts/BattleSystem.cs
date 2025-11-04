@@ -7,8 +7,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Utils.Enums;
-
+using DSG.Utils.Enums;
+using DSG;
 
 public class BattleSystem : MonoBehaviour
 {

@@ -1,7 +1,7 @@
 using UnityEngine;
-using Utils.Enums;
+using DSG.Utils.Enums;
 using System.Collections.Generic;
-
+using DSG;
 public class PickWeakTarget : AttackTargetSelectorBase
 {
     public PickWeakTarget(BattleSystem battle) : base(battle) { }
@@ -15,7 +15,7 @@ public class PickWeakTarget : AttackTargetSelectorBase
         if (slots == null)
             return null;
 
-        Utils.Enums.EAttributeType type = Attacker.characterData.type;
+        EAttributeType type = Attacker.characterData.type;
 
         switch (type)
         {

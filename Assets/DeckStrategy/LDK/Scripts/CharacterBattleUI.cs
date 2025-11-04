@@ -9,6 +9,7 @@ using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static Character;
 using static UnityEngine.GraphicsBuffer;
+using DSG;
 
 [System.Serializable]
 public struct StatusSpritePair

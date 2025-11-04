@@ -1,4 +1,4 @@
-using Utils.Enums;
+using DSG.Utils.Enums;
 
 [System.Serializable]
 public class CharacterData
