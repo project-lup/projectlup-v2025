@@ -21,8 +21,8 @@ public class InventorySlot<T> where T : class, IInventoryItem
 
     public bool IsEmpty => item == null || count <= 0;
 
-    // public bool IsFull => item != null && count >= item.MaxStackSize;
-    // public int RemainingSpace => item != null ? item.MaxStackSize - count : 0;
+    public bool IsFull => item != null && count >= item.MaxStackSize;
+    public int RemainingSpace => item != null ? item.MaxStackSize - count : 0;
 
     public InventorySlot(int slotIndex)
     {
@@ -31,22 +31,16 @@ public class InventorySlot<T> where T : class, IInventoryItem
         count = 0;
     }
 
-    /// <summary>
-    /// 아이템 설정 (새로운 아이템 배치)
-    /// </summary>
     public bool SetItem(T newItem, int amount)
     {
         if (newItem == null || amount <= 0)
             return false;
 
         item = newItem;
-        // count = Mathf.Min(amount, newItem.MaxStackSize);
+        count = Mathf.Min(amount, newItem.MaxStackSize);
         return true;
     }
 
-    /// <summary>
-    /// 아이템 추가 (스택 가능한 경우)
-    /// </summary>
     public int AddItem(T newItem, int amount)
     {
         if (newItem == null || amount <= 0)
@@ -72,9 +66,6 @@ public class InventorySlot<T> where T : class, IInventoryItem
         return 0;
     }
 
-    /// <summary>
-    /// 아이템 제거
-    /// </summary>
     public int RemoveItem(int amount)
     {
         if (IsEmpty || amount <= 0)
@@ -91,18 +82,12 @@ public class InventorySlot<T> where T : class, IInventoryItem
         return removed;
     }
 
-    /// <summary>
-    /// 슬롯 비우기
-    /// </summary>
     public void Clear()
     {
         item = null;
         count = 0;
     }
 
-    /// <summary>
-    /// 다른 슬롯과 교환
-    /// </summary>
     public void SwapWith(InventorySlot<T> other)
     {
         if (other == null)
@@ -118,17 +103,19 @@ public class InventorySlot<T> where T : class, IInventoryItem
         other.count = tempCount;
     }
 
-    /// <summary>
-    /// 저장 데이터로 변환
-    /// </summary>
     public ItemRuntimeData ToSaveData()
     {
-        return new ItemRuntimeData
+        if (IsEmpty)
         {
-            //slotIndex = SlotIndex,
-            //isEmpty = IsEmpty,
-            //itemSaveData = IsEmpty ? null : item.ToSaveData(),
-            //count = count
-        };
+            return new ItemRuntimeData
+            {
+                ItemId = -1,
+                Count = 0
+            };
+        }
+
+        ItemRuntimeData data = item.ToSaveData();
+        data.Count = count;
+        return data;
     }
 }

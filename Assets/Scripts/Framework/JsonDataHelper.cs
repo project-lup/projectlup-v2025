@@ -69,5 +69,26 @@ public static class JsonDataHelper
         string path = GetFilePath(fileName);
         return File.Exists(path);
     }
+
+    public static void DeleteData(string fileName)
+    {
+        string path = GetFilePath(fileName);
+
+        if (!File.Exists(path))
+        {
+            Debug.LogWarning($"삭제할 파일이 없습니다: {path}");
+            return;
+        }
+
+        try
+        {
+            File.Delete(path);
+            Debug.Log($"데이터 삭제 완료: {path}");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"데이터 삭제 실패: {e.Message}");
+        }
+    }
 }
 
