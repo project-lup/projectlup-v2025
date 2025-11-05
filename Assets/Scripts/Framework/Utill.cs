@@ -102,6 +102,24 @@ namespace Define
 
     }
 
+    /// <summary>
+    /// Inventory System
+    /// </summary>
+    public enum ItemType
+    {
+        None = 0,
+        Weapon = 1,      // 무기
+        Armor = 2,       // 방어구
+        Consumable = 3,  // 소비 아이템
+        Material = 4,    // 재료
+        KeyItem = 5,     // 퀘스트/키 아이템
+        Currency = 6,    // 화폐
+        Equipment = 7,   // 장비 (일반)
+        Buff = 8,        // 버프 아이템
+        Character = 9,   // 캐릭터 (덱 빌딩용)
+        Custom = 100     // 게임별 커스텀 (100 이상 사용)
+    }
+
 
 }
 
