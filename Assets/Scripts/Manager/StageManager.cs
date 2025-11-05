@@ -138,6 +138,7 @@ namespace Manager
             Transition.Clear();
 
             // Main
+            SetTransition(Transition, Define.StageKind.Main);
             SetTransition(Transition, Define.StageKind.RL);
             SetTransition(Transition, Define.StageKind.ST);
             SetTransition(Transition, Define.StageKind.DSG);
@@ -149,11 +150,13 @@ namespace Manager
 
             // Intro
             SetTransition(Transition, Define.StageKind.Main);
+            SetTransition(Transition, Define.StageKind.Intro);
 
             AddTransitionToList(Transition);
             Transition.Clear();
 
             //Roguelike
+            SetTransition(Transition, Define.StageKind.RL);
             SetTransition(Transition, Define.StageKind.Main);
             SetTransition(Transition, Define.StageKind.Intro);
             SetTransition(Transition, Define.StageKind.PCR);
@@ -162,6 +165,7 @@ namespace Manager
             Transition.Clear();
 
             // Shooting
+            SetTransition(Transition, Define.StageKind.ST);
             SetTransition(Transition, Define.StageKind.Main);
             SetTransition(Transition, Define.StageKind.Intro);
             SetTransition(Transition, Define.StageKind.PCR);
@@ -170,6 +174,7 @@ namespace Manager
             Transition.Clear();
 
             // ExtractionShooter
+            SetTransition(Transition, Define.StageKind.ES);
             SetTransition(Transition, Define.StageKind.Main);
             SetTransition(Transition, Define.StageKind.Intro);
             SetTransition(Transition, Define.StageKind.PCR);
@@ -194,6 +199,7 @@ namespace Manager
             SetTransition(Transition, Define.StageKind.Main);
             SetTransition(Transition, Define.StageKind.Intro);
             SetTransition(Transition, Define.StageKind.PCR);
+            SetTransition(Transition, Define.StageKind.DSG);
 
             AddTransitionToList(Transition);
             Transition.Clear();
