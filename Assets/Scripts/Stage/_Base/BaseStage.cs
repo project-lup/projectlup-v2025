@@ -44,13 +44,17 @@ namespace Manager
 
         protected abstract void SaveDatas();
 
+        protected abstract void SetupInventory();
+
         public virtual IEnumerator OnStageEnter()
         {
+            SetupInventory();
             LoadResources();
             GetDatas();
 
             yield return null;
         }
+
         public virtual IEnumerator OnStageStay()
         {
             yield return null;
@@ -59,6 +63,7 @@ namespace Manager
         public virtual IEnumerator OnStageExit()
         {
             SaveDatas();
+            Manager.InventoryManager.Instance.OnStageExit();
 
             yield return null;
         }
@@ -85,6 +90,8 @@ namespace Manager
 
             return data;
         }
+
+       
     }
 }
 

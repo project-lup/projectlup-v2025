@@ -1,15 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Framework
 {
-    public class RoguelikeInventoryConfig : IGameInventoryConfig
+    public class DeckStrategyInventoryConfig : IGameInventoryConfig
     {
         public List<string> GetCurrencyTypes()
         {
             return new List<string>
             {
-                // TODO: 재화 타입 추가 (예: "Gold", "Wood", "Stone", "Iron", "Energy")
+                // TODO: 재화 타입 추가 (예: "Gold", "Mana", "Crystal")
             };
         }
 
@@ -17,13 +17,13 @@ namespace Framework
         {
             return new List<string>
             {
-                // TODO: 장비 슬롯 추가 (예: "Tool", "Pet")
+                // TODO: 장비 슬롯 추가 (예: "Artifact", "Relic")
             };
         }
 
         public int GetDefaultCapacity()
         {
-            return 60; // TODO: 필요한 용량으로 변경
+            return 40; // TODO: 필요한 용량으로 변경
         }
 
         public Type GetCustomInventoryType()

@@ -91,6 +91,11 @@ namespace Manager
         {
             Manager.SoundManager.Instance.StopBGM();
         }
+
+        protected override void SetupInventory()
+        {
+
+        }
     }
 }
 

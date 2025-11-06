@@ -286,13 +286,10 @@ namespace Manager
             }
         }
 
-        // 이건 스테이지 매니저에서 호출할듯?
         public void OnStageExit()
         {
             if (currentInventory == null)
-            {
                 return;
-            }
 
             var persistProperty = currentInventory.GetType().GetProperty("ShouldPersist");
             if (persistProperty != null)
@@ -316,7 +313,7 @@ namespace Manager
         }
 
         /// 게임 전환 (인벤토리 저장 후 새 게임 설정 적용)
-        public void SwitchGame(string fromGameId, string toGameId, Framework.IGameInventoryConfig newConfig)
+        public void SwitchGame(Define.StageKind fromStage, Define.StageKind toStage, Framework.IGameInventoryConfig newConfig)
         {
             if (newConfig == null)
             {
@@ -325,8 +322,8 @@ namespace Manager
             }
 
             // 1. 현재 게임의 인벤토리 저장
-            if (currentInventory != null && !string.IsNullOrEmpty(fromGameId))
-                SaveInventory($"Inventory_{fromGameId}");
+            if (currentInventory != null && IsGameStage(fromStage))
+                SaveInventory($"Inventory_{fromStage}");
 
             // 2. 현재 인벤토리 초기화
             currentInventory = null;
@@ -335,82 +332,98 @@ namespace Manager
             Initialize(newConfig);
 
             // 4. 새 게임의 인벤토리 로드 (존재하는 경우)
-            if (!string.IsNullOrEmpty(toGameId))
+            if (IsGameStage(toStage))
             {
-                string saveKey = $"Inventory_{toGameId}";
+                string saveKey = $"Inventory_{toStage}";
                 if (JsonDataHelper.FileExists($"{saveKey}.json"))
                 {
-                    Debug.Log($"[InventoryManager] Found existing save for game: {toGameId}");
+                    Debug.Log($"[InventoryManager] Found existing save for game: {toStage}");
                 }
                 else
                 {
-                    Debug.Log($"[InventoryManager] No existing save for game: {toGameId}. Will start fresh.");
+                    Debug.Log($"[InventoryManager] No existing save for game: {toStage}. Will start fresh.");
                 }
             }
 
-            Debug.Log($"[InventoryManager] Game switched: {fromGameId} → {toGameId}");
+            Debug.Log($"[InventoryManager] Game switched: {fromStage} → {toStage}");
             Debug.Log($"[InventoryManager] Global currencies preserved: Diamond={GetGlobalCurrency("Diamond")}, AccountExp={GetGlobalCurrency("AccountExp")}");
         }
 
-        /// 게임 ID로 설정 조회 (확장 가능하도록 설계)
-        public Framework.IGameInventoryConfig GetConfigForGame(string gameId)
+        /// StageKind로 설정 조회
+        public Framework.IGameInventoryConfig GetConfigForGame(Define.StageKind stageKind)
         {
-            switch (gameId?.ToUpper())
+            switch (stageKind)
             {
-                case "RL":
-                case "ROGUELIKE":
+                case Define.StageKind.RL:
                     return new Framework.RoguelikeInventoryConfig();
 
-                case "ST":
-                case "SHOOTING":
+                case Define.StageKind.ST:
                     return new Framework.ShootingInventoryConfig();
 
-                case "ES":
-                case "EXTRACTIONSHOOTER":
+                case Define.StageKind.ES:
                     return new Framework.ExtractionShooterInventoryConfig();
 
-                case "PCR":
-                case "PRODUCTION":
+                case Define.StageKind.PCR:
                     return new Framework.ProductionInventoryConfig();
 
+                case Define.StageKind.DSG:
+                    return new Framework.DeckStrategyInventoryConfig();
+
+                case Define.StageKind.Debug:
+                    return new Framework.DebugInventoryConfig();
+
+                case Define.StageKind.Main:
+                case Define.StageKind.Intro:
+                case Define.StageKind.Unknown:
                 default:
-                    Debug.LogWarning($"[InventoryManager] Unknown game ID: {gameId}. Returning null.");
+                    Debug.LogWarning($"[InventoryManager] Stage '{stageKind}' does not use inventory system.");
                     return null;
             }
         }
 
-        /// 게임 전환 (게임 ID만으로 편리하게 호출)
-        public void SwitchGame(string fromGameId, string toGameId)
+        /// 게임 전환 (StageKind만으로 편리하게 호출)
+        public void SwitchGame(Define.StageKind fromStage, Define.StageKind toStage)
         {
-            var newConfig = GetConfigForGame(toGameId);
+            var newConfig = GetConfigForGame(toStage);
             if (newConfig != null)
             {
-                SwitchGame(fromGameId, toGameId, newConfig);
+                SwitchGame(fromStage, toStage, newConfig);
             }
         }
 
-        /// 현재 게임 ID 저장 (외부에서 관리 가능하도록)
-        private string currentGameId;
+        /// 현재 스테이지 저장
+        private Define.StageKind currentStageKind = Define.StageKind.Unknown;
 
-        public string GetCurrentGameId() => currentGameId;
+        public Define.StageKind GetCurrentStageKind() => currentStageKind;
 
-        public void SetCurrentGameId(string gameId)
+        public void SetCurrentStageKind(Define.StageKind stageKind)
         {
-            currentGameId = gameId;
-            Debug.Log($"[InventoryManager] Current game ID set to: {gameId}");
+            currentStageKind = stageKind;
+            Debug.Log($"[InventoryManager] Current stage set to: {stageKind}");
         }
 
         /// 인벤토리 등록 시 자동으로 저장된 데이터 로드 시도
-        public void RegisterInventoryAndLoad(MonoBehaviour inventory, string gameId)
+        public void RegisterInventoryAndLoad(MonoBehaviour inventory, Define.StageKind stageKind)
         {
             RegisterInventory(inventory);
-            SetCurrentGameId(gameId);
+            SetCurrentStageKind(stageKind);
 
-            string saveKey = $"Inventory_{gameId}";
+            string saveKey = $"Inventory_{stageKind}";
             if (JsonDataHelper.FileExists($"{saveKey}.json"))
             {
                 LoadInventory(saveKey);
             }
+        }
+
+        /// 해당 스테이지가 게임 스테이지인지 확인 (인벤토리 필요)
+        private bool IsGameStage(Define.StageKind stageKind)
+        {
+            return stageKind == Define.StageKind.RL ||
+                   stageKind == Define.StageKind.ST ||
+                   stageKind == Define.StageKind.ES ||
+                   stageKind == Define.StageKind.PCR ||
+                   stageKind == Define.StageKind.DSG ||
+                   stageKind == Define.StageKind.Debug;
         }
 
         public void BroadcastItemAdded(IInventoryItemable item, int amount)
