@@ -68,6 +68,11 @@ namespace Manager
                 base.SaveRuntimeData(RuntimeData);
             }
         }
+
+        protected override void SetupInventory()
+        {
+
+        }
     }
 }
 

@@ -32,6 +32,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScenes/IntroStage.unity
     guid: bfe6194dfd4d4084ba7b006f35702bb2
+  - enabled: 0
+    path: Assets/Scenes/SampleScenes/DebugScene.unity
+    guid: 40d98895c90e5c049a594efcbd482bfb
+  - enabled: 1
+    path: Assets/Scenes/SampleScenes/DebugStage.unity
+    guid: 6eca0af7957015549a0f0d5cf2a705bb
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

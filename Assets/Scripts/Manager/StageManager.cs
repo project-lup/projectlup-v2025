@@ -203,9 +203,6 @@ namespace Manager
 
             AddTransitionToList(Transition);
             Transition.Clear();
-
-            //LoadStage(startStageKind);
-
         }
 
         private void SetTransition(List<Define.StageKind> from, Define.StageKind to)
@@ -260,6 +257,10 @@ namespace Manager
 
             // Stage Exit 처리
             yield return StartCoroutine(OnStageExit());
+
+            // 인벤토리 게임 전환 (이전 게임 저장 + 새 게임 설정 적용)
+            InventoryManager.Instance.SwitchGame(currentStageKind, targetStageKind);
+            Debug.Log($"[StageManager] Inventory switched: {currentStageKind} → {targetStageKind}");
 
             // 4. Scene 로드
             string sceneName = sceneNameMap.ContainsKey(targetStageKind)
