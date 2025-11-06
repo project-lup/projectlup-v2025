@@ -1,5 +1,4 @@
 using DSG.Utils.Enums;
-using Utils.Enums;
 
 namespace DSG
 {

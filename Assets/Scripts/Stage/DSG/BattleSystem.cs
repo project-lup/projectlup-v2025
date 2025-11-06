@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using DSG.Utils.Enums;
 
@@ -111,19 +112,24 @@ namespace DSG
                 battleSequence.Add(enemySlot.character);
             }
 
-            battleSequence.Sort((a, b) => b.characterData.speed.CompareTo(a.characterData.speed));
+            Resort();
+            //battleSequence.Sort((a, b) => b.characterData.speed.CompareTo(a.characterData.speed));
 
-            foreach (var character in battleSequence)
-            {
-                var icon = Instantiate(iconPrefab, characterSequenceList);
-                var portrait = icon.transform.Find("Portrait")?.GetComponent<Image>();
-                if (portrait != null)
-                {
-                    Color color = character.characterModelData.material.GetColor("_BaseColor");
-                    portrait.color = color;
-                }
-                sequenceImage.Add(icon);
-            }
+            //for (int i = 0; i < battleSequence.Count; i++)
+            //{
+            //    Character character = battleSequence[i];
+            //    character.battleIndex = i;
+
+            //    var icon = Instantiate(iconPrefab, characterSequenceList);
+            //    var portrait = icon.transform.Find("Portrait")?.GetComponent<Image>();
+            //    if (portrait != null)
+            //    {
+            //        Color color = character.characterModelData.material.GetColor("_BaseColor");
+            //        portrait.color = color;
+            //    }
+            //    character.BattleComp.OnDie += OnDieIndexCharacter;
+            //    sequenceImage.Add(icon);
+            //}
         }
 
         public void Resort()
@@ -134,8 +140,11 @@ namespace DSG
 
             battleSequence.Sort((x, y) => y.characterData.speed.CompareTo(x.characterData.speed));
 
-            foreach (var character in battleSequence)
+            for (int i = 0; i < battleSequence.Count; i++)
             {
+                Character character = battleSequence[i];
+                character.battleIndex = i;
+
                 var icon = Instantiate(iconPrefab, characterSequenceList);
                 var portrait = icon.transform.Find("Portrait")?.GetComponent<Image>();
                 if (portrait != null)
@@ -143,6 +152,7 @@ namespace DSG
                     var color = character.characterModelData.material.GetColor("_BaseColor");
                     portrait.color = color;
                 }
+                character.BattleComp.OnDie += OnDieIndexCharacter;
                 sequenceImage.Add(icon);
             }
         }
@@ -162,6 +172,7 @@ namespace DSG
                 if (!battleSequence[i].BattleComp.isAlive)
                 {
                     Character character = battleSequence[i];
+                    character.BattleComp.OnDie -= OnDieIndexCharacter;
                     battleSequence.Remove(character);
                     Destroy(character.gameObject);
                     continue;
@@ -225,10 +236,6 @@ namespace DSG
             Character currentChar = battleSequence[currentTurnIndex];
             if (currentChar == null || currentChar.BattleComp == null || !currentChar.BattleComp.isAlive)
             {
-                if (currentTurnIndex < sequenceImage.Count && sequenceImage[currentTurnIndex] != null)
-                {
-                    sequenceImage[currentTurnIndex].SetActive(false);
-                }
                 currentTurnIndex++;
                 return;
             }
@@ -262,8 +269,6 @@ namespace DSG
         {
             DataCenter dataCenter = FindFirstObjectByType<DataCenter>();
 
-            if (dataCenter == null || dataCenter.mvpData == null)
-            {
             if (dataCenter == null)
                 dataCenter = FindFirstObjectByType<DataCenter>();
             if (dataCenter == null || dataCenter.mvpData == null)
@@ -382,19 +387,20 @@ namespace DSG
         {
             Debug.Log($" Round {currentRound} !");
 
-            Resort();
             currentTurnIndex = 0;
 
             while (currentTurnIndex < battleSequence.Count)
             {
+                int num = currentTurnIndex;
                 NextTurn();
+
+                if (num != currentTurnIndex) continue;
+
                 var currentChar = battleSequence[currentTurnIndex];
-
                 if (currentChar == null || !currentChar.BattleComp.isAlive) continue;
-
                 if (currentChar.characterData.rangeType == ERangeType.Melee)
                 {
-                    yield return new WaitForSeconds(1.5f);
+                    yield return new WaitForSeconds(2.0f);
                 }
                 else
                 {
@@ -434,7 +440,6 @@ namespace DSG
                     slot.character.characterData.defense +
                     slot.character.characterData.speed;
             }
-
             enemyCP.text = cp.ToString();
         }
 
@@ -474,6 +479,11 @@ namespace DSG
                 EndBattle("Defeat");
             }
         }
+       private void OnDieIndexCharacter(int index)
+       {
+            sequenceImage[index].gameObject.SetActive(false);
+       }
     }
+        
 }
     
