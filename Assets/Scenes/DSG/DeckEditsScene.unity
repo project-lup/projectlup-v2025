@@ -1427,7 +1427,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toggle: {fileID: 504369310}
-  formationSystem: {fileID: 0}
   teamIndex: 1
 --- !u!114 &504369310
 MonoBehaviour:
@@ -3009,7 +3008,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toggle: {fileID: 1018181417}
-  formationSystem: {fileID: 0}
   teamIndex: 3
 --- !u!114 &1018181417
 MonoBehaviour:
@@ -3252,7 +3250,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toggle: {fileID: 1049738305}
-  formationSystem: {fileID: 0}
   teamIndex: 7
 --- !u!114 &1049738305
 MonoBehaviour:
@@ -4242,7 +4239,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toggle: {fileID: 1383354224}
-  formationSystem: {fileID: 1314368957}
   teamIndex: 0
 --- !u!1 &1402947965
 GameObject:
@@ -4884,7 +4880,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toggle: {fileID: 1620561177}
-  formationSystem: {fileID: 0}
   teamIndex: 2
 --- !u!114 &1620561177
 MonoBehaviour:
@@ -5299,7 +5294,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toggle: {fileID: 1663620705}
-  formationSystem: {fileID: 0}
   teamIndex: 4
 --- !u!114 &1663620705
 MonoBehaviour:
@@ -5815,7 +5809,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toggle: {fileID: 1855830694}
-  formationSystem: {fileID: 0}
   teamIndex: 6
 --- !u!114 &1855830694
 MonoBehaviour:
@@ -5956,7 +5949,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toggle: {fileID: 1879723639}
-  formationSystem: {fileID: 0}
   teamIndex: 5
 --- !u!114 &1879723639
 MonoBehaviour:
@@ -6652,6 +6644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charactersList: {fileID: 1366979382}
+  filterPanel: {fileID: 668089687}
   filterButtonPrefab: {fileID: 8654377384795523768, guid: 0f197e1c0d269b64eb36a3ab56e7dc44, type: 3}
   attributesFilterArea: {fileID: 1025036094}
   RangesFilterArea: {fileID: 1503181067}
