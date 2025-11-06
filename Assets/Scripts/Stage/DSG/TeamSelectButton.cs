@@ -11,12 +11,13 @@ namespace DSG
         [SerializeField]
         private UnityEngine.UI.Toggle toggle;
 
-        [SerializeField]
         private FormationSystem formationSystem;
 
         public int teamIndex;
         void Start()
         {
+            formationSystem = FindAnyObjectByType<FormationSystem>();
+
             toggle.onValueChanged.AddListener(OnToggleChanged);
             if (teamIndex == 0)
             {

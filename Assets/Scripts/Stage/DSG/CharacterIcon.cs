@@ -36,17 +36,17 @@ namespace DSG
             selectedButton.button.onClick.AddListener(OnButtonClicked);
         }
 
-        public void SetData(CharacterData characterData, CharacterModelData modelData, int characterLevel)
+        public void SetIconData(OwnedCharacterInfo info, EAttributeType type, Color portraitColor, int characterLevel, bool isChecked)
         {
             level.text = "Lv." + characterLevel.ToString();
 
-            portrait.color = modelData.material.color;
+            portrait.color = portraitColor;
 
-            if (characterData.type == EAttributeType.ROCK)
+            if (type == EAttributeType.ROCK)
             {
                 attributeIcon.color = Color.red;
             }
-            else if (characterData.type == EAttributeType.SCISSORS)
+            else if (type == EAttributeType.SCISSORS)
             {
                 attributeIcon.color = Color.green;
             }
@@ -55,9 +55,11 @@ namespace DSG
                 attributeIcon.color = Color.blue;
             }
 
-            characterInfo.characterID = characterData.ID;
-            characterInfo.characterModelID = modelData.ID;
-            characterInfo.characterLevel = characterLevel;
+            characterInfo = info;
+            if(isChecked)
+            {
+                selectedButton.ButtonClicked();
+            }
         }
 
         public void OnButtonClicked()
@@ -69,6 +71,12 @@ namespace DSG
             else
             {
                 OnSelected?.Invoke(characterInfo, selectedButton);
+            }
+
+            CharactersList charactersList = gameObject.GetComponentInParent<CharactersList>();
+            if (charactersList != null)
+            {
+                charactersList.UpdateCheckedList(characterInfo.characterID, selectedButton.isSelected);
             }
         }
     }

@@ -60,15 +60,12 @@ namespace DSG
                 if (selectedTeam.characters[i].characterID == 0) return;
                 LineupSlot slot = slots[i].GetComponent<LineupSlot>();
 
-                //slot.SetSelectedCharacter(selectedTeam.characters[i], false);
-                //++selectedCount;
                 CharacterIcon[] icons = characterListContent.GetComponentsInChildren<CharacterIcon>();
                 foreach (var icon in icons)
                 {
                     if (icon.characterInfo.characterID == selectedTeam.characters[i].characterID)
                     {
                         icon.OnButtonClicked();
-                        //icon.selectedButton.ButtonClicked();
                         break;
                     }
                 }
@@ -93,7 +90,6 @@ namespace DSG
             }
         }
 
-        // �̹� ���õ� ĳ���͸� ������ ��
         public void ReleaseCharacter(int characterID, SelectedButton button)
         {
             if (selectedCount <= 0) return;
@@ -101,7 +97,6 @@ namespace DSG
             for (int i = 0; i < slots.Length; ++i)
             {
                 LineupSlot slot = slots[i].GetComponent<LineupSlot>();
-                // ĳ���Ͱ� ������� ���� ������ �ѱ�
                 if (slot.character == null || slot.character.characterData == null) continue;
                 if (slot.character.characterData.ID == characterID)
                 {
