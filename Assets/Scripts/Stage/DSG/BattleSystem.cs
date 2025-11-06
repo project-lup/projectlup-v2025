@@ -113,23 +113,6 @@ namespace DSG
             }
 
             Resort();
-            //battleSequence.Sort((a, b) => b.characterData.speed.CompareTo(a.characterData.speed));
-
-            //for (int i = 0; i < battleSequence.Count; i++)
-            //{
-            //    Character character = battleSequence[i];
-            //    character.battleIndex = i;
-
-            //    var icon = Instantiate(iconPrefab, characterSequenceList);
-            //    var portrait = icon.transform.Find("Portrait")?.GetComponent<Image>();
-            //    if (portrait != null)
-            //    {
-            //        Color color = character.characterModelData.material.GetColor("_BaseColor");
-            //        portrait.color = color;
-            //    }
-            //    character.BattleComp.OnDie += OnDieIndexCharacter;
-            //    sequenceImage.Add(icon);
-            //}
         }
 
         public void Resort()
@@ -138,7 +121,7 @@ namespace DSG
                 Destroy(icon);
             sequenceImage.Clear();
 
-            battleSequence.Sort((x, y) => y.characterData.speed.CompareTo(x.characterData.speed));
+            battleSequence.Sort((x, y) => y.BattleComp.speed.CompareTo(x.BattleComp.speed));
 
             for (int i = 0; i < battleSequence.Count; i++)
             {
@@ -168,10 +151,12 @@ namespace DSG
                     battleSequence.RemoveAt(i);
                     continue;
                 }
+                
+                Character character = battleSequence[i];
+                character.StatusEffectComp.TurnAll();
 
-                if (!battleSequence[i].BattleComp.isAlive)
+                if (!character.BattleComp.isAlive)
                 {
-                    Character character = battleSequence[i];
                     character.BattleComp.OnDie -= OnDieIndexCharacter;
                     battleSequence.Remove(character);
                     Destroy(character.gameObject);

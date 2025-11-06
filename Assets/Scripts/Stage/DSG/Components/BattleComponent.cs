@@ -1,7 +1,8 @@
+using DSG.Utils.Enums;
 using System;
 using TMPro;
 using UnityEngine;
-using DSG.Utils.Enums;
+using static DSG.Result_CharacterDisplay;
 using static UnityEngine.UI.GridLayoutGroup;
 
 namespace DSG
@@ -12,6 +13,10 @@ namespace DSG
         private Character owner;
 
         public float currHp;
+        public float maxHp;
+        public float attack;
+        public float defense;
+        public float speed;
 
         public bool isAttacking = false;
 
@@ -45,6 +50,7 @@ namespace DSG
         {
             owner = GetComponent<Character>();
             originPosition = owner.gameObject.transform.position;
+            SetStatus(owner.characterData);
         }
 
         // Update is called once per frame
@@ -121,9 +127,13 @@ namespace DSG
             }
         }
 
-        public void SetHp(float hp)
+        public void SetStatus(CharacterData data)
         {
-            currHp = hp;
+            maxHp = data.maxHp;
+            attack = data.attack;
+            defense = data.defense;
+            speed = data.speed;
+            currHp = maxHp;
         }
 
         public void Attack(LineupSlot target)
@@ -153,7 +163,7 @@ namespace DSG
             if (targetSlot == null || targetSlot.character == null || targetSlot.character.BattleComp == null)
                 return;
 
-            float damage = owner.characterData.attack;
+            float damage = attack;
             targetChar.BattleComp.TakeDamage(damage);
             owner.ScoreComp.UpdateDamageDealt(damage);
         }

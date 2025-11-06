@@ -1,3 +1,4 @@
+using DSG.Utils.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -15,7 +16,7 @@ namespace DSG
     [System.Serializable]
     public struct StatusSpritePair
     {
-        public string Name;
+        public EStatusEffectType Name;
         public Sprite Sprite;
     }
 
@@ -27,8 +28,8 @@ namespace DSG
 
         [SerializeField] private List<StatusSpritePair> spritePairs;
 
-        private Dictionary<string, Sprite> statusSprites;
-        private Dictionary<string, Image> activeIcons;
+        private Dictionary<EStatusEffectType, Sprite> statusSprites;
+        private Dictionary<EStatusEffectType, Image> activeIcons;
 
         private Camera mainCamera;
         private RectTransform rectTransform;
@@ -44,7 +45,7 @@ namespace DSG
 
             if (character == null || character.characterData == null) return;
 
-            activeIcons = new Dictionary<string, Image>();
+            activeIcons = new Dictionary<EStatusEffectType, Image>();
             healthSlider.maxValue = character.characterData.maxHp;
             healthSlider.value = character.characterData.maxHp;
 
@@ -55,6 +56,7 @@ namespace DSG
 
             character.StatusEffectComp.OnEffectAdded = OnEffectAdded;
             character.StatusEffectComp.OnEffectRemoved = OnEffectRemoved;
+            character.StatusEffectComp.OnEffectEndTurn = OnEffectEndTurn;
         }
 
         private void OnDisable()
@@ -68,7 +70,7 @@ namespace DSG
         }
         private void Awake()
         {
-            statusSprites = new Dictionary<string, Sprite>();
+            statusSprites = new Dictionary<EStatusEffectType, Sprite>();
             foreach (var pair in spritePairs)
             {
                 if (!statusSprites.ContainsKey(pair.Name))
@@ -91,11 +93,11 @@ namespace DSG
         {
             gaugeSlider.value = CurrGauge;
         }
-        private void OnEffectAdded(StatusEffect effect)
+        private void OnEffectAdded(IStatusEffect effect)
         {
-            if (activeIcons.TryGetValue(effect.Name, out Image image))
+            if (activeIcons.TryGetValue(effect.type, out Image image))
             {
-                image.GetComponentInChildren<TextMeshProUGUI>().text = $"Stack : {effect.Stack}";
+                image.GetComponentInChildren<TextMeshProUGUI>().text = $"Stack : {effect.amount}";
                 return;
             }
 
@@ -117,32 +119,39 @@ namespace DSG
             rt.anchoredPosition = new Vector2(0f, 32f);
 
             var label = textGO.GetComponent<TextMeshProUGUI>();
-            label.text = $"Stack : {effect.Stack}";
+            label.text = $"Stack : {effect.amount}";
             label.fontSize = 36;
             label.alignment = TextAlignmentOptions.Midline;
             label.overflowMode = TextOverflowModes.Overflow;
             label.raycastTarget = false;
             label.color = Color.red;
 
-            // 3) 아이콘 사전에 등록(라벨 업데이트용 접근 경로 확보)
-            activeIcons.TryAdd(effect.Name, icon);
+            activeIcons.TryAdd(effect.type, icon);
 
-            if (statusSprites.TryGetValue(effect.Name, out Sprite sprite))
+            if (statusSprites.TryGetValue(effect.type, out Sprite sprite))
             {
                 icon.sprite = sprite;
             }
             else { icon.sprite = null; }
 
             icon.enabled = true;
-            activeIcons.TryAdd(effect.Name, icon);
+            activeIcons.TryAdd(effect.type, icon);
         }
-        private void OnEffectRemoved(StatusEffect effect)
+        private void OnEffectRemoved(IStatusEffect effect)
         {
-            if (!activeIcons.TryGetValue(effect.Name, out Image icon))
+            if (!activeIcons.TryGetValue(effect.type, out Image icon))
                 return;
 
             Destroy(icon.gameObject);
-            activeIcons.Remove(effect.Name);
+            activeIcons.Remove(effect.type);
+        }
+        private void OnEffectEndTurn(IStatusEffect effect)
+        {
+            if (activeIcons.TryGetValue(effect.type, out Image image))
+            {
+                image.GetComponentInChildren<TextMeshProUGUI>().text = $"Stack : {effect.amount}";
+                return;
+            }
         }
 
         private void LateUpdate()

@@ -5,14 +5,6 @@ namespace DSG
 {
     public class Character : MonoBehaviour
     {
-        public struct StatusEffect
-        {
-            public IStatusEffect statusEffect;
-            public string Name; //�̸� ������
-            public int Stack; // ���� �� +
-            public int RemainsTurn; // �����ο��� ���� �� < �̹����ο��� ���� �� �� ��� �̹����ο��� ���� ���� ������.
-        }
-
         private StatusEffectComponent statusEffectComp;
         private BattleComponent battleComp;
         private ScoreComponent scoreComp;
@@ -27,12 +19,10 @@ namespace DSG
         public CharacterModelData characterModelData { get; private set; }
 
         public float maxSkillGauge { get; private set; }
-
         public bool isEnemy = false;
-
         public int battleIndex = -1;
-        public float combatPower { get; private set; }
 
+        public float combatPower { get; private set; }
         [SerializeField]
         private GameObject characterUIPrefab;
 
@@ -41,7 +31,6 @@ namespace DSG
 
         private void Awake()
         {
-            //healthComp = GetComponent<HealthComponent>();
             statusEffectComp = GetComponent<StatusEffectComponent>();
             battleComp = GetComponent<BattleComponent>();
             scoreComp = GetComponent<ScoreComponent>();
@@ -94,7 +83,7 @@ namespace DSG
             if (data == null || modelData == null) return;
 
             //characterInfo = info;
-            battleComp.SetHp(data.maxHp);
+            battleComp.SetStatus(data);
 
             characterData = data;
             characterModelData = modelData;

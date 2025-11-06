@@ -2,69 +2,60 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using DSG.Utils.Enums;
 using static DSG.Character;
 
 namespace DSG
 {
-    public interface IStatusEffect
-    {
-        void Apply(Character target);
-        void Turn(Character target);
-        void Remove(Character target);
-    }
-
-    public class BurnEffect : IStatusEffect
-    {
-        public void Apply(Character C) => Debug.Log("화상 시작");
-        public void Turn(Character C) => C.BattleComp.TakeDamage(1);
-        public void Remove(Character C) => Debug.Log("화상 끝");
-    }
-
-    public class PoisonEffect : IStatusEffect
-    {
-        public void Apply(Character C) => Debug.Log("독 시작");
-        public void Turn(Character C) => C.BattleComp.TakeDamage(1);
-        public void Remove(Character C) => Debug.Log("독 끝");
-    }
     public class StatusEffectComponent : MonoBehaviour
     {
         Character owner;
 
-        public Action<StatusEffect> OnEffectAdded;
-        public Action<StatusEffect> OnEffectRemoved;
+        public Action<IStatusEffect> OnEffectAdded;
+        public Action<IStatusEffect> OnEffectEndTurn;
+        public Action<IStatusEffect> OnEffectRemoved;
 
-        private readonly Dictionary<string, StatusEffect> _effects = new();
+        private readonly Dictionary<EStatusEffectType, IStatusEffect> _effects = new();
 
         private void Start()
         {
             owner = GetComponent<Character>();
         }
-        public void AddEffect(StatusEffect effect)
+        public void AddEffect(IStatusEffect effect)
         {
             if (!owner.BattleComp.isAlive)
                 return;
 
-            if (_effects.TryGetValue(effect.Name, out StatusEffect getEffect))
+            if (_effects.TryGetValue(effect.type, out IStatusEffect getEffect))
             {
-                getEffect.Stack += effect.Stack;  // 내부 값 수정
-                _effects[effect.Name] = getEffect;  // 다시 저장
+                getEffect.amount += effect.amount;  // 내부 값 수정
+                _effects[effect.type] = getEffect;  // 다시 저장
             }
             else
             {
-                _effects.Add(effect.Name, effect);
+                _effects.Add(effect.type, effect);
             }
 
-            effect.statusEffect.Apply(owner);
-            OnEffectAdded?.Invoke(_effects[effect.Name]);
+            effect.Apply(owner);
+            OnEffectAdded?.Invoke(_effects[effect.type]);
         }
         public void TurnAll()
         {
-            foreach (StatusEffect effect in _effects.Values) effect.statusEffect.Turn(owner);
+            foreach (IStatusEffect effect in _effects.Values)
+            {
+                effect.Turn(owner);
+                effect.remainingTurns--;
+                OnEffectEndTurn?.Invoke(effect);
+                if (effect.remainingTurns <= 0)
+                {
+                    RemoveEffect(effect);
+                }
+            }
         }
-        public void RemoveEffect(StatusEffect effect)
+        public void RemoveEffect(IStatusEffect effect)
         {
-            _effects.Remove(effect.Name);
-            effect.statusEffect.Remove(owner);
+            _effects.Remove(effect.type);
+            effect.Remove(owner);
             OnEffectRemoved?.Invoke(effect);
         }
 

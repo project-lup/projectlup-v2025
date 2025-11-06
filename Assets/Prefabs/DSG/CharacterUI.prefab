@@ -91,14 +91,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfaedd523276a644b81f19b27adfdcdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Panel: {fileID: 8265005829968445088}
+  panel: {fileID: 8265005829968445088}
   healthSlider: {fileID: 5554488253537722840}
   gaugeSlider: {fileID: 7842092411742527968}
-  damageButton: {fileID: 0}
-  effectButton: {fileID: 0}
   spritePairs:
-  - Name: Burn
+  - Name: 0
     Sprite: {fileID: 21300000, guid: c7f9169d3f6486d4db06d01c66192d65, type: 3}
+  - Name: 2
+    Sprite: {fileID: 21300000, guid: b8744436a6a5ec347bd455ec406b450c, type: 3}
   offset: {x: 0, y: 1.5, z: 0}
 --- !u!1 &569745631309147520
 GameObject:
