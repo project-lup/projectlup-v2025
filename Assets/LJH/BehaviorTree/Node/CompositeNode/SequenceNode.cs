@@ -29,6 +29,9 @@ namespace RL
                         currWorkingNodeIndex = i;
                         return NodeState.Running;
 
+                    case NodeState.Success:
+                        break;
+
                     default:
                         CallWrontState();
                         currWorkingNodeIndex = 0;

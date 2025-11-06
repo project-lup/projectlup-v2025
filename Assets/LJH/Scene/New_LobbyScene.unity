@@ -24885,7 +24885,7 @@ GameObject:
   - component: {fileID: 7892101601457044937}
   m_Layer: 5
   m_Name: CircleBtn
-  m_TagString: CharacterSelectionBtn
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27630,7 +27630,7 @@ GameObject:
   - component: {fileID: 8736151902067247201}
   m_Layer: 5
   m_Name: CircleBtn
-  m_TagString: CharacterSelectionBtn
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32668,7 +32668,7 @@ GameObject:
   - component: {fileID: 8583965881210723565}
   m_Layer: 5
   m_Name: CircleBtn
-  m_TagString: CharacterSelectionBtn
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
