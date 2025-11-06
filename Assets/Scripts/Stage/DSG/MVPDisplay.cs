@@ -14,6 +14,12 @@ public class MVPDisplay : MonoBehaviour
 
         var mvp = dataCenter.mvpData;
 
+        TMP_Text resultText = transform.Find("Text_Result")?.GetComponent<TMP_Text>();
+        if (resultText != null)
+        {
+            resultText.text = mvp.battleResult == "Victory" ? "Victory" : "Defeat";
+        }
+
         SetSlot("MVP1", "Image", "Text_Name", "Score", "Text_Score", mvp.char1Name, mvp.char1Color, mvp.char1Score, mvp.char1Score);
         SetSlot("MVP2", "Image", "Text_Name", "Score", "Text_Score", mvp.char2Name, mvp.char2Color, mvp.char2Score, mvp.char1Score);
         SetSlot("MVP3", "Image", "Text_Name", "Score", "Text_Score", mvp.char3Name, mvp.char3Color, mvp.char3Score, mvp.char1Score);

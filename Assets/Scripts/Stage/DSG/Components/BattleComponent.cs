@@ -6,57 +6,61 @@ using static UnityEngine.UI.GridLayoutGroup;
 
 namespace DSG
 {
+    
     public class BattleComponent : MonoBehaviour
     {
         private Character owner;
 
-    public float currHp;
+        public float currHp;
 
-    public bool isAttacking = false;
+        public bool isAttacking = false;
 
-    private LineupSlot targetSlot;
-    private Vector3 originPosition;
-    private Vector3 targetPosition;
+        private LineupSlot targetSlot;
+        private Vector3 originPosition;
+        private Vector3 targetPosition;
 
-    [SerializeField]
-    private GameObject bulletPrefab;
+        [SerializeField]
+        private GameObject bulletPrefab;
 
-    private GameObject bullet;
-    private float bulletSpeed = 0.8f;
+        private GameObject bullet;
+        private float bulletSpeed = 0.8f;
 
-    private bool impactApplied = false;
+        private bool impactApplied = false;
 
-    private Vector3 knockbackTarget;
-    private float knockbackDistance = 0.4f;
-    private float knockbackDuration = 0.2f;
-    private float knockbackTimer = 0f;
-    private bool isKnockback = false;
+        private Vector3 knockbackTarget;
+        private float knockbackDistance = 0.4f;
+        private float knockbackDuration = 0.2f;
+        private float knockbackTimer = 0f;
+        private bool isKnockback = false;
 
-    public bool isAlive { get; private set; } = true;
+        public bool isAlive { get; private set; } = true;
 
         public event Action<float> OnDamaged;
         public event Action<int> OnDie;
 
-    void Start()
-    {
-        owner = GetComponent<Character>();
-        originPosition = owner.gameObject.transform.position;
-    }
+        [SerializeField]
+        private GameObject damageLogPrefab;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (isKnockback)
+        void Start()
         {
-            knockbackTimer += Time.deltaTime;
-            float t = knockbackTimer / knockbackDuration;
+            owner = GetComponent<Character>();
+            originPosition = owner.gameObject.transform.position;
+        }
 
-            transform.position = Vector3.Lerp(knockbackTarget, originPosition, t);
-
-            if (knockbackTimer >= knockbackDuration)
+        // Update is called once per frame
+        void Update()
+        {
+            if (isKnockback)
             {
-                isKnockback = false;
-                transform.position = originPosition;
+                knockbackTimer += Time.deltaTime;
+                float t = knockbackTimer / knockbackDuration;
+
+                transform.position = Vector3.Lerp(knockbackTarget, originPosition, t);
+
+                if (knockbackTimer >= knockbackDuration)
+                {
+                    isKnockback = false;
+                    transform.position = originPosition;
 
                     if (!isAlive)
                     {
@@ -66,104 +70,122 @@ namespace DSG
             }
         }
 
-    private void FixedUpdate()
-    {
-        if(isAttacking)
+        private void FixedUpdate()
         {
-            if (owner.characterData.rangeType == ERangeType.Melee)
+            if (isAttacking)
             {
-                transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPosition, 0.5f);
-                if(transform.position == targetSlot.AttackedPosition.position)
+                if (owner.characterData.rangeType == ERangeType.Melee)
                 {
-                    if (!impactApplied)
+                    transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPosition, 0.5f);
+                    if (transform.position == targetSlot.AttackedPosition.position)
                     {
-                        ApplyDamageOnce();
-                        impactApplied = true;
+                        if (!impactApplied)
+                        {
+                            ApplyDamageOnce();
+                            impactApplied = true;
+                        }
+                        targetPosition = originPosition;
                     }
-                    targetPosition = originPosition;
+                    else if (transform.position == originPosition)
+                    {
+                        isAttacking = false;
+                        impactApplied = false;
+                    }
                 }
-                else if (transform.position == originPosition)
+                else
                 {
-                    isAttacking = false;
-                    impactApplied = false;
+                    if (bullet == null) return;
+
+                    Vector3 dir = targetPosition - bullet.transform.position;
+                    float distanceToTarget = dir.magnitude;
+                    float moveDistance = bulletSpeed;
+
+                    if (distanceToTarget <= moveDistance)
+                    {
+                        bullet.transform.position = targetPosition;
+
+                        if (!impactApplied)
+                        {
+                            ApplyDamageOnce();
+                            impactApplied = true;
+                        }
+
+                        isAttacking = false;
+                        impactApplied = false;
+                        Destroy(bullet);
+                        bullet = null;
+                        return;
+                    }
+                    bullet.transform.position += dir.normalized * moveDistance;
                 }
             }
-            else
-            {
-                if (bullet == null) return;
-
-                Vector3 dir = targetPosition - bullet.transform.position;
-                float distanceToTarget = dir.magnitude;
-                float moveDistance = bulletSpeed;
-
-                if (distanceToTarget <= moveDistance)
-                {
-                    bullet.transform.position = targetPosition;
-
-                    if (!impactApplied)
-                    {
-                        ApplyDamageOnce();
-                        impactApplied = true;
-                    }
-
-                    isAttacking = false;
-                    impactApplied = false;
-                    Destroy(bullet);
-                    bullet = null;
-                    return;
-                }
-                bullet.transform.position += dir.normalized * moveDistance;
-            }
         }
-    }
 
-    public void SetHp(float hp)
-    {
-        currHp = hp;
-    }
-
-    public void Attack(LineupSlot target)
-    {
-        if (isAttacking) return;
-
-        if (target == null)
-            return;
-
-        targetSlot = target;
-        targetPosition = targetSlot.AttackedPosition.position;
-        if (owner.characterData.rangeType == ERangeType.Range)
+        public void SetHp(float hp)
         {
-            bullet = Instantiate(bulletPrefab, originPosition, Quaternion.identity);
+            currHp = hp;
         }
 
-        isAttacking = true;
-    }
+        public void Attack(LineupSlot target)
+        {
+            if (isAttacking) return;
 
-    private void ApplyDamageOnce()
-    {
-        if (targetSlot == null)
-            return;
+            if (target == null)
+                return;
 
-        var targetChar = targetSlot.character;
+            targetSlot = target;
+            targetPosition = targetSlot.AttackedPosition.position;
+            if (owner.characterData.rangeType == ERangeType.Range)
+            {
+                bullet = Instantiate(bulletPrefab, originPosition, Quaternion.identity);
+            }
 
-        if (targetSlot == null || targetSlot.character == null || targetSlot.character.BattleComp == null)
-            return;
+            isAttacking = true;
+        }
 
-        float damage = owner.characterData.attack;
-        targetChar.BattleComp.TakeDamage(damage);
-        owner.ScoreComp.UpdateDamageDealt(damage);
-    }
+        private void ApplyDamageOnce()
+        {
+            if (targetSlot == null)
+                return;
 
-    public virtual void TakeDamage(float amount)
-    {
-        if (!isAlive)
-            return;
+            var targetChar = targetSlot.character;
 
-        currHp -= amount;
-        //print($"{name} ������ ����");
-        OnDamaged?.Invoke(currHp);
-        owner.ScoreComp.UpdateDamageTaken(amount);
-        TriggerKnockback();
+            if (targetSlot == null || targetSlot.character == null || targetSlot.character.BattleComp == null)
+                return;
+
+            float damage = owner.characterData.attack;
+            targetChar.BattleComp.TakeDamage(damage);
+            owner.ScoreComp.UpdateDamageDealt(damage);
+        }
+
+        public virtual void TakeDamage(float amount)
+        {
+            if (!isAlive)
+                return;
+
+            currHp -= amount;
+
+            OnDamaged?.Invoke(currHp);
+            owner.ScoreComp.UpdateDamageTaken(amount);
+            TriggerKnockback();
+
+            if (damageLogPrefab != null)
+            {
+                Vector3 headPos = transform.position + Vector3.up * 1.8f;
+                Quaternion rot = Quaternion.LookRotation(Camera.main.transform.forward);
+                GameObject log = Instantiate(damageLogPrefab, headPos, rot);
+                log.GetComponent<DamageLog>()?.Setup(amount);
+            }
+
+            Camera mainCam = Camera.main;
+            if (mainCam != null)
+            {
+                var shaker = mainCam.GetComponent<CameraShake>();
+                if (shaker == null)
+                    shaker = mainCam.gameObject.AddComponent<CameraShake>();
+
+                shaker.StartCoroutine(shaker.Shake(0.2f, 0.05f));
+            }
 
             if (currHp <= 0)
             {
@@ -174,20 +196,26 @@ namespace DSG
         public virtual void Die()
         {
             isAlive = false;
+            if (owner != null && owner.characterData != null && owner.characterModelData != null && owner.ScoreComp != null)
+            {
+                float score = owner.ScoreComp.CalculateMVPScore();
+                Color color = owner.characterModelData.material.GetColor("_BaseColor");
+                BattleSystem.Instance?.BackupDeadCharacter(owner.characterData.characterName, color, score);
+            }
             OnDie?.Invoke(owner.battleIndex);
         }
         private void TriggerKnockback()
         {
             if (isKnockback) return;
 
-        originPosition = transform.position;
+            originPosition = transform.position;
 
-        float dirX = owner.isEnemy ? 1f : -1f;
-        knockbackTarget = originPosition + new Vector3(dirX * knockbackDistance, 0f, 0f);
+            float dirX = owner.isEnemy ? 1f : -1f;
+            knockbackTarget = originPosition + new Vector3(dirX * knockbackDistance, 0f, 0f);
 
-        knockbackTimer = 0f;
-        isKnockback = true;
-    }
+            knockbackTimer = 0f;
+            isKnockback = true;
+        }
 
         private void OnDisable()
         {

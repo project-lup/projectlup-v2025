@@ -13,7 +13,7 @@ namespace DSG
 
             if (battleSystem != null)
             {
-                battleSystem.EndBattle();
+                battleSystem.EndBattle("Defeat");
             }
         }
     }

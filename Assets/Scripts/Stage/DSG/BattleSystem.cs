@@ -54,6 +54,22 @@ namespace DSG
         [SerializeField]
         private DataCenter dataCenter;
 
+        public static BattleSystem Instance { get; private set; }
+        private Dictionary<string, (Color Color, float Score)> deadScores = new();
+        private List<(string Name, Color Color, float Score)> deadCharacterData = new();
+
+        void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
         private void Start()
         {
             for (int i = 0; i < enemySlots.Length; i++)
@@ -138,11 +154,18 @@ namespace DSG
 
             for (int i = 0; i < battleSequence.Count;)
             {
+                if (battleSequence[i] == null)
+                {
+                    battleSequence.RemoveAt(i);
+                    continue;
+                }
+
                 if (!battleSequence[i].BattleComp.isAlive)
                 {
                     Character character = battleSequence[i];
                     battleSequence.Remove(character);
                     Destroy(character.gameObject);
+                    continue;
                 }
                 else
                 {
@@ -219,8 +242,24 @@ namespace DSG
             StartCoroutine(WaitForAttackEnd(currentChar));
             return;
         }
+        public void BackupScore(Character c)
+        {
+            if (c == null || c.characterData == null || c.ScoreComp == null)
+                return;
 
-        public void EndBattle()
+            string name = c.characterData.characterName;
+            Color color = c.characterModelData != null
+                ? c.characterModelData.material.GetColor("_BaseColor")
+                : Color.white;
+            float score = c.ScoreComp.CalculateMVPScore();
+
+            if (!deadScores.ContainsKey(name))
+            {
+                deadScores[name] = (color, score);
+            }
+        }
+
+        public void EndBattle(string resultText)
         {
             if (dataCenter == null)
                 dataCenter = FindFirstObjectByType<DataCenter>();
@@ -231,71 +270,57 @@ namespace DSG
             }
 
             var mvp = dataCenter.mvpData;
+            mvp.battleResult = resultText;
+
             mvp.char1Score = mvp.char2Score = mvp.char3Score = mvp.char4Score = mvp.char5Score = 0f;
-            mvp.char1Name = mvp.char2Name = mvp.char3Name = mvp.char4Name = mvp.char5Name = string.Empty;
+            mvp.char1Name = mvp.char2Name = mvp.char3Name = mvp.char4Name = mvp.char5Name = "";
             mvp.char1Color = mvp.char2Color = mvp.char3Color = mvp.char4Color = mvp.char5Color = Color.white;
 
-            List<Character> friendlyChars = new();
-
+            var friendlyChars = new List<(string Name, Color Color, float Score)>();
             foreach (var slotObj in friendlySlots)
             {
-                if (slotObj == null) continue;
-                var slot = slotObj.GetComponent<LineupSlot>();
-                if (slot == null) continue;
-
-                var c = slot.character;
-                if (c == null)
+                var slot = slotObj?.GetComponent<LineupSlot>();
+                var character = slot?.character;
+                if (character == null || character.characterData == null || character.characterModelData == null || character.ScoreComp == null)
                     continue;
 
-                if (c.characterData == null && slot.characterInfo != null)
-                {
-                    var info = slot.characterInfo;
-                    var data = dataCenter.FindCharacterData(info.characterID);
-                    var model = dataCenter.FindCharacterModel(info.characterModelID);
-                    if (data != null && model != null)
-                    {
-                        c.SetCharacterData(info);
-                    }
-                }
+                string name = character.characterData.characterName;
+                Color color = character.characterModelData.material.GetColor("_BaseColor");
+                float score = character.ScoreComp.CalculateMVPScore();
 
-                if (c.characterData == null || c.characterModelData == null)
-                    continue;
-
-                if (c.ScoreComp == null)
-                    c.gameObject.AddComponent<ScoreComponent>();
-
-                friendlyChars.Add(c);
+                friendlyChars.Add((name, color, score));
+            }
+            foreach (var d in deadCharacterData)
+            {
+                if (!friendlyChars.Exists(x => x.Name == d.Name))
+                    friendlyChars.Add(d);
             }
 
-            var ranked = friendlyChars
-                .OrderByDescending(c => c.ScoreComp.CalculateMVPScore())
-                .ToList();
+            var ranked = friendlyChars.OrderByDescending(x => x.Score).ToList();
 
             if (ranked.Count == 0)
             {
-                Debug.LogWarning("MVP 계산할 캐릭터가 없습니다.");
                 return;
             }
 
             for (int i = 0; i < Mathf.Min(5, ranked.Count); i++)
             {
-                var c = ranked[i];
-                float score = c.ScoreComp.CalculateMVPScore();
-                ApplyMVP(mvp, i + 1, c, score);
-                Debug.Log($"MVP{i + 1}: {c.characterData.characterName} ({score:F1})");
+                var character = ranked[i];
+                ApplyMVP(mvp, i + 1, character.Name, character.Color, character.Score);
             }
 
             DontDestroyOnLoad(dataCenter.gameObject);
             SceneManager.LoadScene("DeckBattleResultScene");
         }
-
-        private void ApplyMVP(TeamMVPData data, int index, Character character, float score)
+        public void BackupDeadCharacter(string name, Color color, float score)
         {
-            if (character == null) return;
+            if (deadCharacterData.Exists(x => x.Name == name))
+                return;
 
-            Color color = character.characterModelData.material.GetColor("_BaseColor");
-            String name = character.characterData.characterName;
-
+            deadCharacterData.Add((name, color, score));
+        }
+        private void ApplyMVP(TeamMVPData data, int index, string name, Color color, float score)
+        {
             switch (index)
             {
                 case 1: data.char1Name = name; data.char1Color = color; data.char1Score = score; break;
@@ -304,13 +329,7 @@ namespace DSG
                 case 4: data.char4Name = name; data.char4Color = color; data.char4Score = score; break;
                 case 5: data.char5Name = name; data.char5Color = color; data.char5Score = score; break;
             }
-#if UNITY_EDITOR
-            EditorUtility.SetDirty(data);
-            AssetDatabase.SaveAssets();
-#endif
-
         }
-
 
         private void UpdateUI()
         {
@@ -343,10 +362,10 @@ namespace DSG
                 sequenceImage[currentTurnIndex].SetActive(false);
             }
 
-            Debug.Log("WaitForAttackEnd");
             currentTurnIndex++;
             UpdateUI();
 
+            CheckBattleEnd();
         }
         public void NextRound()
         {
@@ -415,5 +434,43 @@ namespace DSG
 
             enemyCP.text = cp.ToString();
         }
+
+        private void CheckBattleEnd()
+        {
+            bool allFriendDead = true;
+            bool allEnemyDead = true;
+
+            foreach (var slotObj in friendlySlots)
+            {
+                var slot = slotObj.GetComponent<LineupSlot>();
+                if (slot.character != null && slot.character.BattleComp != null && slot.character.BattleComp.isAlive)
+                {
+                    allFriendDead = false;
+                    break;
+                }
+            }
+
+            foreach (var slotObj in enemySlots)
+            {
+                var slot = slotObj.GetComponent<LineupSlot>();
+                if (slot.character != null && slot.character.BattleComp != null && slot.character.BattleComp.isAlive)
+                {
+                    allEnemyDead = false;
+                    break;
+                }
+            }
+
+            if (allEnemyDead)
+            {
+                Debug.Log(" 전투 종료 - 플레이어 승리!");
+                EndBattle("Victory");
+            }
+            else if (allFriendDead)
+            {
+                Debug.Log(" 전투 종료 - 패배!");
+                EndBattle("Defeat");
+            }
+        }
     }
 }
+    

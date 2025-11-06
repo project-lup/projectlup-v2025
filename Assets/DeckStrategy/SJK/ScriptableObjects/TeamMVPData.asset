@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35dc64dfe6fe68545990a9314dccc0b4, type: 3}
   m_Name: TeamMVPData
   m_EditorClassIdentifier: 
-  char1Score: 0
-  char2Score: 0
-  char3Score: 0
-  char4Score: 0
+  char1Score: 100
+  char2Score: 100
+  char3Score: 80
+  char4Score: 77
   char5Score: 0
-  char1Name: Test4
-  char2Name: Test6
-  char3Name: Test7
-  char4Name: Test2
-  char5Name: Test1
-  char1Color: {r: 0, g: 1, b: 0, a: 1}
-  char2Color: {r: 1, g: 0, b: 1, a: 1}
-  char3Color: {r: 0.55291617, g: 0.39215684, b: 0.78431374, a: 1}
-  char4Color: {r: 0, g: 0, b: 1, a: 1}
+  char1Name: Test9
+  char2Name: Test10
+  char3Name: Test8
+  char4Name: Test7
+  char5Name: 
+  char1Color: {r: 1, g: 1, b: 1, a: 1}
+  char2Color: {r: 1, g: 1, b: 0, a: 1}
+  char3Color: {r: 1, g: 0, b: 0, a: 1}
+  char4Color: {r: 0.55291617, g: 0.39215684, b: 0.78431374, a: 1}
   char5Color: {r: 0, g: 0, b: 0, a: 1}
