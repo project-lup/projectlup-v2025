@@ -1,8 +1,11 @@
 ﻿[System.Serializable]
 public class DeckScriptData
 {
-    [Column("name")] public string name;
-    [Column("description")] public string description;
-    [Column("stat")] public string stat;
-    [Column("gold")] public int gold;
+    [Column("TableId")] public int tableId;
+    [Column("CharacterId")] public int characterId;
+    [Column("Level")] public int level;
+    [Column("HP")] public float hp;
+    [Column("Attack")] public float attack;
+    [Column("Defense")] public float defense;
+    [Column("Speed")] public float speed;
 }
