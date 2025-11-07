@@ -431,6 +431,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb4c6a0f80b2344fb658bd72af30292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bb: {fileID: 0}
+  act: {fileID: 0}
 --- !u!114 &201611090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,11 +448,14 @@ MonoBehaviour:
   bb: {fileID: 0}
   stats: {fileID: 0}
   enemyLayer:
-    serializedVersion: 2
     m_Bits: 128
   slashAngle: 120
   maxHitBuffer: 24
   faceTurnSpeed: 12
+  isMoving: 0
+  isAttacking: 0
+  currentMoveTarget: {x: 0, y: 0, z: 0}
+  hitBuffer: []
 --- !u!114 &201611091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,11 +469,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyLayer:
-    serializedVersion: 2
     m_Bits: 128
   detectRadius: 30
   attackRadius: 5
   maxColliders: 16
+  hitBuffer: []
+  blackboard: {fileID: 0}
+  <EnemyInDetection>k__BackingField: 0
+  <EnemyInAttackRange>k__BackingField: 0
+  <CurrentTarget>k__BackingField: {fileID: 0}
 --- !u!114 &201611092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2308,7 +2317,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   areaSize: {x: 60, y: 2}
   spawnHeight: 2
-  gizmoColor: {r: 0, g: 1, b: 0, a: 1}
+  gizmoColor:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
 --- !u!4 &767011373
 Transform:
   m_ObjectHideFlags: 0
@@ -2722,7 +2735,10 @@ MonoBehaviour:
   characterName: "\uCE90\uB9AD\uD130 5"
   manualMode: 0
   playerInputExists: 0
+  stats: {fileID: 0}
+  initialPosition: {x: 0, y: 0, z: 0}
   maxAttackChances: 10
+  currentAttackChances: 0
 --- !u!114 &872194608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2735,6 +2751,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb4c6a0f80b2344fb658bd72af30292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bb: {fileID: 0}
+  act: {fileID: 0}
 --- !u!114 &872194609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2747,10 +2765,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a65423260a78ff4ebc907e4dbaa569b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  character: {fileID: 0}
+  stats: {fileID: 0}
+  moveTargetPos: {x: 0, y: 0, z: 0}
+  isMoving: 0
+  currentTarget: {fileID: 0}
+  isAttacking: 0
   slashRange: 2
   slashAngle: 90
   enemyLayer:
-    serializedVersion: 2
     m_Bits: 0
 --- !u!136 &872194610
 CapsuleCollider:
@@ -2857,6 +2881,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTag: Enemy
   showDebugInfo: 0
+  characterInfo: {fileID: 0}
+  meleeCharacterInfo: {fileID: 0}
+  stats: {fileID: 0}
 --- !u!114 &872194615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2869,6 +2896,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e001b5e1ecf8494419169513ff15ae6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rangedCharacter: {fileID: 0}
+  meleeCharacter: {fileID: 0}
+  weaponActions: {fileID: 0}
   showInputDebug: 1
 --- !u!1 &930500931
 GameObject:
@@ -2907,8 +2937,21 @@ MonoBehaviour:
   - {fileID: 1987607658}
   - {fileID: 1068579300}
   - {fileID: 798086574}
-  normalColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor:
+    r: 1
+    g: 1
+    b: 1
+    a: 1
+  selectedColor:
+    r: 1
+    g: 0.92156863
+    b: 0.015686275
+    a: 1
+  isAutoMode: 1
+  currentSelectedIndex: -1
+  allCharacters: []
+  rangedCharacters: []
+  meleeCharacters: []
 --- !u!4 &930500933
 Transform:
   m_ObjectHideFlags: 0
@@ -3573,6 +3616,7 @@ MonoBehaviour:
   maxAmmo: 100
   playerInputExists: 0
   enemyInRange: 0
+  stats: {fileID: 0}
 --- !u!114 &1226941544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3585,6 +3629,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57769cee42e8af14180a77276f62442a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  character: {fileID: 0}
+  characterActions: {fileID: 0}
 --- !u!65 &1226941545
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3687,9 +3733,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70df33adfc99d2c4f9486bf13a699f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  character: {fileID: 0}
+  stats: {fileID: 0}
   bulletPrefab: {fileID: 5421074853364373459, guid: 837e5b0df917e464f968286ac01239c4, type: 3}
   firePoint: {fileID: 664105917}
   enemyTransform: {fileID: 0}
+  lastFireTime: -999
+  isReloading: 0
+  reloadStartTime: 0
 --- !u!114 &1226941550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3732,6 +3784,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTag: Enemy
   showDebugInfo: 0
+  characterInfo: {fileID: 0}
+  meleeCharacterInfo: {fileID: 0}
+  stats: {fileID: 0}
 --- !u!114 &1226941552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3744,6 +3799,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e001b5e1ecf8494419169513ff15ae6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rangedCharacter: {fileID: 0}
+  meleeCharacter: {fileID: 0}
+  weaponActions: {fileID: 0}
   showInputDebug: 1
 --- !u!1 &1263375484
 GameObject:
@@ -4055,6 +4113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb4c6a0f80b2344fb658bd72af30292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bb: {fileID: 0}
+  act: {fileID: 0}
 --- !u!114 &1500349084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4070,11 +4130,14 @@ MonoBehaviour:
   bb: {fileID: 0}
   stats: {fileID: 0}
   enemyLayer:
-    serializedVersion: 2
     m_Bits: 128
   slashAngle: 120
   maxHitBuffer: 24
   faceTurnSpeed: 12
+  isMoving: 0
+  isAttacking: 0
+  currentMoveTarget: {x: 0, y: 0, z: 0}
+  hitBuffer: []
 --- !u!114 &1500349085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4088,11 +4151,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyLayer:
-    serializedVersion: 2
     m_Bits: 128
   detectRadius: 30
   attackRadius: 5
   maxColliders: 16
+  hitBuffer: []
+  blackboard: {fileID: 0}
+  <EnemyInDetection>k__BackingField: 0
+  <EnemyInAttackRange>k__BackingField: 0
+  <CurrentTarget>k__BackingField: {fileID: 0}
 --- !u!114 &1500349086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4646,6 +4713,7 @@ MonoBehaviour:
   maxAmmo: 50
   playerInputExists: 0
   enemyInRange: 0
+  stats: {fileID: 0}
 --- !u!114 &1743877847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4658,6 +4726,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57769cee42e8af14180a77276f62442a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  character: {fileID: 0}
+  characterActions: {fileID: 0}
 --- !u!65 &1743877848
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4760,9 +4830,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70df33adfc99d2c4f9486bf13a699f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  character: {fileID: 0}
+  stats: {fileID: 0}
   bulletPrefab: {fileID: 5421074853364373459, guid: 837e5b0df917e464f968286ac01239c4, type: 3}
   firePoint: {fileID: 1864642474}
   enemyTransform: {fileID: 0}
+  lastFireTime: -999
+  isReloading: 0
+  reloadStartTime: 0
 --- !u!114 &1743877853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4805,6 +4881,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTag: Enemy
   showDebugInfo: 0
+  characterInfo: {fileID: 0}
+  meleeCharacterInfo: {fileID: 0}
+  stats: {fileID: 0}
 --- !u!114 &1743877855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4817,6 +4896,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e001b5e1ecf8494419169513ff15ae6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rangedCharacter: {fileID: 0}
+  meleeCharacter: {fileID: 0}
+  weaponActions: {fileID: 0}
   showInputDebug: 1
 --- !u!1 &1777509193
 GameObject:
@@ -4849,7 +4931,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   areaSize: {x: 60, y: 2}
   spawnHeight: 2
-  gizmoColor: {r: 0, g: 1, b: 0, a: 1}
+  gizmoColor:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
 --- !u!4 &1777509195
 Transform:
   m_ObjectHideFlags: 0
@@ -5329,7 +5415,10 @@ MonoBehaviour:
   characterName: "\uCE90\uB9AD\uD130 4"
   manualMode: 0
   playerInputExists: 1
+  stats: {fileID: 0}
+  initialPosition: {x: 0, y: 0, z: 0}
   maxAttackChances: 10
+  currentAttackChances: 0
 --- !u!114 &1862798089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5342,6 +5431,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb4c6a0f80b2344fb658bd72af30292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bb: {fileID: 0}
+  act: {fileID: 0}
 --- !u!114 &1862798090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5354,10 +5445,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a65423260a78ff4ebc907e4dbaa569b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  character: {fileID: 0}
+  stats: {fileID: 0}
+  moveTargetPos: {x: 0, y: 0, z: 0}
+  isMoving: 0
+  currentTarget: {fileID: 0}
+  isAttacking: 0
   slashRange: 2
   slashAngle: 90
   enemyLayer:
-    serializedVersion: 2
     m_Bits: 0
 --- !u!136 &1862798091
 CapsuleCollider:
@@ -5464,6 +5561,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTag: Enemy
   showDebugInfo: 0
+  characterInfo: {fileID: 0}
+  meleeCharacterInfo: {fileID: 0}
+  stats: {fileID: 0}
 --- !u!114 &1862798096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5476,6 +5576,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e001b5e1ecf8494419169513ff15ae6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rangedCharacter: {fileID: 0}
+  meleeCharacter: {fileID: 0}
+  weaponActions: {fileID: 0}
   showInputDebug: 1
 --- !u!1 &1864642473
 GameObject:
@@ -6088,6 +6191,8 @@ MonoBehaviour:
     delayBeforeNextWave: 2
   autoStartWaves: 1
   showDebugLogs: 1
+  currentWaveIndex: 0
+  isSpawning: 0
 --- !u!4 &2040641705
 Transform:
   m_ObjectHideFlags: 0
@@ -6284,6 +6389,7 @@ MonoBehaviour:
   maxAmmo: 1
   playerInputExists: 0
   enemyInRange: 0
+  stats: {fileID: 0}
 --- !u!114 &2137075732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6296,6 +6402,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57769cee42e8af14180a77276f62442a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  character: {fileID: 0}
+  characterActions: {fileID: 0}
 --- !u!65 &2137075733
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6398,9 +6506,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70df33adfc99d2c4f9486bf13a699f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  character: {fileID: 0}
+  stats: {fileID: 0}
   bulletPrefab: {fileID: 5421074853364373459, guid: 837e5b0df917e464f968286ac01239c4, type: 3}
   firePoint: {fileID: 310767456}
   enemyTransform: {fileID: 0}
+  lastFireTime: -999
+  isReloading: 0
+  reloadStartTime: 0
 --- !u!114 &2137075738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6443,6 +6557,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTag: Enemy
   showDebugInfo: 0
+  characterInfo: {fileID: 0}
+  meleeCharacterInfo: {fileID: 0}
+  stats: {fileID: 0}
 --- !u!114 &2137075740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6455,6 +6572,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e001b5e1ecf8494419169513ff15ae6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rangedCharacter: {fileID: 0}
+  meleeCharacter: {fileID: 0}
+  weaponActions: {fileID: 0}
   showInputDebug: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
