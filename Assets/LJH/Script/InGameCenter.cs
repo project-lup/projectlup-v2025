@@ -44,6 +44,8 @@ namespace RL
         public Button DebugBtn;
 
         private bool debugMode = false;
+
+        public GameObject DebugPanel;
         //------------------------
 
         private CircleButton pauseBtn;
@@ -98,6 +100,8 @@ namespace RL
             DebugBtn.onClick.AddListener(ChangeDebugMode);
 
             SetDebugMode(debugMode);
+
+            DebugPanel.SetActive(false);
             ///////////
 
             Confirm.onClick.AddListener(UploadGameResult);
@@ -263,6 +267,20 @@ namespace RL
 
         void SetDebugMode(bool enable)
         {
+            if(enable)
+            {
+                Time.timeScale = 0f;
+            }
+
+            else
+            {
+                Time.timeScale = 1f;
+            }
+
+                
+
+            DebugPanel.SetActive(enable);
+
             AddItem1Btn.gameObject.SetActive(enable);
             AddItem2Btn.gameObject.SetActive(enable);
             AddItem3Btn.gameObject.SetActive(enable);
