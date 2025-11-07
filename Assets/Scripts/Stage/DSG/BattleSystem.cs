@@ -414,7 +414,7 @@ namespace DSG
                 if (currentChar == null || !currentChar.BattleComp.isAlive) continue;
                 if (currentChar.characterData.rangeType == ERangeType.Melee)
                 {
-                    yield return new WaitForSeconds(2.0f);
+                    yield return new WaitForSeconds(3.0f); //@TODO : battle 이벤트 바인드해서 콜되면 return하게
                 }
                 else
                 {

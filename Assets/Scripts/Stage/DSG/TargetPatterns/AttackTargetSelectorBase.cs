@@ -47,7 +47,7 @@ namespace DSG
         }
         protected bool IsAlive(Character character)
         {
-            return character != null &&
+            return character.characterData != null &&
                    character.BattleComp != null &&
                    character.BattleComp.isAlive;
         }
