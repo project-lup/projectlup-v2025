@@ -38,6 +38,10 @@ namespace Manager
                     filename = Define.RuntimeDataTypes.ToFilename(Define.RuntimeDataType.RoguelikeRuntime);
                     data = JsonDataHelper.LoadData<RoguelikeRuntimeData>(filename);
                     break;
+                case Define.StageKind.Main:
+                    filename = Define.RuntimeDataTypes.ToFilename(Define.RuntimeDataType.Versions);
+                    data = JsonDataHelper.LoadData<VersionsData>(filename);
+                    break;
                 // 그 외 다른 스테이지..
 
                 default:

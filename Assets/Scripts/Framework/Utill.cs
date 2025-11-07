@@ -83,7 +83,8 @@ namespace Define
         ShootingRuntime,
         DeckStrategyRuntime,
         ExtractionShooterRuntime,
-        ProductionRuntime
+        ProductionRuntime,
+        Versions
     }
 
     public static class RuntimeDataTypes
@@ -96,7 +97,8 @@ namespace Define
                 RuntimeDataType.ShootingRuntime => "shooting_runtime.json",
                 RuntimeDataType.DeckStrategyRuntime => "deckstrategy_runtime.json",
                 RuntimeDataType.ExtractionShooterRuntime => "extractionshooter_runtime.json",
-                RuntimeDataType.ProductionRuntime => "production_runtime.json"
+                RuntimeDataType.ProductionRuntime => "production_runtime.json",
+                RuntimeDataType.Versions => "Versions.json"
             };
         }
 

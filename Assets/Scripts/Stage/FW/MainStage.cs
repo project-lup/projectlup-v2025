@@ -1,10 +1,12 @@
 ﻿using Manager;
+using OpenCvSharp;
+using System.Collections;
+using System.Data;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.Video;
-using System.Collections;
-using System.Data;
 namespace Manager
 {
     public class MainStage : BaseStage
@@ -14,7 +16,12 @@ namespace Manager
         public AudioSource BGM;
         public float soundVolume= 0;
         public Slider slider;
-    
+        [SerializeField]
+        private VersionsData versionsdata;
+        [SerializeField]
+        private AssetBundle AB;
+
+
         protected override void Awake() 
         {
             base.Awake();
@@ -29,7 +36,20 @@ namespace Manager
         // Update is called once per frame
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                versionsdata.SaveData();
+            }
 
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                versionsdata.assetbundlehash = "1231";
+            }
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                Debug.Log("versionsdata.assetbundlehash : " + versionsdata.assetbundlehash);
+            }
         }
 
         public override IEnumerator OnStageEnter()
@@ -58,7 +78,9 @@ namespace Manager
         protected override void LoadResources()
         {
             //resource = ResourceManager.Instance.Load...
-
+            versionsdata = (VersionsData)Manager.DataManager.Instance.GetRuntimeData(Define.StageKind.Main,1);
+            AB = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath, Path.Combine("Resources/AssetBundles", "staticdatas")));
+            versionsdata.assetbundlehash = AB.GetHashCode().ToString();
         }
 
         protected override void GetDatas()
@@ -96,6 +118,7 @@ namespace Manager
         {
 
         }
+
     }
 }
 
