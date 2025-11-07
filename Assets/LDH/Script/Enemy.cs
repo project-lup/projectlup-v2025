@@ -10,20 +10,16 @@ namespace RL
         public static event Action<int> OnEnemyDied;
         public delegate void EnemyDeathHandler(Enemy deadEnemy);
         public static event EnemyDeathHandler ObjectOnEnemyDied;
-        public Vector2Int gridPos;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            EnemyStats.Hp = 20;
+            EnemyStats.Hp = 1000;
             EnemyStats.Attack = 0;
             EnemyStats.speed = 3;
 
             Debug.Log($"enemy생성  체력  :  {EnemyStats.Hp}");
         }
-        public  void SetGridPos(int x, int z)
-        {
-            gridPos = new Vector2Int(x, z);
-        }
+  
         public void TakeDamage(int damage)
         {
             EnemyStats.Hp -= damage;
