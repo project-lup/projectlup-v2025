@@ -10,6 +10,8 @@ public class PCRUICenter : MonoBehaviour
     private SelectConstructUIView selectConstructView;
     [SerializeField]
     private FarmTaskUIView farmTaskView;
+    [SerializeField]
+    private ConstructionDecisionView constructionDecisionView;
 
     private TaskController taskController;
 
@@ -18,6 +20,7 @@ public class PCRUICenter : MonoBehaviour
     private MainUIPresenter mainPresenter;
     private SelectConstructUIPresenter selectConstructPresenter;
     private FarmTaskUIPresenter farmTaskPresenter;
+    private ConstructionDecisionPresenter constructionDecisionPresenter;
 
     public void InitUI(TaskController controller)
     {
@@ -32,25 +35,30 @@ public class PCRUICenter : MonoBehaviour
         mainPresenter = new MainUIPresenter();
         selectConstructPresenter = new SelectConstructUIPresenter();
         farmTaskPresenter = new FarmTaskUIPresenter();
+        constructionDecisionPresenter = new ConstructionDecisionPresenter();
 
         mainPresenter.InitPresenter(mainView, new MainUIModel(), selectConstructPresenter);
-        selectConstructPresenter.InitPresenter(selectConstructView, new SelectConstructUIModel(), mainPresenter);
+        selectConstructPresenter.InitPresenter(selectConstructView, new SelectConstructUIModel(), mainPresenter, constructionDecisionPresenter);
         farmTaskPresenter.InitPresenter(farmTaskView, new FarmTaskUIModel(), mainPresenter);
+        constructionDecisionPresenter.InitPresenter(constructionDecisionView, new ConstructionDecisionModel(), mainPresenter);
 
         mainPresenter.Show();
         selectConstructPresenter.Hide();
         farmTaskPresenter.Hide();
-
+        constructionDecisionPresenter.Hide();
 
         // Bind
         mainPresenter.BindActionDig(taskController.DigWallTask);
         mainPresenter.BindActionConstruct(taskController.SetIdleActiveTrue);
 
 
-        selectConstructPresenter.BindActionBuildingType(taskController.SetBuildingType);
+        selectConstructPresenter.BindActionBuildingType(taskController.SetCurrSelectedBuildingType);
         selectConstructPresenter.BindActionBack(taskController.IdleTask);
         selectConstructPresenter.BindActionSelectedBuilding(taskController.BuildingTask);
 
+        constructionDecisionPresenter.BindActionReject(taskController.IdleTask);
+        constructionDecisionPresenter.BindActionAccept(taskController.IdleTask);
+        constructionDecisionPresenter.BindActionAccept(taskController.CreateBuilding);
     }
     
     // 건설 건물 선택 시 공통 이벤트

@@ -44,7 +44,7 @@ namespace PCR
                 return;
 
             Vector3 targetPos = gridMap.GetNodeWorldPosition(path[currentIndex]);
-            Debug.Log(targetPos);
+            //Debug.Log(targetPos);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, targetPos) < 0.1f)

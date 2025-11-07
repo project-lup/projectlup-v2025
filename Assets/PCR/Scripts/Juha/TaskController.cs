@@ -11,15 +11,19 @@ public class TaskController : MonoBehaviour
     private ITaskState buildingState;
     private ITaskState idleState;
 
-    public ITaskState CurrentState { get; set; }
+    private DigWallPreview digWallPreview;
+    private BuildPreview buildPreview;
 
     public BuildingType currSelectedBuildingType;
+    public ITaskState CurrentState { get; set; }
 
     public TileMap tileMap;
     public Tile lastClickTile;
 
     public PCRUICenter uiCenter;
 
+    
+    
     [SerializeField]
     private GameObject wheatFarmPrefab;
     [SerializeField]
@@ -27,35 +31,42 @@ public class TaskController : MonoBehaviour
     [SerializeField]
     private GameObject restaurantPrefab;
 
+    private void Awake()
+    {
+        digWallPreview = GetComponent<DigWallPreview>();
+        buildPreview = GetComponent<BuildPreview>();
+        tileMap = GetComponent<TileMap>();
+
+        idleState = new IdleState(this);
+        digWallState = new DigWallState(this, digWallPreview);
+        buildingState = new BuildingState(this, buildPreview);
+    }
+
     private void Start()
     {
-        digWallState = gameObject.AddComponent<DigWallState>();
-        buildingState = gameObject.AddComponent<BuildingState>();
-        idleState = gameObject.AddComponent<IdleState>();
+        buildPreview.Init(tileMap);
 
-        tileMap = GetComponent<TileMap>();
 
         SetupMainMenuUI();
         
         Trasition(idleState);
 
         currSelectedBuildingType = BuildingType.NONE;
-
     }
 
     private void Update()
     {
-        CurrentState.InputHandle(this);
+        CurrentState.InputHandle();
     }
 
     public void Trasition(ITaskState state)
     {
         if (CurrentState != null)
         {
-            CurrentState.Close(this); // 상태 전환 전, 이전 작업 초기화
+            CurrentState.Close(); // 상태 전환 전, 이전 작업 초기화
         }
         CurrentState = state;
-        CurrentState.Open(this);  // 상태 전환 후, 현재 작업 초기화
+        CurrentState.Open();  // 상태 전환 후, 현재 작업 초기화
     }
 
 
@@ -91,9 +102,17 @@ public class TaskController : MonoBehaviour
         currSelectedBuildingType = buildingType;
     }
 
-    public void CreateBuilding(BuildingType type, Vector3 pos)
+    public void CreateBuilding()
     {
-        switch(type)
+        if (buildPreview.canBuild == false)
+        {
+            Debug.Log("Can't build");
+            return;
+        }
+
+        Vector3 pos = lastClickTile.gameObject.transform.position;
+
+        switch (currSelectedBuildingType)
         {
             case BuildingType.WHEATFARM:
                 Instantiate(wheatFarmPrefab, pos, Quaternion.identity);
@@ -120,12 +139,6 @@ public class TaskController : MonoBehaviour
 
         uiCenter.InitUI(this);
 
-    }
-
-    public void SetBuildingType(BuildingType type)
-    {
-        BuildingState state = buildingState as BuildingState;
-        state?.SetCurrBuildingType(type);
     }
 
     public void ReturnToIdleState()
