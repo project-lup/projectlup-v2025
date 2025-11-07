@@ -7,7 +7,6 @@ using static UnityEngine.UI.GridLayoutGroup;
 
 namespace DSG
 {
-    
     public class BattleComponent : MonoBehaviour
     {
         private Character owner;
@@ -42,6 +41,11 @@ namespace DSG
 
         public event Action<float> OnDamaged;
         public event Action<int> OnDie;
+
+        public event Action<ERangeType> OnAttackStarted;
+        public event Action<bool> OnReachedTargetPos;
+        public event Action OnMeleeAttack;
+        public event Action OnEndMelee;
 
         [SerializeField]
         private GameObject damageLogPrefab;
@@ -87,6 +91,12 @@ namespace DSG
                     {
                         if (!impactApplied)
                         {
+                            // 공격 위치로 이동 완료시
+                            OnReachedTargetPos?.Invoke(true);
+                            // 공격 애니메이션 실행 
+                            OnMeleeAttack?.Invoke();
+                            // 공격 애니메이션 종료시
+                            OnEndMelee?.Invoke();
                             ApplyDamageOnce();
                             impactApplied = true;
                         }
@@ -96,6 +106,7 @@ namespace DSG
                     {
                         isAttacking = false;
                         impactApplied = false;
+                        OnReachedTargetPos?.Invoke(false);
                     }
                 }
                 else
@@ -149,6 +160,8 @@ namespace DSG
             {
                 bullet = Instantiate(bulletPrefab, originPosition, Quaternion.identity);
             }
+
+            OnAttackStarted?.Invoke(owner.characterData.rangeType);
 
             isAttacking = true;
         }

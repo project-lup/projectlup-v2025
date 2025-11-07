@@ -1,4 +1,5 @@
 using DSG.Utils.Enums;
+using Manager;
 using NUnit.Framework.Interfaces;
 using Roguelike.Define;
 using System;
@@ -30,8 +31,29 @@ namespace DSG
                 SelectedOwnedList.Add(false);
             }
 
+            //DeckStrategyStage stage = Manager.StageManager.Instance.GetCurrentStage() as DeckStrategyStage;
+            //if(stage != null)
+            //{
+            //    DeckStrategyRuntimeData runtimeData = (DeckStrategyRuntimeData)stage.RuntimeData;
+            //    runtimeData.OwnedCharacterList = characterList;
+            //    testLog();
+            //}
+
             PopulateScrollView();
         }
+
+        //private void testLog()
+        //{
+        //    DeckStrategyStage stage = Manager.StageManager.Instance.GetCurrentStage() as DeckStrategyStage;
+        //    if (stage != null)
+        //    {
+        //        DeckStrategyRuntimeData runtimeData = (DeckStrategyRuntimeData)stage.RuntimeData;
+        //        foreach(OwnedCharacterInfo info in runtimeData.OwnedCharacterList)
+        //        {
+        //            Debug.Log(info.characterID + ", " + info.characterModelID + ", " + info.characterLevel);
+        //        }
+        //    }
+        //}
 
         public void PopulateScrollView(CharacterFilterState filterState = null)
         {

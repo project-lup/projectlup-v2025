@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using static UnityEngine.UI.GridLayoutGroup;
 
@@ -8,6 +9,7 @@ namespace DSG
         private StatusEffectComponent statusEffectComp;
         private BattleComponent battleComp;
         private ScoreComponent scoreComp;
+        private AnimationComponent animationComp;
 
         [SerializeField]
         private SkinnedMeshRenderer bodySkin;
@@ -17,6 +19,8 @@ namespace DSG
         public StatusEffectComponent StatusEffectComp => statusEffectComp;
         public BattleComponent BattleComp => battleComp;
         public ScoreComponent ScoreComp => scoreComp;
+
+        public AnimationComponent AnimationComp => animationComp;
 
         //public OwnedCharacterInfo characterInfo;
 
@@ -39,6 +43,7 @@ namespace DSG
             statusEffectComp = GetComponent<StatusEffectComponent>();
             battleComp = GetComponent<BattleComponent>();
             scoreComp = GetComponent<ScoreComponent>();
+            animationComp = GetComponent<AnimationComponent>();
 
             Canvas[] canvases = FindObjectsByType<Canvas>(FindObjectsSortMode.None);
             foreach (var canvas in canvases)
@@ -58,6 +63,14 @@ namespace DSG
                     break;
                 }
             }
+        }
+
+        private void Start()
+        {
+            battleComp.OnAttackStarted += animationComp.StartAttackAnimation;
+            battleComp.OnReachedTargetPos += animationComp.EndDashLoop;
+            battleComp.OnDamaged += animationComp.PlayHittedAnimation;
+            battleComp.OnDie += animationComp.PlayDiedAnimation;
         }
 
         public void EndTurn()
