@@ -13,7 +13,7 @@ namespace Manager
         protected override void Awake() 
         {
             base.Awake();
-            StageKind = Define.StageKind.Roguelike;
+            StageKind = Define.StageKind.RL;
         }
 
         void Start()
@@ -59,8 +59,8 @@ namespace Manager
 
         protected override void GetDatas()
         {
-            StaticData = base.GetStaticData(this);
-            RuntimeData = base.GetRuntimeData(this);
+            StaticData = base.GetStaticData(this, (int)Define.RoguelikeStageKind.Lobby);
+            RuntimeData = base.GetRuntimeData(this, (int)Define.RoguelikeStageKind.Lobby);
         }
 
         protected override void SaveDatas()
@@ -69,6 +69,11 @@ namespace Manager
             {
                 base.SaveRuntimeData(RuntimeData);
             }
+        }
+
+        protected override void SetupInventory()
+        {
+
         }
     }
 }

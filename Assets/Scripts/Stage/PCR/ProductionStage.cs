@@ -8,10 +8,13 @@ namespace Manager
 {
     public class ProductionStage : BaseStage
     {
+        public BaseStaticData StaticData;
+        public BaseRuntimeData RuntimeData;
+
         protected override void Awake() 
         {
             base.Awake();
-            StageKind = Define.StageKind.Production;
+            StageKind = Define.StageKind.PCR;
         }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -54,10 +57,19 @@ namespace Manager
 
         protected override void GetDatas()
         {
-            //data = GetData...
+            StaticData = base.GetStaticData(this,(int)Define.ProductionStageKind.Lobby);
+            RuntimeData = base.GetRuntimeData(this, (int)Define.ProductionStageKind.Lobby);
         }
 
         protected override void SaveDatas()
+        {
+            if (RuntimeData != null)
+            {
+                base.SaveRuntimeData(RuntimeData);
+            }
+        }
+
+        protected override void SetupInventory()
         {
 
         }

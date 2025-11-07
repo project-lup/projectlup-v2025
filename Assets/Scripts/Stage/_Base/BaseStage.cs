@@ -8,7 +8,7 @@ namespace Manager
 {
     public abstract class BaseStage : MonoBehaviour
     {
-        public Define.StageKind StageKind = Define.StageKind.Main;
+        [ReadOnly] public Define.StageKind StageKind = Define.StageKind.Main;
 
         protected virtual void Awake()
         {
@@ -44,13 +44,17 @@ namespace Manager
 
         protected abstract void SaveDatas();
 
+        protected abstract void SetupInventory();
+
         public virtual IEnumerator OnStageEnter()
         {
+            SetupInventory();
             LoadResources();
             GetDatas();
 
             yield return null;
         }
+
         public virtual IEnumerator OnStageStay()
         {
             yield return null;
@@ -59,6 +63,7 @@ namespace Manager
         public virtual IEnumerator OnStageExit()
         {
             SaveDatas();
+            Manager.InventoryManager.Instance.OnStageExit();
 
             yield return null;
         }
@@ -68,7 +73,7 @@ namespace Manager
             DataManager.Instance.SaveRuntimeData(runtimeData);
         }
 
-        protected BaseStaticData GetStaticData(BaseStage stage)
+        protected BaseStaticData GetStaticData(BaseStage stage, int dataindex)
         {
             BaseStaticData data = null;
 
@@ -77,7 +82,7 @@ namespace Manager
             return data;
         }
 
-        protected BaseRuntimeData GetRuntimeData(BaseStage stage)
+        protected BaseRuntimeData GetRuntimeData(BaseStage stage, int dataindex)
         {
             BaseRuntimeData data = null;
 
@@ -85,6 +90,8 @@ namespace Manager
 
             return data;
         }
+
+       
     }
 }
 

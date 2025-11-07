@@ -81,6 +81,11 @@ namespace Manager
         {
 
         }
+
+        protected override void SetupInventory()
+        {
+
+        }
     }
 }
 

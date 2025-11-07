@@ -4,14 +4,18 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using System.Collections;
+
 namespace Manager
 {
     public class ExtractionShooterStage : BaseStage
     {
+        public BaseStaticData StaticData;
+        public BaseRuntimeData RuntimeData;
+
         protected override void Awake() 
         {
             base.Awake();
-            StageKind = Define.StageKind.ExtractionShooter;
+            StageKind = Define.StageKind.ES;
         }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -54,10 +58,19 @@ namespace Manager
 
         protected override void GetDatas()
         {
-            //data = GetData...
+            StaticData = base.GetStaticData(this, (int)Define.ExtractionShooterStageKind.Lobby);
+            RuntimeData = base.GetRuntimeData(this, (int)Define.ExtractionShooterStageKind.Lobby);
         }
 
         protected override void SaveDatas()
+        {
+            if (RuntimeData != null)
+            {
+                base.SaveRuntimeData(RuntimeData);
+            }
+        }
+
+        protected override void SetupInventory()
         {
 
         }
