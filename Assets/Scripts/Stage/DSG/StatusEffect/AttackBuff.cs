@@ -13,10 +13,10 @@ namespace DSG
         }
         public override void Apply(Character C)
         {
-            float playerAttack = C.BattleComp.attack;
+            float playerAttack = C.characterData.attack;
             float result = 0;
             Operation.TryEval(operationType, playerAttack, amount,out result);
-            C.BattleComp.attack = result;
+            C.characterData.attack = result;
         }
         public override void Turn(Character C) { }
         public override void Remove(Character C)
