@@ -8,7 +8,8 @@ namespace ES
         public float maxRange = 10f;
         public LayerMask obstacleMask;
         public Transform firePoint;
-        public GunData gunData; // 현재 총의 데이터
+        //public GunData gunData; // 현재 총의 데이터
+        private Gun gun;
 
         [Header("색상 설정")]
         public Color visibleColor = Color.green;
@@ -26,6 +27,8 @@ namespace ES
         void Start()
         {
             FixBulletRenderSettings();
+            
+            gun = GetComponent<Gun>();
 
             visibleLine = CreateLine("VisibleLine", visibleColor);
             blockedLine = CreateLine("BlockedLine", blockedColor);
@@ -84,9 +87,9 @@ namespace ES
 
         void Update()
         {
-            if (gunData != null)
+            if (gun != null)
             {
-                maxRange = gunData.distance;
+                maxRange = gun.weapon.range;
             }
 
             Vector3 start = origin.position;
