@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-namespace ST
+namespace LUP.ST
 {
 
     public class TeamCompositionUI : MonoBehaviour

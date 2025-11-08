@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace ST
+namespace LUP.ST
 {
 
     /// 근접 캐릭터용 블랙보드

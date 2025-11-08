@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace ST
+namespace LUP.ST
 {
 
     public abstract class BehaviorTreeBase : MonoBehaviour

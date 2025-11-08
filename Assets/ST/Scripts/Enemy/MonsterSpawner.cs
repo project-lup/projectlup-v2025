@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-namespace ST
+namespace LUP.ST
 {
 
     public class MonsterSpawner : MonoBehaviour

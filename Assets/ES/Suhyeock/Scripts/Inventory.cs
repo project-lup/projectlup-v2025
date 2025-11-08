@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 using UnityEngine;
-
+using ES;
 public class Inventory : MonoBehaviour
 {
     public event Action OnInventoryUpdated;

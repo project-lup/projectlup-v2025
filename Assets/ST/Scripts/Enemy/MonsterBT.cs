@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-namespace ST
+namespace LUP.ST
 {
 
     public class MonsterBT : BehaviorTreeBase

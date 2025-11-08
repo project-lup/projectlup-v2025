@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-namespace ST
+namespace LUP.ST
 {
 
     public class SceneChanger : MonoBehaviour

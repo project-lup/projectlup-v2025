@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-namespace ST
+namespace LUP.ST
 {
 
     public class MeleeActions : MonoBehaviour

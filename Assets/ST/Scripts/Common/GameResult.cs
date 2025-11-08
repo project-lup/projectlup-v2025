@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace ST
+namespace LUP.ST
 {
     // 게임 결과 데이터 (static으로 씬 간 전달)
     public static class GameResult

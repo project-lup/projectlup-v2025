@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-namespace ST
+namespace LUP.ST
 {
     [DefaultExecutionOrder(-50)] // 블랙보드보다 먼저 갱신
 

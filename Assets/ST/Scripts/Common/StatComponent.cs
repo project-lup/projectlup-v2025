@@ -2,11 +2,13 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-namespace ST
-{
 
+namespace LUP.ST
+{
+    
     public class StatComponent : MonoBehaviour, IDamageable
     {
+        
         [Header("±‚∫ª Ω∫≈»")]
         [SerializeField] private float maxHealth = 100f;
         [SerializeField] private float currentHealth;

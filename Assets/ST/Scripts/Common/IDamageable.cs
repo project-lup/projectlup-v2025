@@ -1,4 +1,4 @@
-namespace ST
+namespace LUP.ST
 {
 
     public interface IDamageable

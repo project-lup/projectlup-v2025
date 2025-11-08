@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-namespace ST
+namespace LUP.ST
 {
 
     public class PlayerController : MonoBehaviour

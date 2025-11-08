@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace ST
+namespace LUP.ST
 {
 
     [CreateAssetMenu(fileName = "New Item", menuName = "Game/Item Data")]

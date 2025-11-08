@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-namespace ST
+namespace LUP.ST
 {
 
     public class MonsterData : MonoBehaviour, IPoolable

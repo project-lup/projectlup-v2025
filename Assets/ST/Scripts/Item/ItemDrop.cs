@@ -3,7 +3,7 @@ using System.Threading;
 using UnityEngine;
 using static UnityEditor.Progress;
 using static UnityEditor.Rendering.FilterWindow;
-namespace ST
+namespace LUP.ST
 {
 
     public class ItemDrop : MonoBehaviour

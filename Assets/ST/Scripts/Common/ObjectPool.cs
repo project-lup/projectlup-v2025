@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-namespace ST
+namespace LUP.ST
 {
 
     public class ObjectPool<T> where T : Component
