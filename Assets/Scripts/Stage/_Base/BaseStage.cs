@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Manager
+namespace LUP
 {
     public abstract class BaseStage : MonoBehaviour
     {
@@ -73,7 +73,7 @@ namespace Manager
         {
             BaseStaticDataLoader data = null;
 
-            data = Manager.DataManager.Instance.GetStaticData(stage.StageKind, dataindex);
+            data = LUP.DataManager.Instance.GetStaticData(stage.StageKind, dataindex);
 
             return data;
         }
@@ -82,7 +82,7 @@ namespace Manager
         {
             BaseRuntimeData data = null;
 
-            data = Manager.DataManager.Instance.GetRuntimeData(stage.StageKind, dataindex);
+            data = LUP.DataManager.Instance.GetRuntimeData(stage.StageKind, dataindex);
 
             return data;
         }

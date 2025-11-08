@@ -1,5 +1,5 @@
-using LUP.DSG.Utils.Enums;
-using Manager;
+Ôªøusing DSG.Utils.Enums;
+using LUP;
 using NUnit.Framework.Interfaces;
 using Roguelike.Define;
 using System;
@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
-using static LUP.DSG.ResultCharacterDisplay;
+using static DSG.ResultCharacterDisplay;
 
-namespace LUP.DSG
+namespace DSG
 {
     public class CharactersList : MonoBehaviour
     {
@@ -91,7 +91,7 @@ namespace LUP.DSG
         private void AddCharacterIcon(OwnedCharacterInfo characterInfo, EAttributeType type)
         {
             var itemUI = Instantiate(iconPrefab, contentParent.transform);
-            var icon = itemUI.GetComponent<CharacterIcon>(); // «¡∏Æ∆’ø° ∫Ÿ¿∫ UI Ω∫≈©∏≥∆Æ
+            var icon = itemUI.GetComponent<CharacterIcon>(); // ÌîÑÎ¶¨ÌåπÏóê Î∂ôÏùÄ UI Ïä§ÌÅ¨Î¶ΩÌä∏
 
             var modelData = dataCenter.FindCharacterModel(characterInfo.characterModelID);
 

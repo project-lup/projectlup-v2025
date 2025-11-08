@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad3f170a95d7e1c488f4a79d199ecb37, type: 3}
+  m_Script: {fileID: 11500000, guid: 3fdc2d69aec08a94293e188eb340c663, type: 3}
   m_Name: ShootingStaticData
   m_EditorClassIdentifier: 
-  associatedWorksheet: Shooting
+  associatedWorksheet: 
   START_ROW: 1
   DataList: []

@@ -1,4 +1,4 @@
-﻿using Manager;
+﻿using LUP;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ public class SampleCharacter : MonoBehaviour
 
     void Awake()
     {
-        RoguelikeStage stage = Manager.StageManager.Instance.GetCurrentStage() as RoguelikeStage;
+        RoguelikeStage stage = LUP.StageManager.Instance.GetCurrentStage() as RoguelikeStage;
         if (stage != null)
         {
             RoguelikeStaticDataLoader staticdataloader = (RoguelikeStaticDataLoader)stage.StaticDataLoader;

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Video;
 
-namespace Manager
+namespace LUP
 {
     public class ResourceManager : Singleton<ResourceManager>
     {

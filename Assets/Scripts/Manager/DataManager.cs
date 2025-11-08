@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Manager
+namespace LUP
 {
     public class DataManager : Singleton<DataManager>
     {

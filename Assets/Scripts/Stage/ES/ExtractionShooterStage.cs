@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Manager
+namespace LUP
 {
     public class ExtractionShooterStage : BaseStage
     {
@@ -56,8 +56,8 @@ namespace Manager
 
         protected override void GetDatas()
         {
-            StaticDataLoader = base.GetStaticData(this, (int)Define.ExtractionShooterStageKind.Lobby);
-            RuntimeData = base.GetRuntimeData(this, (int)Define.ExtractionShooterStageKind.Lobby);
+            StaticDataLoader = base.GetStaticData(this, 1);
+            RuntimeData = base.GetRuntimeData(this, 1);
 
             if (StaticDataLoader != null)
             {

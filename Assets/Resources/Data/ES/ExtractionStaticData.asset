@@ -9,17 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 194c6b9e78e07fd4db293f7dfdc3243a, type: 3}
+  m_Script: {fileID: 11500000, guid: 068f33b09168d9f4484085fd50f577db, type: 3}
   m_Name: ExtractionStaticData
   m_EditorClassIdentifier: 
-  associatedWorksheet: Extraction
+  associatedWorksheet: 
   START_ROW: 1
-  DataList:
-  - name: "\uCCB4\uB825"
-    description: "\uCCB4\uB825\uC744 5 \uD68C\uBCF5\uD569\uB2C8\uB2E4"
-    stat: CurrentHP
-    gold: 3
-  - name: "\uB9C8\uB098"
-    description: "\uB9C8\uB098\uB97C 10 \uD68C\uBCF5\uD569\uB2C8\uB2E4"
-    stat: CurrentHP
-    gold: 3
+  DataList: []

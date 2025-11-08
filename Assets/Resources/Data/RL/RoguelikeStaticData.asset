@@ -9,79 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bc3571e0bbf85346a69cec8d36463d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 156ec766e1042a345baa1c8381d6242d, type: 3}
   m_Name: RoguelikeStaticData
   m_EditorClassIdentifier: 
-  associatedWorksheet: Roguelike
+  associatedWorksheet: 
   START_ROW: 1
-  DataList:
-  - DataType: CharacterStat
-    ID: 1
-    Name: Archer
-    HP: 10
-    ATK: 10
-    SPEED: 
-    ChapterMaxRoomNum: 
-  - DataType: CharacterStat
-    ID: 2
-    Name: BattleMage
-    HP: 9
-    ATK: 9
-    SPEED: 
-    ChapterMaxRoomNum: 
-  - DataType: CharacterStat
-    ID: 3
-    Name: Sniper
-    HP: 8
-    ATK: 15
-    SPEED: 
-    ChapterMaxRoomNum: 
-  - DataType: Null
-    ID: -1
-    Name: 
-    HP: 0
-    ATK: 0
-    SPEED: 
-    ChapterMaxRoomNum: 
-  - DataType: Chapter
-    ID: 4
-    Name: Chapter1
-    HP: 0
-    ATK: 0
-    SPEED: 
-    ChapterMaxRoomNum: 5
-  - DataType: Chapter
-    ID: 5
-    Name: Chapter2
-    HP: 0
-    ATK: 0
-    SPEED: 
-    ChapterMaxRoomNum: 5
-  - DataType: Chapter
-    ID: 6
-    Name: Chapter3
-    HP: 0
-    ATK: 0
-    SPEED: 
-    ChapterMaxRoomNum: 5
-  - DataType: Chapter
-    ID: 7
-    Name: Chapter4
-    HP: 0
-    ATK: 0
-    SPEED: 
-    ChapterMaxRoomNum: 5
-  - DataType: Chapter
-    ID: 8
-    Name: Chapter5
-    HP: 0
-    ATK: 0
-    SPEED: 
-    ChapterMaxRoomNum: 5
-  - DataType: Chapter
-    ID: 9
-    Name: Chapter6
-    HP: 0
-    ATK: 0
-    SPEED: 
-    ChapterMaxRoomNum: 5
+  DataList: []

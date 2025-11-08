@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Manager
+namespace LUP
 {
     public class RoguelikeStage : BaseStage
     {
@@ -58,8 +58,8 @@ namespace Manager
 
         protected override void GetDatas()
         {
-            StaticDataLoader = base.GetStaticData(this, (int)Define.RoguelikeStageKind.Lobby);
-            RuntimeData = base.GetRuntimeData(this, (int)Define.RoguelikeStageKind.Lobby);
+            StaticDataLoader = base.GetStaticData(this, 1);
+            RuntimeData = base.GetRuntimeData(this, 1);
 
             if (StaticDataLoader != null)
             {
