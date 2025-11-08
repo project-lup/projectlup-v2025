@@ -58,7 +58,7 @@ namespace RL
                 // 일정 시간이 지나면 원래 속도로 복구
                 if (timer >= hitDuration)
                 {
-                    bb.Move.speed = bb.Move.baseSpeed;
+                    bb.Move.speed = bb.Move.speed;
                     bb.OnHit = false;
                     speedReduced = false;
                     timer = 0f;

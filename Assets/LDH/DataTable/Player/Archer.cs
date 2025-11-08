@@ -111,11 +111,9 @@ namespace RL
         private void GainExp(int exp)
         {
             var data = levelTable.GetLevelData(Adata.level);
-            if (data == null) Debug.Log("데이터테이블없음");
             Adata.xp += exp;
             if (Adata.xp >= data.RequiredExp)
                 LevelUp();
-            Debug.Log($"플레이어가 {exp} 경험치 획득! 현재 총 {Adata.xp}");
             OnExpChanged?.Invoke();
         }
         private void LevelUp()
@@ -130,7 +128,6 @@ namespace RL
                 Adata.currentData.MaxHp = levelData.HpBouns;
             }
             ShowBuffSelection();
-            Debug.Log($"레벨{Adata.level}, 체력 :  {Adata.currentData.Hp} ,  공격력  {Adata.currentData.Attack}");
         }
     }
 }

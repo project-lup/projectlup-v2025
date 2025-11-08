@@ -31,11 +31,9 @@ namespace RL
             int level = archer.Adata.level;
             int Exp = archer.Adata.xp;
 
-            //다음레벨 존재할 경우  필요 경험치 갖고오기 .
             int requirExp = levelTable.levelList[level - 1].RequiredExp;
             //비율   계산  
             float ratio = (float)Exp / requirExp;
-            Debug.Log($"현재 경험치 비율: {ratio}");
             if (fillCoroutine != null)
                 StopCoroutine(fillCoroutine);
             fillCoroutine = StartCoroutine(SmoothFill(ratio));

@@ -19,7 +19,6 @@ namespace RL
 
             if (Time.time - lastFireTime < bb.Shooter.fireDelay)  return NodeState.Fail;
 
-            Debug.Log("น฿ป็");
                 bb.Shooter.ShootArrow();
                 lastFireTime = Time.time;
                 return NodeState.Success;

@@ -24,7 +24,7 @@ namespace RL
             }
             else
             {
-                bb.Move.MoveByJoystick(h, v);
+                bb.Move.Setinput(h, v);
                 bb.Move.isMoving = true;
                 return NodeState.Running;  
             }

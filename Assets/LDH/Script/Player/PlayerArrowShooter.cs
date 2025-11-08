@@ -16,9 +16,17 @@ namespace RL
         public float fireDelay = 2f;
         public float arrowSpeed = 10f;
         public Archer archer;
-
+        private InGameCenter gameCenter;
         public Transform currentRoom;
+
+        public event System.Action OnRoomClear;
         private float lastFireTime = 0f;
+
+        private void Start()
+        {
+            InGameCenter game = gameCenter.GetComponent<InGameCenter>();
+           
+        }
         void Update()
         {
             //일정시간마다 공격하게끔
@@ -32,12 +40,11 @@ namespace RL
         {
             spawnPoint.rotation = Quaternion.LookRotation(this.transform.forward);
             Enemy targetEnemy = FindClosestEnemy();
-
+            if (targetEnemy == null || targetEnemy.Equals(null))
+                return;
+    
             Vector3 fireDir;
-            if (targetEnemy != null)
                 fireDir = (targetEnemy.transform.position - this.transform.position).normalized;
-            else
-                fireDir = transform.forward;
 
             fireDir.y = 0f;
             if (fireDir.sqrMagnitude > 0.01f)
@@ -62,9 +69,11 @@ namespace RL
                 return null;
             }
             Enemy[] enemies = currentRoom.GetComponentsInChildren<Enemy>(true);
-            if (enemies.Length == 0)
+      
+            if (enemies.Length <= 0)
             {
-                    return null;
+                OnRoomClear.Invoke();
+                return null;
             }
             Enemy closest = null;
             float minDist = Mathf.Infinity;
@@ -85,11 +94,13 @@ namespace RL
         private void OnEnable()
         {
             Enemy.ObjectOnEnemyDied += HandleEnemyDeath;
+
         }
 
         private void OnDisable()
         {
             Enemy.ObjectOnEnemyDied -= HandleEnemyDeath;
+      
         }
         private void HandleEnemyDeath(Enemy dead)
         {

@@ -12,7 +12,7 @@ namespace RL
 
             float h = fixedJoystick.Horizontal;
             float v = fixedJoystick.Vertical;
-            playermove.MoveByJoystick(h, v);
+            playermove.Setinput(h, v);
         }
 
     }

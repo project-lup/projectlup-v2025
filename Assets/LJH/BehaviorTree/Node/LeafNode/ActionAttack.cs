@@ -4,11 +4,13 @@ namespace RL
 {
     public class ActionAttack : LeafNode
     {
+        private readonly EnemyBlackBoard bb;
         bool isAnimOnPlayed = false;
-        public ActionAttack(BlackBoard blackBoar, BaseBehaviorTree behaviorTree) : base( blackBoar, behaviorTree )
+        public ActionAttack(EnemyBlackBoard blackBoard, BaseBehaviorTree behaviorTree) : base(blackBoard, behaviorTree )
         {
-
+            bb = blackBoard;
         }
+
         public override NodeState Evaluate()
         {
             UnityEngine.Debug.Log("Action Attack");
@@ -18,11 +20,11 @@ namespace RL
                 return nodeState;
             }
 
-            isAnimOnPlayed = true;
+            //isAnimOnPlayed = true;
             nodeState = NodeState.Running;
 
-
             behaviorTree.PlayAnimation("Attack", this);
+            bb.EShooter.ShootArrow(bb.Target, bb.targetPos);
             blackBoard.OnAtk = true;
             blackBoard.InAtkState = true;
             blackBoard.AtkCollTime = blackBoard.AtkCooldownDuration;
@@ -33,7 +35,7 @@ namespace RL
         public override void OnAnimationEnd(AnimatorStateInfo animInfo)
         {
             UnityEngine.Debug.Log("Hit Animation Ended");
-            isAnimOnPlayed = false;
+            //isAnimOnPlayed = false;
             nodeState = NodeState.Success;
             blackBoard.InAtkState = false;
             blackBoard.OnAtk = false;

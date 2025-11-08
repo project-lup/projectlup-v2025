@@ -4,37 +4,41 @@ namespace RL
 {
     public class PlayerMove : MonoBehaviour
     {
-
-        [Header("이동 속도")]
-        public float speed = 5f;
-        public float baseSpeed = 5f;
-       
+        private Archer acher;
+     
+        public float speed;
+        public Vector3 moveInput;
         public  bool isMoving = false;
+        Rigidbody rb;
         private void Start()
         {
-            speed = baseSpeed;
-        }
-        public void AddSpeed(float amount)
-        {
-            speed += amount;
-        }
-  
-        public void MoveByJoystick(float h, float v)
-        {
-      
-            Vector3 dir = new Vector3(h, 0, v).normalized;
-            transform.position += dir * speed * Time.deltaTime;
+            acher = GetComponent<Archer>();
+            speed = acher.Adata.currentData.speed;
+            rb = GetComponent<Rigidbody>();
 
-            if (dir != Vector3.zero)
+        }
+        public void FixedUpdate()
+        {
+            if (moveInput.sqrMagnitude > 0.1f)
             {
+                rb.MovePosition(rb.position + moveInput * speed * Time.fixedDeltaTime);
                 isMoving = true;
-                transform.forward = dir;
+                transform.forward = moveInput;
             }
             else
             {
                 isMoving = false;
             }
         }
+        public void AddSpeed(float amount)
+        {
+            speed += amount;
+        }
+        public void Setinput(float h, float v)
+        {
+            moveInput = new Vector3(h, 0, v).normalized;
+        }
+
 
     }
 }
