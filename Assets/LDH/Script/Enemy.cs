@@ -10,14 +10,11 @@ namespace RL
         public static event Action<int> OnEnemyDied;
         public delegate void EnemyDeathHandler(Enemy deadEnemy);
         public static event EnemyDeathHandler ObjectOnEnemyDied;
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             EnemyStats.Hp = 1000;
-            EnemyStats.Attack = 0;
+            EnemyStats.Attack = 10;
             EnemyStats.speed = 3;
-
-            Debug.Log($"enemy생성  체력  :  {EnemyStats.Hp}");
         }
   
         public void TakeDamage(int damage)
