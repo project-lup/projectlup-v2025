@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using static UnityEngine.UI.GridLayoutGroup;
 
-namespace DSG
+namespace LUP.DSG
 {
     public class Character : MonoBehaviour
     {

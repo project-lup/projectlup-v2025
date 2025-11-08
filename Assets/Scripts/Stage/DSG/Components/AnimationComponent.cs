@@ -1,8 +1,8 @@
-using DSG.Utils.Enums;
+using LUP.DSG.Utils.Enums;
 using System;
 using UnityEngine;
 
-namespace DSG
+namespace LUP.DSG
 {
     public class AnimationComponent : MonoBehaviour
     {

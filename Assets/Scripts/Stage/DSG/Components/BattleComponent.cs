@@ -1,13 +1,13 @@
-using DSG.Utils.Enums;
+using LUP.DSG.Utils.Enums;
 using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using static DSG.ResultCharacterDisplay;
+using static LUP.DSG.ResultCharacterDisplay;
 using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEngine.UI.GridLayoutGroup;
 
-namespace DSG
+namespace LUP.DSG
 {
     public class BattleComponent : MonoBehaviour
     {
@@ -45,9 +45,6 @@ namespace DSG
 
         public event Action<ERangeType> OnAttackStarted;
         public event Action<bool> OnReachedTargetPos;
-        public event Action OnAttack;
-
-
         public event Action OnMeleeAttack;
         public event Action OnEndMelee;
 
@@ -98,8 +95,6 @@ namespace DSG
                             OnMeleeAttack?.Invoke();
 
                             StartCoroutine(WaitAttack());
-
-                            //OnEndMelee?.Invoke();
 
                             if (currGauge == maxSkillGauge)
                             {
@@ -275,9 +270,10 @@ namespace DSG
             float clipLen = clips[0].clip.length;
             float speed = anim.speed * state.speedMultiplier;
             float waitSec = clipLen / Mathf.Max(speed, 0.0001f);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(waitSec);
 
             targetPosition = originPosition;
+            OnEndMelee?.Invoke();
         }
     }
 }
