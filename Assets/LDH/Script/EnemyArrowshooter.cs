@@ -1,7 +1,7 @@
 using UnityEditor.Searcher;
 using UnityEngine;
 
-namespace RL
+namespace LUP.RL
 {
     public class EnemyArrowShooter : MonoBehaviour
     {

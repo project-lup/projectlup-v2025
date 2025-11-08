@@ -1,6 +1,6 @@
 
 using UnityEngine;
-namespace RL
+namespace LUP.RL
 {
     public class  EnemyArrow : MonoBehaviour
     {
@@ -33,17 +33,17 @@ namespace RL
         void Update()
         {
 
-            //if (target == null)
-            //{
-            //    transform.position += transform.forward * speed * Time.deltaTime;
-            //    return;
-            //}
-
-            //// 적을 향한 방향 벡터 계산
-            //Vector3 dir = (target.position - transform.position).normalized;
-
-            //// 회전은 안 하고, 방향 벡터로 직접 이동
-            //transform.position += dir * speed * Time.deltaTime;
+            if (target == null)
+            {
+                transform.position += transform.forward * speed * Time.deltaTime;
+                return;
+            }
+            
+            // 적을 향한 방향 벡터 계산
+            Vector3 dir = (target.position - transform.position).normalized;
+            
+            // 회전은 안 하고, 방향 벡터로 직접 이동
+            transform.position += dir * speed * Time.deltaTime;
         }
 
 

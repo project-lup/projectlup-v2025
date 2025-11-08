@@ -131,7 +131,7 @@ namespace LUP.RL
             CalrkParmas();
 
 
-            SwitchPannelTo(PanelType.WORLD);
+            SwitchPannelTo(PanelType.WORLD, false);
         }
 
         // Update is called once per frame
@@ -140,7 +140,7 @@ namespace LUP.RL
 
         }
 
-        public void SwitchPannelTo(PanelType switchedtype)
+        public void SwitchPannelTo(PanelType switchedtype, bool smoothMove = true)
         {
 
             Vector2 pos = panelCenterPosition[(int)switchedtype];
@@ -150,9 +150,21 @@ namespace LUP.RL
                 StopCoroutine(scrollCoroutine);
 
             lobbyPannels[(int)switchedtype].MoveTo();
-            scrollCoroutine = StartCoroutine(SmoothScrollTo(targetValue, switchedtype));
 
-            OnPanelSwitched?.Invoke(switchedtype);
+            if(smoothMove)
+            {
+                scrollCoroutine = StartCoroutine(SmoothScrollTo(targetValue, switchedtype));
+            }
+
+            else
+            {
+                mainHorizenScrollBar.value = targetValue;
+                currentPanel = switchedtype;
+
+                SetActiveVerticScroll(lobbyPannels[(int)currentPanel].GetActiveVerticScrollbar());
+            }
+
+                OnPanelSwitched?.Invoke(switchedtype);
         }
 
         private IEnumerator SmoothScrollTo(float targetValue, PanelType targetPanel)

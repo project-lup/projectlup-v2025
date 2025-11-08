@@ -33,11 +33,10 @@ namespace LUP.RL
             spawnPoint.rotation = Quaternion.LookRotation(this.transform.forward);
             Enemy targetEnemy = FindClosestEnemy();
 
+            
             Vector3 fireDir;
-            if (targetEnemy != null)
+            if (targetEnemy == null || targetEnemy.Equals(null)) return;
                 fireDir = (targetEnemy.transform.position - this.transform.position).normalized;
-            else
-                fireDir = transform.forward;
 
             fireDir.y = 0f;
             if (fireDir.sqrMagnitude > 0.01f)
@@ -52,6 +51,7 @@ namespace LUP.RL
 
             // АЊРќДо  
             HomingArrow homing = arrow.GetComponent<HomingArrow>();
+          
             homing.Initialize(archer, targetEnemy.transform, arrowSpeed, archer.Adata.currentData.Attack);
 
         }
@@ -61,6 +61,7 @@ namespace LUP.RL
             {
                 return null;
             }
+            
             Enemy[] enemies = currentRoom.GetComponentsInChildren<Enemy>(true);
             if (enemies.Length == 0)
             {

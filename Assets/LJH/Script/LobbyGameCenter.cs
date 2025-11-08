@@ -1,12 +1,12 @@
-using UnityEngine;
-using UnityEngine.UI;
-using System;
-using TMPro;
-using Unity.VisualScripting;
-
+using OpenCvSharp.Flann;
 using Roguelike.Define;
 using Roguelike.Util;
+using System;
 using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyGameCenter : MonoBehaviour
 {
@@ -59,7 +59,7 @@ public class LobbyGameCenter : MonoBehaviour
             int savedLastSeletedChapter = platformAdapter.LastSeletedChapter;
             int savedLastSeletedCharacter = platformAdapter.LastSeletedCharacter;
 
-            if ((savedLastSeletedChapter > 0 && savedLastSeletedCharacter > 0) &&
+            if ((savedLastSeletedChapter >= 0 && savedLastSeletedCharacter >= 0) &&
                 savedLastSeletedChapter < chapterDatas.Length && savedLastSeletedCharacter < characterDatas.Length)
             {
                 SetPastGameData(savedLastSeletedChapter, savedLastSeletedCharacter);
@@ -232,7 +232,7 @@ public class LobbyGameCenter : MonoBehaviour
         selectedChapter = chapterDatas[savedLastSeletedChapter];
         selectedCharacter = characterDatas[savedLastSeletedCharacter];
 
-        //UpdateLobbyStageInfo(selectedChapter);
+        SetSelectedData(DisplayableDataType.ChapterData, savedLastSeletedChapter);
     }
 
     void UpdateLobbyStageInfo(ChapterData chapterData)

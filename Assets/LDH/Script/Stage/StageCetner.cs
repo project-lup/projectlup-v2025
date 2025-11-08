@@ -49,6 +49,7 @@ namespace LUP.RL
                 if (playerArrow == null) return;
                 StageData data = stageData[currentStage];
                 currentRoom = Instantiate(data.roomprefab, Vector3.zero, Quaternion.identity, roomParent);
+
                 playerArrow.currentRoom = this.currentRoom.transform;
                 //UI °»½Å
                 if (stageText != null)
