@@ -90,16 +90,22 @@ namespace LUP
 
         protected override void SaveDatas()
         {
+            List<BaseRuntimeData> runtimeDataList = new List<BaseRuntimeData>();
+
             if (RuntimeData != null)
             {
-                base.SaveRuntimeData(RuntimeData);
+                runtimeDataList.Add(RuntimeData);
             }
+
+            // 나중에 다른 RuntimeData 추가 시 여기에 추가
+            // if (CharacterRuntimeData != null)
+            // {
+            //     runtimeDataList.Add(CharacterRuntimeData);
+            // }
+
+            base.SaveRuntimeDataList(runtimeDataList);
         }
 
-        protected override void SetupInventory()
-        {
-
-        }
     }
 }
 

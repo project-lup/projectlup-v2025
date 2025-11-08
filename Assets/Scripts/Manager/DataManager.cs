@@ -83,13 +83,26 @@ namespace LUP
 
             // RuntimeData가 코루틴을 사용할 수 있도록 설정
             BaseRuntimeData.SetCoroutineRunner(this);
-
-            // Manager.ResourceManager.Instance.Load
         }
 
         public void SaveRuntimeData(BaseRuntimeData runtimeData)
         {
             JsonDataHelper.SaveData(runtimeData, runtimeData.filename);
+        }
+
+        public void SaveRuntimeDataList(List<BaseRuntimeData> runtimeDataList)
+        {
+            if (runtimeDataList == null || runtimeDataList.Count == 0)
+            {
+                Debug.LogWarning("SaveRuntimeDataList: No runtime data to save");
+                return;
+            }
+
+            foreach (var data in runtimeDataList)
+            {
+                if (data != null)
+                    JsonDataHelper.SaveData(data, data.filename);
+            }
         }
     }
 }

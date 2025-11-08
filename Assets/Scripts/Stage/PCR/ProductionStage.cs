@@ -83,16 +83,16 @@ namespace LUP
 
         protected override void SaveDatas()
         {
+            List<BaseRuntimeData> runtimeDataList = new List<BaseRuntimeData>();
+
             if (RuntimeData != null)
             {
-                base.SaveRuntimeData(RuntimeData);
+                runtimeDataList.Add(RuntimeData);
             }
+
+            base.SaveRuntimeDataList(runtimeDataList);
         }
 
-        protected override void SetupInventory()
-        {
-
-        }
     }
 }
 
