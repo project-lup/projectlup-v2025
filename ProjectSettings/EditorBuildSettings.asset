@@ -18,6 +18,15 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScenes/IntroStage.unity
     guid: bfe6194dfd4d4084ba7b006f35702bb2
   - enabled: 1
+    path: Assets/Scenes/ST/LobbyScene.unity
+    guid: 8f2124e481bbb9f4ca3a3b373c295b20
+  - enabled: 1
+    path: Assets/Scenes/ST/GameScene.unity
+    guid: a23c389af57013947a0921eca99c442e
+  - enabled: 1
+    path: Assets/Scenes/ST/ResultScene.unity
+    guid: b0dc07b5f265f5c479dccd22f1eed850
+  - enabled: 1
     path: Assets/Scenes/SampleScenes/ProductionSampleStage.unity
     guid: 231e44d376864ac4b9b98690c0be2701
   - enabled: 1
