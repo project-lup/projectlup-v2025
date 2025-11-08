@@ -14,10 +14,11 @@ namespace ES
 
         public override NodeState Evaluate()
         {
+            blackboard.navMeshAgent.speed = 0;
             deathTime -= Time.deltaTime;
             if (deathTime < 0)
             {
-
+                
                 Object.Destroy(blackboard.gameObject);
             }
             return NodeState.Running;

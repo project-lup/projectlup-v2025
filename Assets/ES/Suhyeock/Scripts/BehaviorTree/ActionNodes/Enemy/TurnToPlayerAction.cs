@@ -6,7 +6,7 @@ namespace ES
     public class TurnToPlayerAction : BTNode
     {
         EnemyBlackboard blackboard;
-        private const float ACCEPTABLE_ANGLE = 10.0f;
+        private const float ACCEPTABLE_ANGLE = 1.0f;
         private const float TURN_SPEED = 500.0F;
         public TurnToPlayerAction(EnemyBlackboard blackboard)
         {

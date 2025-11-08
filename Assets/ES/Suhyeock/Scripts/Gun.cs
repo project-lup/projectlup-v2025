@@ -18,8 +18,8 @@ namespace ES
         public EventBroker eventBroker;
         //public GunData gunData;
         public Weapon weapon;
-        private BulletObjectPool bulletPool;
         public GameObject bulletPrefab;
+        private BulletObjectPool bulletPool;
         public Transform firePoint;
         [HideInInspector]
         public GunState state;

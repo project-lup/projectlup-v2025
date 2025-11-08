@@ -4,12 +4,14 @@ namespace ES
 {
     public class Bullet : MonoBehaviour
     {
+        [SerializeField]
+        private string targetTag;
         private float maxDistance;
         private Vector3 spawnPostion;
         private float speed = 0f;
         private float damage = 0f;
         private BulletObjectPool ownerPool;
-
+        
 
         void Update()
         {
@@ -29,12 +31,11 @@ namespace ES
             this.maxDistance = maxDistance;
             this.damage = damage;
             this.speed = speed;
-
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Enemy"))
+            if (other.gameObject.CompareTag(targetTag))
             {
                 Debug.Log("OnTriggerEnter");
                 if (other.TryGetComponent(out HealthComponent healthComponent))
