@@ -7960,9 +7960,11 @@ MonoBehaviour:
   OnRampage: 0
   HasTarget: 0
   isLocallyControlled: 0
-  Speed: 2
+  Speed: 3
   AtkRange: 2
   AtkCollTime: 0
+  AtkCooldownDuration: 3
+  AtkCoolTimeRecoverySpeed: 1
   HittedAccumTime: 0
   RampageTime: 3
   TargetDistance: 100
