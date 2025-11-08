@@ -7,11 +7,13 @@ namespace LUP.ST
     {
         public void LoadGameScene()
         {
-            SceneManager.LoadScene("GameScene");
+            StageManager.Instance.GetCurrentStage().LoadStage(Define.StageKind.ST, 1);
+            //SceneManager.LoadScene("GameScene");
         }
         public void LoadLobbyScene()
         {
-            SceneManager.LoadScene("LobbyScene");
+            StageManager.Instance.GetCurrentStage().LoadStage(Define.StageKind.ST, 2);
+            //SceneManager.LoadScene("LobbyScene");
         }
         public void LoadScene(string sceneName)
         {

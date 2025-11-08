@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: STSceneList
   m_EditorClassIdentifier: 
   scenes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 102900000, guid: 8f2124e481bbb9f4ca3a3b373c295b20, type: 3}
+  - {fileID: 102900000, guid: a23c389af57013947a0921eca99c442e, type: 3}
+  - {fileID: 102900000, guid: b0dc07b5f265f5c479dccd22f1eed850, type: 3}
