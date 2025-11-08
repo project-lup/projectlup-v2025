@@ -20,13 +20,14 @@ namespace ES
 
             Quaternion enemyQuaternion = blackboard.transform.rotation;
 
-            Vector3 attackPoint = enemyPosition + (enemyForward * blackboard.attackSize * 0.7f);
+            Vector3 attackPoint = enemyPosition + (enemyForward * blackboard.attackSize);
 
             Collider[] hitColliders = Physics.OverlapSphere(
                 attackPoint,
                 blackboard.attackSize,
                 blackboard.LayerMask
             );
+
             HashSet<GameObject> hitTargetsOnce = new HashSet<GameObject>();
 
             for (int i = 0; i < hitColliders.Length; i++)
@@ -38,7 +39,7 @@ namespace ES
 
                     if (health)
                     {
-                        health.TakeDamage(10.0f);
+                        health.TakeDamage(blackboard.damage);
                         Debug.Log("Attack");
                     }
                 }

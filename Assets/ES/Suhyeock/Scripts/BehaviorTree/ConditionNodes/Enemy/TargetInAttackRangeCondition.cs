@@ -20,6 +20,7 @@ namespace ES
             
             if(distance <= blackboard.attackRange)
             {
+                blackboard.navMeshAgent.ResetPath();
                 return NodeState.Success;
             }
 

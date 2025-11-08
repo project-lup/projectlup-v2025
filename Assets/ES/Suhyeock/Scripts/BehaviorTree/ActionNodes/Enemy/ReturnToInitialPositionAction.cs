@@ -2,19 +2,18 @@ using UnityEngine;
 
 namespace ES
 {
-    public class MoveToTargetAction : BTNode
+    public class ReturnToInitialPositionAction : BTNode
     {
         EnemyBlackboard blackboard;
         private const float REACHED_DISTANCE = 0.5f;
-
-        public MoveToTargetAction(EnemyBlackboard blackboard)
+        public ReturnToInitialPositionAction(EnemyBlackboard blackboard)
         {
             this.blackboard = blackboard;
         }
 
         public override NodeState Evaluate()
         {
-            blackboard.navMeshAgent.SetDestination(blackboard.targetMovePosition);
+            blackboard.navMeshAgent.SetDestination(blackboard.initialPosition);
 
             if (blackboard.navMeshAgent.remainingDistance <= REACHED_DISTANCE && !blackboard.navMeshAgent.pathPending)
             {
@@ -26,9 +25,8 @@ namespace ES
 
         public override void Reset()
         {
-            blackboard.navMeshAgent.ResetPath();
+            
         }
     }
 }
-
 

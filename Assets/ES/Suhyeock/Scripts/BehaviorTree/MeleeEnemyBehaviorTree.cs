@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ES
 {
-    public class EnemyBehaviorTree : MonoBehaviour
+    public class MeleeEnemyBehaviorTree : MonoBehaviour
     {
         private BTNode rootNode;
         private EnemyBlackboard blackboard;
@@ -28,10 +28,15 @@ namespace ES
             EnemyDeathAction deathAction = new EnemyDeathAction(blackboard);
             Sequence handleDeathSequence = new Sequence(new List<BTNode> { deadCondition, deathAction });
 
+            TooFarFromHomeCondition tooFarFromHomeCondition = new TooFarFromHomeCondition(blackboard);
+            ReturnToInitialPositionAction returnToInitialPositionAction = new ReturnToInitialPositionAction(blackboard);
+            Sequence OutOfRangeReturnSequence = new Sequence(new List<BTNode> { tooFarFromHomeCondition, returnToInitialPositionAction });
+
             TargetInAttackRangeCondition targetInAttackRangeCondition = new TargetInAttackRangeCondition(blackboard);
+            TurnToPlayerAction turnToPlayerAction = new TurnToPlayerAction(blackboard);
             EnemyAttackAction enemyAttackAction = new EnemyAttackAction(blackboard);
-            Sequence attackSequence = new Sequence(new List<BTNode> { enemyAttackAction, new WaitAction(2.0f) });
-            Sequence handleAttackSequence = new Sequence(new List<BTNode> { targetInAttackRangeCondition , attackSequence });
+            Sequence attackSequence = new Sequence(new List<BTNode> { turnToPlayerAction, enemyAttackAction, new WaitAction(2.0f) });
+            Sequence handleAttackSequence = new Sequence(new List<BTNode> { targetInAttackRangeCondition, attackSequence });
 
             TargetInDetectionRangeCondition targetInDetectionRangeCondition = new TargetInDetectionRangeCondition(blackboard);
             ChaseTargetAction chaseTargetAction = new ChaseTargetAction(blackboard);
@@ -40,12 +45,15 @@ namespace ES
             FindRandomLocationAction findRandomLocationAction = new FindRandomLocationAction(blackboard);
             MoveToTargetAction moveToTargetAction = new MoveToTargetAction(blackboard);
             Sequence patrolSequence = new Sequence(new List<BTNode> { findRandomLocationAction, moveToTargetAction, new WaitAction(3.0f)});
+
+            
             rootNode = new Selector(new List<BTNode> 
             { 
                 handleDeathSequence,
+                OutOfRangeReturnSequence,
                 handleAttackSequence,
                 handleMoveSequence,
-                patrolSequence
+                patrolSequence,
             });
         }
 
@@ -53,9 +61,18 @@ namespace ES
         {
             if (Application.isPlaying && blackboard != null && blackboard.transform != null)
             {
-                Vector3 attackPoint = blackboard.transform.position + (blackboard.transform.forward * blackboard.attackSize * 0.7f);
+                Vector3 attackPoint = blackboard.transform.position + (blackboard.transform.forward * blackboard.attackSize);
                 Gizmos.color = Color.red;
                 Gizmos.DrawWireSphere(attackPoint, blackboard.attackSize);
+
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireSphere(transform.position, blackboard.attackRange);
+
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(transform.position, blackboard.detectionRange);
+
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireSphere(blackboard.initialPosition, blackboard.maxRange);
             }
         }
     }

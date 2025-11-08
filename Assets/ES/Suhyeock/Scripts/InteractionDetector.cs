@@ -6,14 +6,12 @@ namespace ES
     public class InteractionDetector : MonoBehaviour
     {
         public EventBroker eventBroker;
-        //public LootDisplayCenter lootDisplayCenter;
-        private PlayerBlackboard blackboard;
+        public PlayerBlackboard blackboard;
         private SphereCollider detectionCollider;
         private List<IInteractable> nearbyInteractables = new List<IInteractable>();
 
         private void Start()
         {
-            blackboard = GetComponent<PlayerBlackboard>();
             detectionCollider = gameObject.AddComponent<SphereCollider>();
             detectionCollider.radius = blackboard.InteractionRadius;
             detectionCollider.isTrigger = true;
