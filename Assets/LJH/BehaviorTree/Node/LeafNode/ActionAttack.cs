@@ -1,42 +1,30 @@
 using UnityEngine;
 
-namespace LUP.RL
+namespace RL
 {
     public class ActionAttack : LeafNode
     {
-        bool isAnimOnPlayed = false;
-        public ActionAttack(BlackBoard blackBoar, BaseBehaviorTree behaviorTree) : base( blackBoar, behaviorTree )
+        private readonly EnemyBlackBoard bb;
+        public ActionAttack(EnemyBlackBoard blackBoard, BaseBehaviorTree behaviorTree) : base( blackBoard, behaviorTree )
         {
+            bb = blackBoard;
 
         }
         public override NodeState Evaluate()
         {
             UnityEngine.Debug.Log("Action Attack");
-            if (isAnimOnPlayed)
+            if(bb.EShooter == null)
             {
-                nodeState = NodeState.Running;
-                return nodeState;
+                Debug.Log("½´ÅÍ °ª ¾øÀ½");
+                return NodeState.Fail;
             }
-
-            isAnimOnPlayed = true;
-            nodeState = NodeState.Running;
-
-
-            behaviorTree.PlayAnimation("Attack", this);
-            blackBoard.OnAtk = true;
-            blackBoard.InAtkState = true;
-            blackBoard.AtkCollTime = blackBoard.AtkCooldownDuration;
-
-            return nodeState;
+            bb.EShooter.ShootArrow(bb.Target, bb.targetPos);
+            return NodeState.Success;
         }
 
-        public override void OnAnimationEnd(AnimatorStateInfo animInfo)
+        public override void OnAnimationEnd()
         {
-            UnityEngine.Debug.Log("Hit Animation Ended");
-            isAnimOnPlayed = false;
-            nodeState = NodeState.Success;
-            blackBoard.InAtkState = false;
-            blackBoard.OnAtk = false;
+
         }
     }
 }
