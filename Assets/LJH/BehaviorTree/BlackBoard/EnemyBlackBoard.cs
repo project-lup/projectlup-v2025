@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace RL
+namespace LUP.RL
 {
     public class EnemyBlackBoard : BlackBoard
     {

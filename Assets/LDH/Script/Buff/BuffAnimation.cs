@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Roguelike.Define;
-namespace RL
+namespace LUP.RL
 {
     public class BuffRouletteManager : MonoBehaviour
     {

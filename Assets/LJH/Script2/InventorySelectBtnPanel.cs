@@ -1,7 +1,7 @@
 using UnityEngine;
 using Roguelike.Util;
 
-namespace RL
+namespace LUP.RL
 {
     public class InventorySelectBtnPanel : MonoBehaviour
     {

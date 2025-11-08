@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace RL
+namespace LUP.RL
 { 
 [System.Serializable]
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RL
+namespace LUP.RL
 {
     public enum ConditionMode
     {
@@ -38,7 +38,8 @@ namespace RL
             {
                 ConditionCheckEnum.ISALIVE => currBlackBoard.Alive,
                 ConditionCheckEnum.INATKSTATE => currBlackBoard.InAtkState,
-                ConditionCheckEnum.INHITTEDSTATE => currBlackBoard.OnHitted,
+                ConditionCheckEnum.OnHit => currBlackBoard.OnHitted,
+                ConditionCheckEnum.INHITTEDSTATE => currBlackBoard.InHittedState,
                 ConditionCheckEnum.INRAMPAGE => currBlackBoard.OnRampage,
                 ConditionCheckEnum.HASTARGET => currBlackBoard.HasTarget,
                 ConditionCheckEnum.INREADYTOATK => currBlackBoard.AtkCollTime <= 0,

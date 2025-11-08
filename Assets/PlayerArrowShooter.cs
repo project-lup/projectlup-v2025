@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
-namespace RL
+namespace LUP.RL
 {
     public class PlayerArrowShooter : MonoBehaviour
     {

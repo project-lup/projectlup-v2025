@@ -3,7 +3,7 @@ using System.Globalization;
 using UnityEditor.Experimental.GraphView;
 #endif
 using UnityEngine;
-namespace RL
+namespace LUP.RL
 {
     public class GridGenerator : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
-namespace RL
+namespace LUP.RL
 {
 
 

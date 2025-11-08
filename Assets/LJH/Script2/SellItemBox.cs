@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Roguelike.Util;
 
-namespace RL
+namespace LUP.RL
 {
     public class SellItemBox : MonoBehaviour, IPanelContentAble
     {

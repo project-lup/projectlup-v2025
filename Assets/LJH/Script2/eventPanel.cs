@@ -3,7 +3,7 @@ using Roguelike.Util;
 using static UnityEngine.UI.Image;
 using UnityEngine.UI;
 
-namespace RL
+namespace LUP.RL
 {
     public class EventPanel : LobbyContentAblePannel
     {

@@ -2,7 +2,7 @@ using Roguelike.Define;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-namespace RL
+namespace LUP.RL
 {
     public class Archer : MonoBehaviour
     {

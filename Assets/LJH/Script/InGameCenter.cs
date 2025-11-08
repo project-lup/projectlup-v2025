@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Roguelike.Define;
 using Roguelike.Util;
 
-namespace RL
+namespace LUP.RL
 {
     public class InGameCenter : MonoBehaviour
     {

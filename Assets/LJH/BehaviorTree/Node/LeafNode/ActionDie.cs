@@ -1,7 +1,7 @@
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-namespace RL
+namespace LUP.RL
 {
     public class ActionDie : LeafNode
     {

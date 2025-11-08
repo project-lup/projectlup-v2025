@@ -6,7 +6,7 @@ using TMPro.Examples;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-namespace RL
+namespace LUP.RL
 {
 
     public class StageController : MonoBehaviour

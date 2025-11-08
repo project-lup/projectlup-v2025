@@ -2,7 +2,7 @@ using ES;
 using JetBrains.Annotations;
 using System;
 using UnityEngine;
-namespace RL
+namespace LUP.RL
 {
     public class Enemy : MonoBehaviour
     {

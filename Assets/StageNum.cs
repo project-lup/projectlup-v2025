@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-namespace RL
+namespace LUP.RL
 {
     public class StageNum : MonoBehaviour
     {

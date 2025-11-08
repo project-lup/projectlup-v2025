@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-namespace RL
+namespace LUP.RL
 {
     public class EnemyBehaviorTree : BaseBehaviorTree
     {
@@ -47,14 +47,7 @@ namespace RL
 
             //Hitted Action
             {
-                List<Node> childList = new List<Node>();
-
-                ReduceHP reduceHP = new ReduceHP(enemyBlackBoard, this);
-
                 ActionHitted actionHitted = new ActionHitted(enemyBlackBoard, this);
-
-                //BlackboardConditionNode isAttackState = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.INATKSTATE, false, actionHitted);
-                //BlackboardConditionNode isRampagesTATE = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.INRAMPAGE, false, actionHitted);
 
                 List<(ConditionCheckEnum, bool)> whishConditions = new()
                 {
@@ -64,42 +57,57 @@ namespace RL
 
                 BlackboardMultiConditionNode inAttack_InRampage = new BlackboardMultiConditionNode(enemyBlackBoard, whishConditions, actionHitted);
 
+                BlackboardConditionNode isRampage_TargetInAtkRange = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.INRAMPAGE, true, MakeAtkDefaultNode());
+
+                List<Node> bottomSelectorChildNodes = new List<Node>();
+
+                bottomSelectorChildNodes.Add(inAttack_InRampage);
+                bottomSelectorChildNodes.Add(isRampage_TargetInAtkRange);
+
+                SelectorNode bottomSelector = new SelectorNode(bottomSelectorChildNodes);
 
 
-                childList.Add(reduceHP);
-                childList.Add(inAttack_InRampage);
 
 
-                SequenceNode atkSequenceNode = new SequenceNode(childList);
-                BlackboardConditionNode isHitted = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.OnHit, true, atkSequenceNode);
+                List<Node> topSequenceChildNodes = new List<Node>();
+
+                ReduceHP reduceHP = new ReduceHP(enemyBlackBoard, this);
+
+                topSequenceChildNodes.Add(reduceHP);
+                topSequenceChildNodes.Add(bottomSelector);
+
+                SequenceNode topSequence = new SequenceNode(topSequenceChildNodes);
+                BlackboardConditionNode isOnHit = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.OnHit, true, topSequence);
 
 
-                midleNodes.Add(isHitted);
+                midleNodes.Add(isOnHit);
             }
 
             //Attack Action
             {
-                List<Node> childList = new List<Node>();
+                //List<Node> childList = new List<Node>();
 
-                Wait wait = new Wait(enemyBlackBoard, this);
-                BlackboardConditionNode isAtkCollTime = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.INREADYTOATK, false, wait);
+                //Wait wait = new Wait(enemyBlackBoard, this);
+                //BlackboardConditionNode isAtkCollTime = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.INREADYTOATK, false, wait);
 
-                ActionAttack actionAttack = new ActionAttack(enemyBlackBoard, this);
+                //ActionAttack actionAttack = new ActionAttack(enemyBlackBoard, this);
 
-                List<(ConditionCheckEnum, bool)> whishConditions = new()
-                {
-                    (ConditionCheckEnum.INHITTEDSTATE, false),
-                    (ConditionCheckEnum.INREADYTOATK, true)
-                };
-                BlackboardMultiConditionNode inHittedState_InReadyToAtk = new BlackboardMultiConditionNode(enemyBlackBoard, whishConditions, actionAttack);
+                //List<(ConditionCheckEnum, bool)> whishConditions = new()
+                //{
+                //    (ConditionCheckEnum.INHITTEDSTATE, false),
+                //    (ConditionCheckEnum.INREADYTOATK, true)
+                //};
+                //BlackboardMultiConditionNode inHittedState_InReadyToAtk = new BlackboardMultiConditionNode(enemyBlackBoard, whishConditions, actionAttack);
 
-                childList.Add(isAtkCollTime);
-                childList.Add(inHittedState_InReadyToAtk);
+                //childList.Add(isAtkCollTime);
+                //childList.Add(inHittedState_InReadyToAtk);
 
-                SelectorNode selectorNode = new SelectorNode(childList);
-                BlackboardConditionNode isTargetInAtkRange = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.TargetINATKRANGE, true, selectorNode);
+                //SelectorNode selectorNode = new SelectorNode(childList);
+                //BlackboardConditionNode isTargetInAtkRange = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.TargetINATKRANGE, true, selectorNode);
 
-                midleNodes.Add(isTargetInAtkRange);
+                //midleNodes.Add(isTargetInAtkRange);
+
+                midleNodes.Add(MakeAtkDefaultNode());
             }
 
             //MoveTo Action
@@ -132,24 +140,30 @@ namespace RL
         }
 
 
+        Node MakeAtkDefaultNode()
+        {
+            List<Node> childList = new List<Node>();
 
-        //public void PlayAnimation(string animName, LeafNode caller)
-        //{
-        //    if (Animator == null)
-        //        return;
+            Wait wait = new Wait(enemyBlackBoard, this);
+            BlackboardConditionNode isAtkCollTime = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.INREADYTOATK, false, wait);
 
-        //    currentRunningLeaf = caller;
-        //    Animator.Play(animName);
-        //}
+            ActionAttack actionAttack = new ActionAttack(enemyBlackBoard, this);
 
-        //public void OnAnimationEnd(AnimatorStateInfo info)
-        //{
-        //    if (currentRunningLeaf == null)
-        //        return;
+            List<(ConditionCheckEnum, bool)> whishConditions = new()
+                {
+                    (ConditionCheckEnum.INHITTEDSTATE, false),
+                    (ConditionCheckEnum.INREADYTOATK, true)
+                };
+            BlackboardMultiConditionNode inHittedState_InReadyToAtk = new BlackboardMultiConditionNode(enemyBlackBoard, whishConditions, actionAttack);
 
-        //    currentRunningLeaf.OnAnimationEnd();
-        //    currentRunningLeaf = null;
-        //}
+            childList.Add(isAtkCollTime);
+            childList.Add(inHittedState_InReadyToAtk);
+
+            SelectorNode selectorNode = new SelectorNode(childList);
+            BlackboardConditionNode isTargetInAtkRange = new BlackboardConditionNode(enemyBlackBoard, ConditionCheckEnum.TargetINATKRANGE, true, selectorNode);
+
+            return isTargetInAtkRange;
+        }
     }
 }
 

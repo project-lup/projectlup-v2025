@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-namespace RL
+namespace LUP.RL
 {
     public class OptionButtonUI : MonoBehaviour
     {

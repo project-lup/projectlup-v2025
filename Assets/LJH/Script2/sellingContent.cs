@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RL
+namespace LUP.RL
 {
     public class sellingContent : MonoBehaviour, IPanelContentAble
     {

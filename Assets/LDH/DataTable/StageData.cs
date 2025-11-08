@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-namespace RL
+namespace LUP.RL
 {
     [CreateAssetMenu(fileName = "StageData", menuName = "Game/StageData")]
     public class StageData : ScriptableObject

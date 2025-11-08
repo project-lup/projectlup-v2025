@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RL
+namespace LUP.RL
 {
     public class SelectorNode : CompositeNode
     {

@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RL
+namespace LUP.RL
 {
     public class ShopPanel : LobbyContentAblePannel
     {

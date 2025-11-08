@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RL
+namespace LUP.RL
 {
     public class ChapterSelectionScrollPanel : BaseScrollAblePanel
     {

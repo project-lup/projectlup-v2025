@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Roguelike.Define;
 
-namespace RL
+namespace LUP.RL
 {
     public class WorldPanel : LobbyContentAblePannel
     {

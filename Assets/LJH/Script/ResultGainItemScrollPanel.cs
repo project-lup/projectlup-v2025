@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RL
+namespace LUP.RL
 {
     public class ResultGainItemScrollPanel : BaseScrollAblePanel
     {

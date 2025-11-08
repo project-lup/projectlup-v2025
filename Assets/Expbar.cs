@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-namespace RL
+namespace LUP.RL
 {
     public class ExpBar : MonoBehaviour
     {

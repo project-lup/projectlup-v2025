@@ -10,7 +10,7 @@ using Roguelike.Define;
 using Roguelike.Util;
 using System.Collections;
 
-namespace RL
+namespace LUP.RL
 {
     public abstract class BaseScrollAblePanel : MonoBehaviour
     {

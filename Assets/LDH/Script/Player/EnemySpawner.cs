@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
-namespace RL
+namespace LUP.RL
 {
     public class EnemySpawner : MonoBehaviour
     {
