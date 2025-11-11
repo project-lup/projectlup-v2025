@@ -38,6 +38,7 @@ namespace LUP.DSG
         private bool isKnockback = false;
 
         public bool isAlive { get; private set; } = true;
+        public bool isSkillOn { get; private set; } = false;
 
         public event Action<float> OnDamaged;
         public event Action<int> OnDie;
@@ -95,11 +96,6 @@ namespace LUP.DSG
                             OnMeleeAttack?.Invoke();
 
                             StartCoroutine(WaitAttack());
-
-                            if (currGauge == maxSkillGauge)
-                            {
-                                currGauge = 0;
-                            }
 
                             impactApplied = true;
                         }
@@ -181,10 +177,27 @@ namespace LUP.DSG
                 return;
 
             float damage = owner.characterData.attack;
-            targetChar.BattleComp.TakeDamage(1);
-            owner.ScoreComp.UpdateDamageDealt(damage);
 
-            PlusGuage(50);
+            if (isSkillOn)
+            {
+                StatusEffectFactory factory = new StatusEffectFactory();
+                IStatusEffect burn = factory.CreateStatusEffect(EStatusEffectType.Burn, EOperationType.Plus
+                    ,3, 3);
+                targetChar.BattleComp.TakeDamage(1 + 10);
+                targetChar.StatusEffectComp.AddEffect(burn);
+                currGauge = 0;
+            }
+            else
+            {
+                targetChar.BattleComp.TakeDamage(1);
+                owner.ScoreComp.UpdateDamageDealt(damage);
+                PlusGuage(50);
+
+                if (currGauge == maxSkillGauge)
+                {
+                    isSkillOn = true;
+                }
+            }
         }
 
         public virtual void TakeDamage(float amount)
