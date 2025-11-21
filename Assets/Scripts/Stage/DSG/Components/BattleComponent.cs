@@ -1,4 +1,5 @@
 using DSG.Utils.Enums;
+using LUP.DSG;
 using System;
 using TMPro;
 using UnityEngine;
@@ -89,11 +90,11 @@ namespace DSG
                     {
                         if (!impactApplied)
                         {
-                            // ���� ��ġ�� �̵� �Ϸ��
+                            // 공격 시 실행
                             OnReachedTargetPos?.Invoke(true);
-                            // ���� �ִϸ��̼� ���� 
+                            // 공격 애니메이션 실행
                             OnMeleeAttack?.Invoke();
-                            // ���� �ִϸ��̼� �����
+                            // 공격종료시 실행
                             OnEndMelee?.Invoke();
                             ApplyDamageOnce();
                             if (currGauge == maxSkillGauge)
@@ -194,7 +195,7 @@ namespace DSG
 
             if (damageLogPrefab != null)
             {
-                Vector3 headPos = transform.position + Vector3.up * 1.8f;
+                Vector3 headPos = transform.position + Vector3.up * 0.8f;
                 Quaternion rot = Quaternion.LookRotation(Camera.main.transform.forward);
                 GameObject log = Instantiate(damageLogPrefab, headPos, rot);
                 log.GetComponent<DamageLog>()?.Setup(amount);
@@ -207,8 +208,10 @@ namespace DSG
                 if (shaker == null)
                     shaker = mainCam.gameObject.AddComponent<CameraShake>();
 
-                shaker.StartCoroutine(shaker.Shake(0.2f, 0.05f));
+                shaker.StartCoroutine(shaker.Shake(0.2f, 0.2f));
             }
+
+            FindFirstObjectByType<HitVignetteEffect>()?.PlayDamageEffect();
 
             if (currHp <= 0)
             {
@@ -223,7 +226,7 @@ namespace DSG
             {
                 float score = owner.ScoreComp.CalculateMVPScore();
                 Color color = owner.characterModelData.material.GetColor("_BaseColor");
-                BattleSystem.Instance?.BackupDeadCharacter(owner.characterData.characterName, color, score);
+                BattleSystem.Instance?.BackupDeadCharacter(owner.characterData.characterName, color, score, owner.characterModelData.prefab);
             }
             OnDie?.Invoke(owner.battleIndex);
         }

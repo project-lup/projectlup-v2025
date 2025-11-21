@@ -80,6 +80,8 @@ namespace DSG
 
             mainCamera = Camera.main;
             rectTransform = GetComponent<RectTransform>();
+
+            rectTransform.localScale = new Vector3(1f, 1f, 1f);
         }
         private void Start()
         {
