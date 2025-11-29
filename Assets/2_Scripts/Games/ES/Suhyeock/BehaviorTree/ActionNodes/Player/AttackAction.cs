@@ -26,7 +26,15 @@ namespace LUP.ES
                 blackboard.weapon.Attack();
                 blackboard.playerOverheadUI.UpdateAmmoUI();
                 blackboard.weapon.state = WeaponState.ATTACKING;
+                if (blackboard.animator != null)
+                {
+                    blackboard.animator.SetBool("IsAttacking", true);
+                }
                 return NodeState.Running;
+            }
+            if (blackboard.animator != null)
+            {
+                blackboard.animator.SetBool("IsAttacking", false);
             }
             blackboard.weapon.state = WeaponState.READY;
             return NodeState.Success;

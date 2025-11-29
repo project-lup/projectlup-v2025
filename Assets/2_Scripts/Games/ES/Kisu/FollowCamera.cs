@@ -15,7 +15,7 @@ namespace LUP.ES
             transform.position = new Vector3(
                 (x ? target.position.x : transform.position.x),
                 (y ? target.position.y : transform.position.y),
-                (z ? target.position.z - 13 : transform.position.z));
+                (z ? target.position.z - 6 : transform.position.z));
         }
     }
 }

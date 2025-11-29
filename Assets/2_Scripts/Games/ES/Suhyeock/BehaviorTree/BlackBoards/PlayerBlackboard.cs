@@ -20,7 +20,8 @@ namespace LUP.ES
         public EventBroker eventBroker;
         public Weapon weapon;
         public InteractionDetector InteractionDetector;
-
+        [HideInInspector]
+        public Animator animator;
         [HideInInspector]
         public MoveState moveState = MoveState.IDLE;
         [HideInInspector]
@@ -37,6 +38,11 @@ namespace LUP.ES
         {
             //isCastingInteraction = false;
             interactingObject = null;
+        }
+
+        private void Start()
+        {
+            animator = GetComponentInChildren<Animator>();
         }
     }
 }
