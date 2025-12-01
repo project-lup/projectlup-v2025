@@ -22,6 +22,10 @@ namespace LUP.ES
             else if (blackboard.weapon.state == WeaponState.READY && isReloadingStarted)
             {
                 isReloadingStarted = false;
+                if (blackboard.animator != null)
+                {
+                    blackboard.animator.SetBool("IsReloading", false);
+                }
                 return NodeState.Success;
             }
 
@@ -30,6 +34,10 @@ namespace LUP.ES
                 reloadableWeapon.Reload();
                 isReloadingStarted = true;
                 blackboard.isReloadButtonPressed = false;
+                if (blackboard.animator != null)
+                {
+                    blackboard.animator.SetBool("IsReloading", true);
+                }
                 return NodeState.Running;
             }
             return NodeState.Failure;

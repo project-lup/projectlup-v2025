@@ -28,7 +28,6 @@ namespace LUP.ES
         void Update()
         {
             rootNode.Evaluate();
-            UpdateAnimation();
         }
         private void SetupBehaviorTree()
         {
@@ -74,7 +73,8 @@ namespace LUP.ES
        
             MovingCondition movingCondition = new MovingCondition(blackboard);
             MoveAction moveAction = new MoveAction(blackboard, characterController);
-            Parallel combatParallel = new Parallel(new List<BTNode> { handleActionsSelector, movingCondition, moveAction });
+            UpdateAimDirectionAction updateAimDirectionAction = new UpdateAimDirectionAction(blackboard);
+            Parallel combatParallel = new Parallel(new List<BTNode> { updateAimDirectionAction, handleActionsSelector, movingCondition, moveAction });
 
 
             rootNode = new Selector(new List<BTNode>
@@ -84,28 +84,6 @@ namespace LUP.ES
                 InteractionSequence ,
                 combatParallel,
             });
-        }
-
-        void UpdateAnimation()
-        {
-            Vector3 moveInput = new Vector3(blackboard.leftJoystick.Horizontal, 0, blackboard.leftJoystick.Vertical);
-            if (moveInput.magnitude > 0.01f)
-            {
-                moveInput = moveInput.normalized;
-            }
-
-            Vector3 localMove = transform.InverseTransformDirection(moveInput);
-            blackboard.animator.SetFloat("InputX", localMove.x, 0.1f, Time.deltaTime);
-            blackboard.animator.SetFloat("InputY", localMove.z, 0.1f, Time.deltaTime);
-
-            if (blackboard.weapon.state == WeaponState.ATTACKING)
-            {
-                blackboard.animator.SetLayerWeight(1, 1);
-            }
-            else
-            {
-                blackboard.animator.SetLayerWeight(1, 0);
-            }
         }
 
 

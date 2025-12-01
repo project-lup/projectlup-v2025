@@ -20,9 +20,9 @@ namespace LUP.ES
 
             if (horizontal != 0 || Vertical != 0)
             {
-                Vector3 dir = new Vector3(horizontal, 0f, Vertical);
-                dir.Normalize();
-                characterController.transform.forward = dir;
+                //Vector3 dir = new Vector3(horizontal, 0f, Vertical);
+                //dir.Normalize();
+                //characterController.transform.forward = dir;
                 blackboard.weapon.Attack();
                 blackboard.playerOverheadUI.UpdateAmmoUI();
                 blackboard.weapon.state = WeaponState.ATTACKING;
@@ -42,7 +42,10 @@ namespace LUP.ES
 
         public override void Reset()
         {
-
+            if (blackboard.animator != null)
+            {
+                blackboard.animator.SetBool("IsAttacking", false);
+            }
         }
     }
 }

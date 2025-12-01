@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 5974502463838644164}
   - component: {fileID: 1068742499048342183}
   - component: {fileID: 1592714663866799431}
+  - component: {fileID: -2265169198104987356}
   m_Layer: 3
   m_Name: RangedEnemy
   m_TagString: Enemy
@@ -366,8 +367,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16
   playerTransform: {fileID: 0}
+  lootSpawner: {fileID: 0}
   isDetected: 0
   navMeshAgent: {fileID: 0}
   targetMovePosition: {x: 0, y: 0, z: 0}
   initialPosition: {x: 0, y: 0, z: 0}
   gun: {fileID: 8771809529935355103}
+--- !u!114 &-2265169198104987356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7011581053849183949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97da2611359309f4caf6d02e517ed285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemBoxPrefab: {fileID: 3561679798942957983, guid: 6bff9ff19276b1b499d720ea079863fd, type: 3}

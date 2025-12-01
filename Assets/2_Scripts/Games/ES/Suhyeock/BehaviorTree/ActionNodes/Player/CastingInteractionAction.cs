@@ -15,6 +15,10 @@ namespace LUP.ES
         {
             if (blackboard.interactingObject == null)
             {
+                if (blackboard.animator != null)
+                {
+                    blackboard.animator.SetBool("IsInteracting", false);
+                }
                 return NodeState.Failure;
             }
 
@@ -36,9 +40,13 @@ namespace LUP.ES
             bool isCompleted = blackboard.interactingObject.TryStartInteraction(Time.deltaTime);
             if (isCompleted)
             {
+                if (blackboard.animator != null)
+                    blackboard.animator.SetBool("IsInteracting", false);
                 blackboard.ResetInteractionState();
                 return NodeState.Success;
             }
+            if (blackboard.animator != null)
+                blackboard.animator.SetBool("IsInteracting", true);
             return NodeState.Running;
         }
 
@@ -49,7 +57,11 @@ namespace LUP.ES
                 blackboard.interactingObject.HideInteractionTimerUI();
                 blackboard.interactingObject.ResetInteraction();
                 blackboard.ResetInteractionState();
-               
+
+                if (blackboard.animator != null)
+                {
+                    blackboard.animator.SetBool("IsInteracting", false);
+                }
             }
         }
     }

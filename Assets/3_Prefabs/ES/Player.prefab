@@ -65,6 +65,7 @@ GameObject:
   - component: {fileID: 6348856284375335552}
   - component: {fileID: 884996925007334372}
   - component: {fileID: 3145711136167374506}
+  - component: {fileID: -8382978363877592038}
   m_Layer: 4
   m_Name: Player
   m_TagString: Player
@@ -230,8 +231,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d781338a8e3e0748bfbe5256bfb8628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spineBone: {fileID: 7580089878250307210}
-  spineOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &4266032240462980186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,6 +304,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventorySize: 30
+--- !u!114 &-8382978363877592038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7395278910700784524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e032b1efb9b1c3438a48713dbcb023d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spine: {fileID: 6463942672253196300}
+  animator: {fileID: 0}
 --- !u!1001 &293225654458306262
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -375,9 +388,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5344231552994531198, guid: ab6e17c960027b04d83fcbdc44489ebb, type: 3}
   m_PrefabInstance: {fileID: 293225654458306262}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7580089878250307210 stripped
+--- !u!4 &6463942672253196300 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7863386897209389148, guid: ab6e17c960027b04d83fcbdc44489ebb, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6747859751345903322, guid: ab6e17c960027b04d83fcbdc44489ebb, type: 3}
   m_PrefabInstance: {fileID: 293225654458306262}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5193050237833926495

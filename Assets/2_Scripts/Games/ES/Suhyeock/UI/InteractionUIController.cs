@@ -5,12 +5,11 @@ namespace LUP.ES
 {
     public class InteractionUIController : MonoBehaviour
     {
+        private GameObject InteractionCanvas;
         [SerializeField]
         private GameObject InteractionPromptPrefab;
         [SerializeField]
         private GameObject InteractionTimerPrefab;
-        [SerializeField]
-        private GameObject InteractionCanvas;
         [SerializeField]
         private float YOffset = 40.0f;
 
@@ -23,6 +22,7 @@ namespace LUP.ES
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            InteractionCanvas = GameObject.FindWithTag("InteractionCanvas");
             MainCamera = Camera.main;
             InitUI();
         }

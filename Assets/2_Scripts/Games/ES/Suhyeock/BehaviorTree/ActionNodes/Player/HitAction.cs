@@ -4,19 +4,23 @@ namespace LUP.ES
 {
     public class HitAction : BTNode
     {
-        PlayerBlackboard Blackboard;
+        PlayerBlackboard blackboard;
 
         public HitAction(PlayerBlackboard blackboard)
         {
-            this.Blackboard = blackboard;
+            this.blackboard = blackboard;
         }
 
         public override NodeState Evaluate()
         {
-            Blackboard.healthComponent.isHit = false;
-            Blackboard.eventBroker.CloseLootDisplay();
-            Blackboard.eventBroker.HandleIventoryVisibility(false);
-            Blackboard.playerOverheadUI.UpdateHPUI();
+            blackboard.healthComponent.isHit = false;
+            blackboard.eventBroker.CloseLootDisplay();
+            blackboard.eventBroker.HandleIventoryVisibility(false);
+            blackboard.playerOverheadUI.UpdateHPUI();
+            if (blackboard.animator != null)
+            {
+                blackboard.animator.SetBool("IsInteracting", false);
+            }
             return NodeState.Success;
         }
 

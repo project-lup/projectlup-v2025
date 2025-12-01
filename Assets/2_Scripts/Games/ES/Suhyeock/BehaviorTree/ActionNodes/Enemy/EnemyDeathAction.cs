@@ -1,3 +1,4 @@
+using Unity.Collections;
 using UnityEngine;
 
 namespace LUP.ES
@@ -22,7 +23,14 @@ namespace LUP.ES
                 if (enemyBlackboard != null)
                 {
                     enemyBlackboard.gun.Destroy();
+                    
+
                 }
+                if (blackboard.lootSpawner != null)
+                {
+                    blackboard.lootSpawner.SpawnLoot();
+                }
+
                 Object.Destroy(blackboard.gameObject);
             }
             return NodeState.Running;

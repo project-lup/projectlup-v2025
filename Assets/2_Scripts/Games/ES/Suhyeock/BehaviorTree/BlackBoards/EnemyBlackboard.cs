@@ -15,6 +15,8 @@ namespace LUP.ES
         public Transform playerTransform;
 
         [HideInInspector]
+        public LootSpawner lootSpawner;
+        [HideInInspector]
         public bool isDetected = false;
         [HideInInspector]
         public NavMeshAgent navMeshAgent;
@@ -25,6 +27,7 @@ namespace LUP.ES
 
         public void Start()
         {
+            lootSpawner = GetComponent<LootSpawner>();
             navMeshAgent = GetComponent<NavMeshAgent>();
             navMeshAgent.speed = speed;
             navMeshAgent.acceleration = 16;

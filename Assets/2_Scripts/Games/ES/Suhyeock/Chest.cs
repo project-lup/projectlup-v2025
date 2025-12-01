@@ -6,7 +6,7 @@ namespace LUP.ES
 {
     public class Chest : MonoBehaviour, IInteractable
     {
-        public EventBroker eventBroker;
+        private EventBroker eventBroker;
         public ItemCenter itemCenter;
         private InteractionUIController InteractionUIController;
         private float currentTime = 0.0f;
@@ -22,6 +22,12 @@ namespace LUP.ES
 
         private void Start()
         {
+            GameObject eventBroker = GameObject.FindWithTag("EventBroker");
+            if (eventBroker)
+                this.eventBroker = eventBroker.GetComponent<EventBroker>();
+            GameObject itemCenter = GameObject.FindWithTag("ItemCenter");
+            if (itemCenter)
+                this.itemCenter = itemCenter.GetComponent<ItemCenter>();
             InteractionUIController = GetComponent<InteractionUIController>();
         }
         public void Interact()

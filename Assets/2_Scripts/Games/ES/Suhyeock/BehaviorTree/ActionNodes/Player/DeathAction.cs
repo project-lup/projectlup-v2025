@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace LUP.ES
@@ -5,6 +6,8 @@ namespace LUP.ES
     public class DeathAction : BTNode
     {
         PlayerBlackboard blackboard;
+        bool isDeathHandled = false;
+        float delaySeconds = 3.0f;
 
         public DeathAction(PlayerBlackboard blackboard)
         {
@@ -13,11 +16,26 @@ namespace LUP.ES
 
         public override NodeState Evaluate()
         {
-            blackboard.playerOverheadUI.UpdateHPUI();
-            blackboard.eventBroker.ReportGameFinish(false);
+            if (isDeathHandled == false)
+            {
+                isDeathHandled = true;
+                blackboard.playerOverheadUI.UpdateHPUI();
+                MonoBehaviour agent = blackboard.gameObject.GetComponent<MonoBehaviour>();
+                agent.StartCoroutine(ShowResultRoutine());
+                if (blackboard.animator != null)
+                {
+                    blackboard.animator.SetBool("IsDead", true);
+                }
+                return NodeState.Success;
+            }
             return NodeState.Success;
         }
 
+        private IEnumerator ShowResultRoutine()
+        {
+            yield return new WaitForSeconds(delaySeconds);
+            blackboard.eventBroker.ReportGameFinish(false);
+        }
         public override void Reset()
         {
             

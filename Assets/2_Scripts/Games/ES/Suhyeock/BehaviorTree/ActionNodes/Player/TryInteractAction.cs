@@ -42,7 +42,8 @@ namespace LUP.ES
             //        }
             //    }
             //}
-
+            if(blackboard.weapon.state == WeaponState.RELOADING)
+                return NodeState.Failure;
 
             IInteractable target = blackboard.InteractionDetector.GetNearestInteractable();
             if (target == null)
