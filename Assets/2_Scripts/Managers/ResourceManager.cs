@@ -79,7 +79,7 @@ namespace LUP
                     folderPath = "Data/ST";
                     break;
                 case Define.StageKind.DSG:
-                    folderPath = "Data/DSG";
+                    folderPath = "Data/Games/DSG";
                     break;
                 case Define.StageKind.ES:
                     folderPath = "Data/ES";

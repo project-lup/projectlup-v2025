@@ -149,7 +149,7 @@ namespace LUP.DSG
         private void AddCharacterIcon(OwnedCharacterInfo characterInfo, EAttributeType type)
         {
             var itemUI = Instantiate(iconPrefab, contentParent.transform);
-            var icon = itemUI.GetComponent<CharacterIcon>(); // 프리팹에 붙은 UI 스크립트
+            var icon = itemUI.GetComponent<CharacterIcon>();
 
             var modelData = dataCenter.FindCharacterModel(characterInfo.characterModelID);
             icon.Init();

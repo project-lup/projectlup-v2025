@@ -55,7 +55,7 @@ namespace LUP.DSG
             if (runtimeData.OwnedCharacterList == null || runtimeData.OwnedCharacterList.Count <= 0)
             {
                 OwnedCharacterTable testCharacterTable
-                    = Resources.Load<OwnedCharacterTable>("Data/DSG/ScriptableObjects/OwnedCharacter/OwnedCharacterListTable");
+                    = Resources.Load<OwnedCharacterTable>("Data/Games/DSG/ScriptableObjects/OwnedCharacter/OwnedCharacterListTable");
                 if (testCharacterTable != null)
                 {
                     runtimeData.OwnedCharacterList = testCharacterTable.ownedCharacterList;
