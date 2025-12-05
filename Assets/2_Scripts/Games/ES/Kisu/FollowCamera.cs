@@ -8,7 +8,7 @@ namespace LUP.ES
         [SerializeField] private Joystick aimJoystick;
         [SerializeField] private bool followX = true, followY = true, followZ = true;
         [SerializeField] private Transform target;
-        [SerializeField] private Vector3 defaultOffset = new Vector3(0, 0, -6);
+        [SerializeField] private Vector3 defaultOffset = new Vector3(0, 6, -6);
 
         [SerializeField] private float smoothTime = 0.12f; // 값이 클수록 더 천천히 따라갑니다
         [SerializeField] private float maxSpeed = 20f;

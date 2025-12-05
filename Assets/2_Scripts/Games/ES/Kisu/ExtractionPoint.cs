@@ -49,7 +49,8 @@ namespace LUP.ES
 
             if (eventBroker != null)
             {
-                eventBroker.OnExtractionSuccess();
+                //eventBroker.OnExtractionSuccess();
+                eventBroker.ReportGameFinish(true);
             }
         }
 

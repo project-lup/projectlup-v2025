@@ -25,10 +25,10 @@ namespace LUP.ES
             blackboard = GetComponent<PlayerBlackboard>();
             hpSlider = GetComponent<Slider>();
             ammoSlider = GetComponent<Slider>();
-            eventBroker.OnReloadTimeUpdate += UpdateReloadUI;
         }
         void Start()
         {
+            eventBroker.OnReloadTimeUpdate += UpdateReloadUI;
             mainCamera = Camera.main;
 
             Init();
