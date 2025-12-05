@@ -29,6 +29,22 @@ namespace LUP.DSG
         public CharacterPlacedHandler placedHandler;
         public CharacterReleasedHandler releaseHandler;
 
+        private void OnEnable()
+        {
+            StageInitializeInvoker.OnDSGStagePostInitialize += OnStagePostInitialize;
+        }
+
+        private void OnDisable()
+        {
+            StageInitializeInvoker.OnDSGStagePostInitialize -= OnStagePostInitialize;
+        }
+
+        private void OnStagePostInitialize(DeckStrategyStage stage)
+        {
+            // 이 시점에는 LineupSlot.Initialize 가 이미 실행되어
+            // 각 slot.character 가 null 이 아님
+            PlaceTeam(selectedTeamIndex);  // 기본 0번 팀 같은 것
+        }
         public void PlaceTeam(int teamIndex)
         {
             selectedTeamIndex = teamIndex;
@@ -54,7 +70,10 @@ namespace LUP.DSG
             for (int i = 0; i < slots.Length; ++i)
             {
                 LineupSlot slot = slots[i].GetComponent<LineupSlot>();
-                slot.DeselectCharacter();
+                if (slot.isPlaced)
+                {
+                    slot.DeselectCharacter();
+                }
 
                 if (selectedTeam.characters[i] == null || selectedTeam.characters[i].characterID == 0) continue;
 
@@ -84,13 +103,28 @@ namespace LUP.DSG
         {
             if (selectedCount >= 5 || slotIndex == -1) return;
 
-            LineupSlot slot = slots[slotIndex].GetComponent<LineupSlot>();
+            if (slotIndex < 0 || slotIndex >= slots.Length)
+            {
+                return;
+            }
+
+            var slotObj = slots[slotIndex];
+            if (slotObj == null)
+            {
+                return;
+            }
+
+            LineupSlot slot = slotObj.GetComponent<LineupSlot>();
+            if (slot == null)
+            {
+                return;
+            }
+
             if (!slot.isPlaced)
             {
                 slot.SetSelectedCharacter(info, false);
                 selectedTeam.characters[slotIndex] = info;
                 ++selectedCount;
-                Debug.Log("characterID: " + selectedTeam.characters[slotIndex].characterID);
                 button.ButtonClicked();
             }
         }
@@ -99,15 +133,19 @@ namespace LUP.DSG
         {
             if (selectedCount >= 5) return;
 
-            for(int i = 0; i < slots.Length; ++i)
+            for (int i = 0; i < slots.Length; ++i)
             {
-                LineupSlot slot = slots[i].GetComponent<LineupSlot>();
+                var slotObj = slots[i];
+                if (slotObj == null) continue;
+
+                LineupSlot slot = slotObj.GetComponent<LineupSlot>();
+                if (slot == null) continue;
+
                 if (!slot.isPlaced)
                 {
                     slot.SetSelectedCharacter(info, false);
                     selectedTeam.characters[i] = info;
                     ++selectedCount;
-                    Debug.Log("characterID: " + selectedTeam.characters[i].characterID);
                     button.ButtonClicked();
                     return;
                 }

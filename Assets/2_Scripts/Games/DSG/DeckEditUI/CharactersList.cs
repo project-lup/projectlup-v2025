@@ -21,7 +21,7 @@ namespace LUP.DSG
         [SerializeField]
         private Transform contentParent;
 
-        List<bool> SelectedOwnedList = new List<bool>();
+        Dictionary<int, bool> selectedOwnedMap = new Dictionary<int, bool>();
 
         private void Awake()
         {
@@ -40,18 +40,21 @@ namespace LUP.DSG
                 if (runtimeData == null || runtimeData.OwnedCharacterList.Count == 0) return;
                 List<OwnedCharacterInfo> characterList = runtimeData.OwnedCharacterList;
 
-                for (int i = 0; i <= characterList.Count; ++i)
+                selectedOwnedMap.Clear();
+                foreach (var info in characterList)
                 {
-                    SelectedOwnedList.Add(false);
+                    if (info == null) continue;
+                    selectedOwnedMap[info.characterID] = false;
                 }
             }
         }
 
         public void ResetSelectedStatus()
         {
-            for(int i = 0; i < SelectedOwnedList.Count; ++i)
+            var keys = new List<int>(selectedOwnedMap.Keys);
+            foreach (var key in keys)
             {
-                SelectedOwnedList[i] = false;
+                selectedOwnedMap[key] = false;
             }
         }
         public void PopulateScrollView()
@@ -105,13 +108,13 @@ namespace LUP.DSG
                 CharacterIcon[] icons = contentParent.GetComponentsInChildren<CharacterIcon>();
                 foreach (var icon in icons)
                 {
-                    for (int i = 1; i <= SelectedOwnedList.Count; ++i)
+                    if (icon == null || icon.characterInfo == null) continue;
+
+                    int charId = icon.characterInfo.characterID;
+
+                    if (selectedOwnedMap.TryGetValue(charId, out bool isSelected) && isSelected)
                     {
-                        if (icon.characterInfo.characterID == i && SelectedOwnedList[i])
-                        {
-                            icon.selectedButton.ButtonClicked();
-                            break;
-                        }
+                        icon.selectedButton.ButtonClicked();
                     }
                 }
             }
@@ -131,13 +134,13 @@ namespace LUP.DSG
                 CharacterIcon[] icons = contentParent.GetComponentsInChildren<CharacterIcon>();
                 foreach (var icon in icons)
                 {
-                    for (int i = 1; i <= SelectedOwnedList.Count; ++i)
+                    if (icon == null || icon.characterInfo == null) continue;
+
+                    int charId = icon.characterInfo.characterID;
+
+                    if (selectedOwnedMap.TryGetValue(charId, out bool isSelected) && isSelected)
                     {
-                        if (icon.characterInfo.characterID == i && SelectedOwnedList[i])
-                        {
-                            icon.selectedButton.ButtonClicked();
-                            break;
-                        }
+                        icon.selectedButton.ButtonClicked();
                     }
                 }
             }
@@ -156,8 +159,13 @@ namespace LUP.DSG
         public void UpdateCheckedList(int index, bool isChecked)
         {
             if (index == 0) return;
-            SelectedOwnedList[index] = isChecked;
-            Debug.Log(index + ": " + isChecked.ToString());
+
+            if (!selectedOwnedMap.ContainsKey(index))
+            {
+                return;
+            }
+
+            selectedOwnedMap[index] = isChecked;
         }
     }
 }

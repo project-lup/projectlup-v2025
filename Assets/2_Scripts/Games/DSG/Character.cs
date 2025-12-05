@@ -43,6 +43,17 @@ namespace LUP.DSG
         {
             StageInitializeInvoker.OnDSGStagePostInitialize -= PostInitialize;
             StageInitializeInvoker.OnDSGStageInitialize -= Initialize;
+
+            if (battleComp != null && animationComp != null)
+            {
+                battleComp.OnAttackStarted -= animationComp.StartAttackAnimation;
+                battleComp.OnReachedTargetPos -= animationComp.EndDashLoop;
+                battleComp.OnDamaged -= animationComp.PlayHittedAnimation;
+                battleComp.OnDie -= animationComp.PlayDiedAnimation;
+
+                animationComp.OnHitAttack -= battleComp.ApplyDamageOnce;
+                animationComp.OnShootRangeAttack -= battleComp.TrySpawnProjectileForRangedAttack;
+            }
         }
 
         private void Initialize(DeckStrategyStage stage)
@@ -65,10 +76,19 @@ namespace LUP.DSG
                     break;
                 }
             }
-        }
 
-        private void PostInitialize(DeckStrategyStage stage)
+        }
+        public void ManualInitializeAfterSpawn()
         {
+            if (battleComp == null)
+                battleComp = GetComponent<BattleComponent>();
+            if (animationComp == null)
+                animationComp = GetComponent<AnimationComponent>();
+            if (statusEffectComp == null)
+                statusEffectComp = GetComponent<StatusEffectComponent>();
+            if (scoreComp == null)
+                scoreComp = GetComponent<ScoreComponent>();
+
             battleComp.OnAttackStarted += animationComp.StartAttackAnimation;
             battleComp.OnReachedTargetPos += animationComp.EndDashLoop;
             battleComp.OnDamaged += animationComp.PlayHittedAnimation;
@@ -76,6 +96,17 @@ namespace LUP.DSG
 
             animationComp.OnHitAttack += battleComp.ApplyDamageOnce;
             animationComp.OnShootRangeAttack += battleComp.TrySpawnProjectileForRangedAttack;
+        }
+
+        private void PostInitialize(DeckStrategyStage stage)
+        {/*
+            battleComp.OnAttackStarted += animationComp.StartAttackAnimation;
+            battleComp.OnReachedTargetPos += animationComp.EndDashLoop;
+            battleComp.OnDamaged += animationComp.PlayHittedAnimation;
+            battleComp.OnDie += animationComp.PlayDiedAnimation;
+
+            animationComp.OnHitAttack += battleComp.ApplyDamageOnce;
+            animationComp.OnShootRangeAttack += battleComp.TrySpawnProjectileForRangedAttack;*/
         }
 
         public void EndTurn()

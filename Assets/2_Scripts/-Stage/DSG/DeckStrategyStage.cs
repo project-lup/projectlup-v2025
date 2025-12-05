@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LUP
+namespace LUP.DSG
 {
     public static class StageInitializeInvoker
     {
@@ -28,6 +28,7 @@ namespace LUP
 
         public List<DeckStaticData> DeckDataList;
         public List<DeckCharacterStaticData> CharacterDataList;
+        public CharacterModelDataTable characterModelDataTable;
 
         protected override void Awake() 
         {
@@ -146,6 +147,41 @@ namespace LUP
             base.SaveRuntimeDataList(runtimeDataList);
         }
 
+        public CharacterModelData FindCharacterModel(int modelId)
+        {
+            if (characterModelDataTable == null || characterModelDataTable.characterModelDataList == null)
+            {
+                Debug.LogError("[DeckStrategyStage] characterModelDataTable 이 비어있습니다.");
+                return null;
+            }
+
+            foreach (var data in characterModelDataTable.characterModelDataList)
+            {
+                if (data.ID == modelId)
+                    return data;
+            }
+
+            return null;
+        }
+
+        public GameObject GetCharacterPrefab(int modelId)
+        {
+            var modelData = FindCharacterModel(modelId);
+            if (modelData == null)
+            {
+                Debug.LogError($"[DeckStrategyStage] modelId {modelId} 에 해당하는 CharacterModelData 를 찾지 못했습니다.");
+                return null;
+            }
+
+            if (modelData.prefab == null)
+            {
+                Debug.LogError($"[DeckStrategyStage] modelId {modelId} 의 prefab 이 비어 있습니다. (CharacterModelDataTable 체크)");
+                return null;
+            }
+
+            Debug.Log($"[DeckStrategyStage] GetCharacterPrefab({modelId}) → {modelData.prefab.name}");
+            return modelData.prefab;
+        }
         public CharacterData FindCharacterData(int id, int level)
         {
             foreach (DeckCharacterStaticData data in CharacterDataList)
