@@ -17,25 +17,16 @@ namespace LUP.ES
 
         public override NodeState Evaluate()
         {
-            //Transform enemyTransform = blackboard.navMeshAgent.transform;
-            //Vector3 targetPosition = blackboard.playerTransform.position;
-
-            //Vector3 direction = (targetPosition - enemyTransform.position);
-            //direction.y = 0;
-            //direction.Normalize();
-
-            //Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-            //enemyTransform.rotation = Quaternion.RotateTowards(enemyTransform.rotation, targetRotation, TURN_SPEED * Time.deltaTime);
-
 
             if (blackboard.gun.Fire())
             {
+                blackboard.ChangeState(EnemyState.Attack);
                 totalShotsFired++;
             }
             
             if(totalShotsFired >= shotsPerBurst)
             {
+                blackboard.ChangeState(EnemyState.Idle);
                 totalShotsFired = 0;
                 return NodeState.Success;
             }

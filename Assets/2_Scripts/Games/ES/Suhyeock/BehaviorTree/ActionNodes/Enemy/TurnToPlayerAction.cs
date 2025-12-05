@@ -32,7 +32,6 @@ namespace LUP.ES
             Quaternion targetRotation = Quaternion.LookRotation(direction);
 
             enemyTransform.rotation = Quaternion.RotateTowards(enemyTransform.rotation, targetRotation, TURN_SPEED * Time.deltaTime);
-
             return NodeState.Running;
         }
 

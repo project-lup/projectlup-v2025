@@ -21,6 +21,7 @@ namespace LUP.ES
         public int magAmmo = 0;
         private float nextAttackTime = 0f;
 
+        private FollowCamera cameraScript;
         private void Awake()
         {
             bulletPool = GetComponent<BulletObjectPool>();
@@ -36,6 +37,12 @@ namespace LUP.ES
             {
                 magAmmo = weaponData.magCapacity;
                 bulletPool.Init(bulletPrefab);
+            }
+
+            GameObject camObj = GameObject.FindGameObjectWithTag("MainCamera");
+            if (camObj != null)
+            {
+                cameraScript = camObj.GetComponent<FollowCamera>();
             }
         }
         public override void Attack()
@@ -53,6 +60,7 @@ namespace LUP.ES
             {
                 bullet.Init(bulletPool, firePoint.position, firePoint.rotation, data.range, data.damage, data.bulletSpeed);
                 magAmmo--;
+                cameraScript.Shake(0.08f, 0.03f);
                 return;
             }
             return;

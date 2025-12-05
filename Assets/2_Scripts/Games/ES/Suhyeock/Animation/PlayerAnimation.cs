@@ -7,13 +7,10 @@ namespace LUP.ES
     {
         public Transform spine;
         [HideInInspector]
-        public Animator animator;
-        [HideInInspector]
         public PlayerBlackboard blackboard;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            animator = GetComponentInChildren<Animator>();
             blackboard = GetComponent<PlayerBlackboard>();
         }
 

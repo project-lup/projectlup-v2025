@@ -15,6 +15,7 @@ namespace LUP.ES
         public override NodeState Evaluate()
         {
             blackboard.navMeshAgent.SetDestination(blackboard.playerTransform.position);
+            blackboard.ChangeState(EnemyState.Run);
             return NodeState.Success;
         }
 

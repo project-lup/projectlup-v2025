@@ -16,11 +16,13 @@ namespace LUP.ES
         {
             blackboard.navMeshAgent.SetDestination(blackboard.targetMovePosition);
 
+            
             if (blackboard.navMeshAgent.remainingDistance <= REACHED_DISTANCE && !blackboard.navMeshAgent.pathPending)
             {
+                blackboard.ChangeState(EnemyState.Idle);
                 return NodeState.Success;
             }
-
+            blackboard.ChangeState(EnemyState.Run);
             return NodeState.Running;
         }
 

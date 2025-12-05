@@ -2009,10 +2009,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c7816bd9321eb4d83ed83e28810825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 1
-  y: 0
-  z: 1
+  aimJoystick: {fileID: 1413288532}
+  followX: 1
+  followY: 0
+  followZ: 1
   target: {fileID: 1661900842}
+  defaultOffset: {x: 0, y: 0, z: -6}
+  smoothTime: 0.12
+  maxSpeed: 20
+  lookAheadDistance: 3
+  lookAheadSmoothTime: 0.2
+  deadZone: 0.1
 --- !u!1001 &593346230
 PrefabInstance:
   m_ObjectHideFlags: 0
