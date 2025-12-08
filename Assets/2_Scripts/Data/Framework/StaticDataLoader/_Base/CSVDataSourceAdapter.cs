@@ -119,6 +119,9 @@ public class CSVDataSourceAdapter : IDataSourceAdapter
         T instance = new T();
         FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance);
 
+        // 매핑된 컬럼 추적 (확장 필드 수집용)
+        HashSet<string> mappedColumns = new HashSet<string>();
+
         foreach (FieldInfo field in fields)
         {
             ColumnAttribute columnAttr = field.GetCustomAttribute<ColumnAttribute>();
@@ -138,6 +141,7 @@ public class CSVDataSourceAdapter : IDataSourceAdapter
             }
 
             int columnIndex = headerMap[headerName];
+            mappedColumns.Add(headerName); // 매핑됨 추적
 
             if (columnIndex >= values.Length)
             {
@@ -154,6 +158,30 @@ public class CSVDataSourceAdapter : IDataSourceAdapter
             catch (System.Exception e)
             {
                 Debug.LogWarning($"[CSVDataSourceAdapter] Failed to set field '{field.Name}': {e.Message}");
+            }
+        }
+
+        // ===== 확장 필드 자동 수집 (ICustomFieldSupport 구현 시) =====
+        if (instance is LUP.ICustomFieldSupport customFieldSupport)
+        {
+            foreach (var header in headerMap)
+            {
+                string columnName = header.Key;
+                int columnIndex = header.Value;
+
+                // 이미 매핑된 컬럼은 건너뛰기
+                if (mappedColumns.Contains(columnName))
+                    continue;
+
+                // 값 가져오기
+                if (columnIndex < values.Length)
+                {
+                    string value = values[columnIndex]?.Trim();
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        customFieldSupport.SetCustomField(columnName, value);
+                    }
+                }
             }
         }
 
