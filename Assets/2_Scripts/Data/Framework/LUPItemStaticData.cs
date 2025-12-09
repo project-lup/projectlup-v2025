@@ -20,6 +20,7 @@ namespace LUP
         [Column("IconPath")]
         public string IconPath = "";
 
+
         [Column("MaxStackSize")]
         public int MaxStackSize = 1;
 

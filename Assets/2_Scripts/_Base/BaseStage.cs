@@ -34,6 +34,7 @@ namespace LUP
         {
             LoadResources();
             GetDatas();
+            yield return ItemManager.Instance.LoadAllItems();
 
             yield return null;
         }

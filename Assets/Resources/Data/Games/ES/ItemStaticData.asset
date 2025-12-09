@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f0881c0943b0e468e62f2961bc078d, type: 3}
+  m_Name: ItemStaticData
+  m_EditorClassIdentifier: 
+  sourceType: 0
+  associatedWorksheet: 
+  START_ROW: 2
+  DataList:
+  - ItemID: 1
+    ItemName: "\uCCB4\uB825\uD3EC\uC158"
+    ItemType: 
+    IconPath: 999
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: "\uCCB4\uB825\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4"
+  - ItemID: 2
+    ItemName: "\uB9C8\uB098\uD3EC\uC158"
+    ItemType: 2
+    IconPath: 999
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: "\uB9C8\uB098\uB97C \uD68C\uBCF5\uD569\uB2C8\uB2E4"
+  - ItemID: 3
+    ItemName: 
+    ItemType: 
+    IconPath: 
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: 
+  - ItemID: 4
+    ItemName: 
+    ItemType: 
+    IconPath: 
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: 
+  - ItemID: 5
+    ItemName: 
+    ItemType: 
+    IconPath: 
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: 
+  - ItemID: 6
+    ItemName: 
+    ItemType: 
+    IconPath: 
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: 
+  - ItemID: 7
+    ItemName: 
+    ItemType: 
+    IconPath: 
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: 
+  - ItemID: 8
+    ItemName: 
+    ItemType: 
+    IconPath: 
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: 
+  - ItemID: 9
+    ItemName: 
+    ItemType: 
+    IconPath: 
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: 
+  - ItemID: 10
+    ItemName: 
+    ItemType: 
+    IconPath: 
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: 
+  - ItemID: 11
+    ItemName: 
+    ItemType: 
+    IconPath: 
+    MaxStackSize: 1
+    IsUsable: 0
+    Description: 
+  csvUrl: https://docs.google.com/spreadsheets/d/1R-q7I41tJMOg7_Melx8lQYMLczS27u-pGseCk-DLxeE/export?format=csv&gid=1480693328#gid=1480693328

@@ -19,6 +19,8 @@ namespace LUP
         [SerializeField]
         private CurrentQuestListData currentQuestListData;
 
+        Inventory inven;
+
         protected override void Awake() 
         {
             base.Awake();
@@ -49,17 +51,26 @@ namespace LUP
             {
                 QuestManager.Instance.Trigger(123, 1);
             }
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                IItemable item = ItemManager.Instance.GetItem("체력포션"); 
+                if (item != null)
+                {
+                    inven.AddItem(item, 1);
+                }
+            }
         }
 
         public override IEnumerator OnStageEnter()
         {
             yield return base.OnStageEnter();
-            
-            //구현부
 
+            inven = new Inventory();
 
             yield return null;
         }
+
         public override IEnumerator OnStageStay()
         {
             yield return base.OnStageStay();

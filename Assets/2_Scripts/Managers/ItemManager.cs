@@ -18,29 +18,19 @@ namespace LUP
 
             if (loaders.Count == 0)
             {
-                FindAllLoaders();
-            }
-        }
-
-        private void FindAllLoaders()
-        {
-            var foundLoaders = Resources.LoadAll<BaseStaticDataLoader>("Data/StaticData");
-            loaders.AddRange(foundLoaders);
-
-            if (loaders.Count > 0)
-            {
-                Debug.Log($"[ItemManager] {loaders.Count}개 로더 발견");
+                Debug.LogError("[ItemManager] 로더가 설정되지 않았습니다! Inspector에서 loaders 목록에 BaseStaticDataLoader를 할당하세요.");
             }
         }
 
         public IEnumerator LoadAllItems()
         {
+            Debug.Log($"[ItemManager] LoadAllItems 시작 - loaders.Count: {loaders.Count}");
             itemDatabase.Clear();
 
             if (loaders.Count == 0)
             {
-                Debug.LogWarning("[ItemManager] 로더가 없습니다. 자동으로 찾습니다...");
-                FindAllLoaders();
+                Debug.LogError("[ItemManager] 로더가 없습니다! Inspector에서 loaders를 먼저 할당하세요.");
+                yield break;
             }
 
             foreach (var loader in loaders)
@@ -52,14 +42,14 @@ namespace LUP
                 }
 
                 // BaseStaticDataLoader를 통해 DataList 접근
-                var dataListProp = loader.GetType().GetProperty("DataList");
-                if (dataListProp == null)
+                var dataListField = loader.GetType().GetField("DataList");
+                if (dataListField == null)
                 {
-                    Debug.LogWarning($"[ItemManager] {loader.name}에 DataList 프로퍼티가 없습니다.");
+                    Debug.LogWarning($"[ItemManager] {loader.name}에 DataList 필드가 없습니다.");
                     continue;
                 }
 
-                var dataList = dataListProp.GetValue(loader) as System.Collections.IList;
+                var dataList = dataListField.GetValue(loader) as System.Collections.IList;
                 if (dataList == null || dataList.Count == 0)
                 {
                     Debug.LogWarning($"[ItemManager] {loader.name}의 DataList가 비어있습니다. '데이터 읽기'를 먼저 실행하세요.");
@@ -67,6 +57,9 @@ namespace LUP
                 }
 
                 Debug.Log($"[ItemManager] {loader.name}에서 {dataList.Count}개 아이템 로드 중...");
+
+                int loadedCount = 0;
+                int skippedCount = 0;
 
                 foreach (var staticData in dataList)
                 {
@@ -84,9 +77,18 @@ namespace LUP
                         else
                         {
                             itemDatabase[itemData.ItemID] = itemData;
+                            Debug.Log($"[ItemManager] 아이템 추가: {itemData.ItemName} (ID: {itemData.ItemID})");
                         }
+                        loadedCount++;
+                    }
+                    else
+                    {
+                        skippedCount++;
+                        Debug.LogWarning($"[ItemManager] LUPItemStaticData가 아닌 타입 발견: {staticData?.GetType().Name ?? "null"}");
                     }
                 }
+
+                Debug.Log($"[ItemManager] {loader.name} 처리 완료 - 로드: {loadedCount}, 건너뜀: {skippedCount}");
 
                 yield return null; // 프레임 분산
             }
@@ -101,17 +103,18 @@ namespace LUP
 
             if (loaders.Count == 0)
             {
-                FindAllLoaders();
+                Debug.LogError("[ItemManager] 로더가 없습니다! Inspector에서 loaders를 먼저 할당하세요.");
+                return;
             }
 
             foreach (var loader in loaders)
             {
                 if (loader == null) continue;
 
-                var dataListProp = loader.GetType().GetProperty("DataList");
-                if (dataListProp == null) continue;
+                var dataListField = loader.GetType().GetField("DataList");
+                if (dataListField == null) continue;
 
-                var dataList = dataListProp.GetValue(loader) as System.Collections.IList;
+                var dataList = dataListField.GetValue(loader) as System.Collections.IList;
                 if (dataList == null) continue;
 
                 foreach (var staticData in dataList)
