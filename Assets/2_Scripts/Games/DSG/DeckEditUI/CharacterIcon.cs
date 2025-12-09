@@ -26,6 +26,9 @@ namespace LUP.DSG
 
         public int selectedSlot = -1;
 
+        public float iconWidth = 1000f;
+        public float iconHeight = 1000f;
+
         private void OnEnable()
         {
             IconBootstrapper.OnAllIconsGenerated += RefreshIcon;
@@ -43,6 +46,8 @@ namespace LUP.DSG
 
             selectedButton.Init();
             selectedButton.button.onClick.AddListener(OnButtonClicked);
+
+            SetIconRectSize(iconWidth, iconHeight);
         }
 
         public void SetIconData(OwnedCharacterInfo info, EAttributeType type,
@@ -65,8 +70,6 @@ namespace LUP.DSG
                 portrait.sprite = null;
                 portrait.color = portraitColor;
             }
-
-            // 속성 색 처리, isChecked 처리 그대로…
         }
 
         public void OnButtonClicked()
@@ -105,6 +108,17 @@ namespace LUP.DSG
             {
                 Debug.LogWarning($"[CharacterIcon] Refresh 실패(아직 없음): {characterId}");
             }
+
         }
+        public void SetIconRectSize(float width, float height)
+        {
+            var rt = portrait.rectTransform;
+
+            rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+            rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
+
+            rt.localScale = Vector3.one;
+        }
+
     }
 }

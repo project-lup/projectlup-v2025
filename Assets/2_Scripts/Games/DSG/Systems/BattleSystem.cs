@@ -119,10 +119,6 @@ namespace LUP.DSG
                 if (currentChar != null && currentChar.BattleComp.isAttacking)
                     return;
             }
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-            {
-               // HandleTurnInput();
-            }
         }
         private void SortBattleSequence()
         {
