@@ -1,10 +1,12 @@
 using LUP.RL;
 using OpenCvSharp.Flann;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using TMPro.Examples;
 using Unity.AI.Navigation;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -38,6 +40,17 @@ namespace LUP.RL
         private int currentStage = 0;
         public bool GameClear = false;
         public EnemySpawner currentSpawner;
+
+        private void Start()
+        {
+            FindFirstObjectByType<InGameCenter>().OnPlayerCharacterSpawned += OnPlayerCharacterSpanwed;
+        }
+
+        void OnPlayerCharacterSpanwed(GameObject playerObj)
+        {
+            player = playerObj.GetComponent<Transform>();
+        }
+
         public void LoadNextRoom()
         {
             ClearPreviousRoom();
@@ -48,7 +61,10 @@ namespace LUP.RL
                 return;
             }
 
-            if (player == null) return;
+            //if (player == null)
+            //{
+            //    player = FindFirstObjectByType<PlayerMove>().gameObject.GetComponent<Transform>();
+            //}
 
             StageData data = stageData[currentStage];
 
@@ -62,7 +78,10 @@ namespace LUP.RL
             currentStage++;
 
             onMoveToNextRoom.Invoke();
+            //StartCoroutine(InvokeOnMoveToNextRoomDelayed());
         }
+
+
         private void ClearPreviousRoom()
         {
             if (roomParent.childCount == 0) return;
@@ -172,5 +191,14 @@ namespace LUP.RL
         {
             return stageData.Count;
         }
+
+        private IEnumerator InvokeOnMoveToNextRoomDelayed()
+        {
+            yield return new WaitForSeconds(0.1f);
+            onMoveToNextRoom.Invoke();
+        }
+
     }
+
+
 }

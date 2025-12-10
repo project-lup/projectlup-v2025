@@ -17,15 +17,21 @@ namespace LUP.RL
         private Vector3 DownBound;
 
         private float ViewportZOffset;
+        private float DefaultZOffset;
 
         void Start()
         {
-            //FindTarget();
+            FindFirstObjectByType<InGameCenter>().OnPlayerCharacterSpawned += OnPlayerCharacterSpanwed;
+        }
+
+        void OnPlayerCharacterSpanwed(GameObject playerObj)
+        {
+            player = playerObj.GetComponent<PlayerMove>();
         }
 
         public void FindTarget()
         {
-            player = FindFirstObjectByType<PlayerMove>();
+            //player = FindFirstObjectByType<PlayerMove>();
             room = FindFirstObjectByType<BaseRoom>();
 
             if (player == null || room == null)
@@ -35,6 +41,17 @@ namespace LUP.RL
             }
 
             ViewportZOffset = player.gameObject.transform.position.z - this.gameObject.transform.position.z;
+
+            if (ViewportZOffset > 5)
+            {
+                
+                DefaultZOffset = ViewportZOffset;
+            }
+
+            else
+            {
+                ViewportZOffset = DefaultZOffset;
+            }
 
             if (room)
             {

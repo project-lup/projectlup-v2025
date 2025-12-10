@@ -19,13 +19,21 @@ namespace LUP.RL
         [SerializeField] private LevelDataTable levelTable;
         void Start()
         {
-            if (archer != null)
-            {
-                archer.OnExpChanged += UpdateUi;
-                archer.OnArcherDataReady += UpdateUi;
-                UpdateUi();
-            }
+            //if (archer != null)
+            //{
+            //    archer.OnExpChanged += UpdateUi;
+            //    archer.OnArcherDataReady += UpdateUi;
+            //    UpdateUi();
+            //}
+            FindFirstObjectByType<InGameCenter>().OnPlayerCharacterSpawned += OnPlayerCharacterSpanwed;
         }
+
+        void OnPlayerCharacterSpanwed(GameObject playerObj)
+        {
+            archer = playerObj.GetComponent<Archer>();
+            UpdateUi();
+        }
+
         public void UpdateUi()
         {
             //현재 레벨 경험치

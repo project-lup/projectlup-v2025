@@ -1,10 +1,10 @@
-using UnityEngine.Events;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
 using Roguelike.Define;
 using Roguelike.Util;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace LUP.RL
 {
@@ -14,7 +14,7 @@ namespace LUP.RL
         public LevelDataTable levelTable;
 
         [SerializeField]
-        private GameObject mainCanvas;
+        private GameObject inGamePopupPanels;
 
         public GameObject gameResultPanel;
         public GameObject gamePausePanel;
@@ -34,6 +34,8 @@ namespace LUP.RL
         private FollowCamera followCamera;
 
         public bool gameClear = false;
+
+        public Action<GameObject> OnPlayerCharacterSpawned;
 
         //------Temp Test Button
         public Button AddItem1Btn;
@@ -83,11 +85,6 @@ namespace LUP.RL
                 {
                     stageController.onStageClear.AddListener(GameClear);
                     stageController.onMoveToNextRoom.AddListener(OnMoveToNextRoom);
-
-                    controlledPlayer = stageController.player.gameObject.GetComponent<Archer>();
-
-                    if (controlledPlayer == null)
-                        UnityEngine.Debug.LogError("Fail to Find Player!!");
                 }
             }
 
@@ -96,11 +93,6 @@ namespace LUP.RL
                 if (followCamera == null)
                 {
                     UnityEngine.Debug.LogError("Fail To Find FollowCam");
-                }
-
-                else
-                {
-                    followCamera.FindTarget();
                 }
             }
 
@@ -178,7 +170,7 @@ namespace LUP.RL
             }
 
             {
-                ButtonRule[] circleButtons = mainCanvas.GetComponentsInChildren<ButtonRule>();
+                ButtonRule[] circleButtons = inGamePopupPanels.GetComponentsInChildren<ButtonRule>();
 
                 for (int i = 0; i < circleButtons.Length; i++)
                 {
@@ -219,11 +211,18 @@ namespace LUP.RL
                 }
             }
 
+            OnPlayerCharacterSpawned?.Invoke(character);
+
             FollowCamera followCamera = FindFirstObjectByType<FollowCamera>();
             if(followCamera)
             {
                 followCamera.FindTarget();
             }
+
+            controlledPlayer = character.gameObject.GetComponent<Archer>();
+
+            if (controlledPlayer == null)
+                UnityEngine.Debug.LogError("Fail to Find Player!!");
         }
 
         void OnMoveToNextRoom()
@@ -240,7 +239,7 @@ namespace LUP.RL
 
         void ShowPausePanel()
         {
-            OwningBuffListScrollPanel buffScrollPanel = mainCanvas.GetComponentInChildren<OwningBuffListScrollPanel>(true);
+            OwningBuffListScrollPanel buffScrollPanel = inGamePopupPanels.GetComponentInChildren<OwningBuffListScrollPanel>(true);
             buffScrollPanel.SetScrollPanelType(ScrollRect.MovementType.Elastic, LayoutDirection.Grid, TextAnchor.UpperLeft);
 
             IDisplayable[] buffs = controlledPlayer.GetActiveBufflist().ToArray();
@@ -332,7 +331,7 @@ namespace LUP.RL
         {
             Time.timeScale = 0;
 
-            ResultGainItemScrollPanel resultIteScrollPanel = mainCanvas.GetComponentInChildren<ResultGainItemScrollPanel>(true);
+            ResultGainItemScrollPanel resultIteScrollPanel = inGamePopupPanels.GetComponentInChildren<ResultGainItemScrollPanel>(true);
             resultIteScrollPanel.SetScrollPanelType(ScrollRect.MovementType.Elastic, LayoutDirection.Grid);
 
             IDisplayable[] gainedItems = MakeGainItemArray();
