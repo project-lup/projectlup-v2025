@@ -59,7 +59,7 @@ namespace LUP.DSG
 
             int characterId = info.characterID;
 
-            if (CharacterIconCache.TryGet(characterId, out var sprite))
+            if (CharacterIconCache.TryGetByCharacterId(characterId, out var sprite))
             {
                 portrait.sprite = sprite;
                 portrait.color = Color.white;
@@ -96,7 +96,7 @@ namespace LUP.DSG
 
             int characterId = characterInfo.characterID;
 
-            if (CharacterIconCache.TryGet(characterId, out var sprite))
+            if (CharacterIconCache.TryGetByCharacterId(characterId, out var sprite))
             {
                 Debug.Log($"[CharacterIcon] Refresh ¼º°ø: {characterId}");
 
@@ -110,6 +110,7 @@ namespace LUP.DSG
             }
 
         }
+
         public void SetIconRectSize(float width, float height)
         {
             var rt = portrait.rectTransform;

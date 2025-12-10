@@ -57,6 +57,8 @@ namespace LUP.DSG
         [SerializeField]
         private SkillUIPanel skillUIPanel;
 
+        public float iconSize = 1000f;
+
         public static BattleSystem Instance { get; private set; }
         private Dictionary<string, (Color Color, float Score)> deadScores = new();
         private List<(string Name, Color Color, float Score, GameObject Prefab)> deadCharacterData = new();
@@ -156,13 +158,40 @@ namespace LUP.DSG
                 Character character = battleSequence[i];
                 character.battleIndex = i;
 
+
+
                 var icon = Instantiate(iconPrefab, characterSequenceList);
                 var portrait = icon.transform.Find("Portrait")?.GetComponent<Image>();
                 if (portrait != null)
                 {
-                    var color = character.characterModelData.material.GetColor("_BaseColor");
-                    portrait.color = color;
+                    int characterId = character.IconCacheKey;
+                    int modelId = character.characterModelData.ID;
+
+                    var prtRt = portrait.rectTransform;
+                    prtRt.localScale = Vector3.one * 5.0f;
+
+                    Sprite sprite = null;
+
+                    if (!CharacterIconCache.TryGetByCharacterId(characterId, out sprite))
+                    {
+                        CharacterIconCache.TryGetByModelId(modelId, out sprite);
+                    }
+
+                    if (sprite != null)
+                    {
+                        portrait.sprite = sprite;
+                        portrait.color = Color.white;
+                        portrait.preserveAspect = true;
+                        portrait.type = Image.Type.Simple;
+                        portrait.material = null;
+                    }
+                    else
+                    {
+                        portrait.sprite = null;
+                        portrait.color = Color.gray;
+                    }
                 }
+
                 character.BattleComp.OnDie += OnDieIndexCharacter;
                 sequenceImage.Add(icon);
             }
@@ -571,12 +600,10 @@ namespace LUP.DSG
 
             if (allEnemyDead)
             {
-                Debug.Log(" 전투 종료 - 플레이어 승리!");
                 EndBattle("Victory");
             }
             else if (allFriendDead)
             {
-                Debug.Log(" 전투 종료 - 패배!");
                 EndBattle("Defeat");
             }
         }

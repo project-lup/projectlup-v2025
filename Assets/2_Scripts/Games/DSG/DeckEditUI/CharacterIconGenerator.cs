@@ -15,8 +15,7 @@ namespace LUP.DSG
 
         public IEnumerator GenerateIconRoutine(DeckStrategyStage stage, int cacheKeyCharacterId, int modelId)
         {
-            // 이미 캐시에 있으면 스킵
-            if (CharacterIconCache.TryGet(cacheKeyCharacterId, out _))
+            if (CharacterIconCache.TryGetByCharacterId(cacheKeyCharacterId, out _))
             {
                 Debug.Log($"[CharacterIconGenerator] characterId {cacheKeyCharacterId} 는 이미 캐시에 있음, 스킵");
                 yield break;
@@ -28,7 +27,6 @@ namespace LUP.DSG
                 yield break;
             }
 
-            // 프리팹 찾을 때는 modelId 사용
             GameObject prefab = stage.GetCharacterPrefab(modelId);
             if (prefab == null)
             {
@@ -42,7 +40,6 @@ namespace LUP.DSG
 
             yield return new WaitForEndOfFrame();
 
-            // RenderTexture -> Texture2D
             RenderTexture currentRT = RenderTexture.active;
             RenderTexture.active = renderTexture;
 
@@ -57,15 +54,14 @@ namespace LUP.DSG
 
             RenderTexture.active = currentRT;
 
-            // Texture2D -> Sprite
             Sprite sprite = Sprite.Create(
                 tex,
                 new Rect(0, 0, tex.width, tex.height),
                 new Vector2(0.5f, 0.5f),
                 100f
             );
-
-            CharacterIconCache.Set(cacheKeyCharacterId, sprite);
+            CharacterIconCache.SetByCharacterId(cacheKeyCharacterId, sprite);
+            CharacterIconCache.SetByModelId(modelId, sprite);
 
             Debug.Log($"[CharacterIconGenerator] 아이콘 생성 완료. characterId={cacheKeyCharacterId}, modelId={modelId}");
 
