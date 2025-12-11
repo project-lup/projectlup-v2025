@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b3759627024bc246ad1c78f200d79fc, type: 3}
-  m_Name: CharacterData3
+  m_Name: M001_CharacterData
   m_EditorClassIdentifier: 
-  characterName: F003
-  characterPreviewImage: {fileID: -1411784306, guid: 885180009917a50459e1a157a742ed9a, type: 3}
-  characterPrefab: {fileID: 6828710996149563988, guid: 91136c3ed953a7c499e549f5df939083, type: 3}
-  weaponPrefab: {fileID: 7742877874128164408, guid: 45e6fd756c3ad2a4d812cf3d248bcf67, type: 3}
+  characterName: M001
+  characterPreviewImage: {fileID: 229520926, guid: 6760ee19d8e373242b6f9a943235d68d, type: 3}
+  characterPrefab: {fileID: 7307492492725346322, guid: 285c6251db02b1a40b957aa507715104, type: 3}
+  weaponPrefab: {fileID: 919132149155446097, guid: b4bac87a59e3520479d5cde2aeeca4a6, type: 3}
   stats:
-    Hp: 150
-    Attack: 5
-    speed: 5
+    Hp: 100
+    Attack: 10
+    speed: 10
     MaxHp: 0
     Exp: 0
-  characterType: 3
+  characterType: 1

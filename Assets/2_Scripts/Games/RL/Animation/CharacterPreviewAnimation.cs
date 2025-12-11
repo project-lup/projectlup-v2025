@@ -23,6 +23,8 @@ public class CharacterPreviewAnimation : MonoBehaviour
         {
             "M001" => "Image/RL/ChracterImage/PreviewIdleImage/M001Idles",
             "M002" => "Image/RL/ChracterImage/PreviewIdleImage/M002Idles",
+            "F001" => "Image/RL/ChracterImage/PreviewIdleImage/F001Idles",
+            "F002" => "Image/RL/ChracterImage/PreviewIdleImage/F002Idles",
             "F003" => "Image/RL/ChracterImage/PreviewIdleImage/F003Idles",
             _ => null
         };

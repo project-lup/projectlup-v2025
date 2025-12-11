@@ -215,6 +215,11 @@ namespace LUP.RL
                     }
 
                 }
+
+                else if(weaponHand.weaponType == WeaponType.Magic)
+                {
+                    character.GetComponent<FireSystem>().bulletData.bulletPrefab = characterData.GetWeaponProjecTile();
+                }
             }
 
             OnPlayerCharacterSpawned?.Invoke(character);
