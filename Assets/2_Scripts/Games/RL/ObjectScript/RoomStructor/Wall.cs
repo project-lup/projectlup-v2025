@@ -29,9 +29,17 @@ namespace LUP.RL
                 NoiseWallRenderer = NoiseObject.GetComponent<MeshRenderer>();
                 WallMaterial = NoiseWallRenderer.material;
 
-                NoiseWallRenderer.enabled = false;
-                //WallMaterial.SetFloat("_Distortion", 5.0f);
+                NoiseWallRenderer.enabled = true;
             }
+        }
+
+        private IEnumerator Start()
+        {
+            WallMaterial.SetFloat("_Distortion", 5.0f);
+
+            yield return null;
+
+            NoiseWallRenderer.enabled = false;
         }
 
         private void OnTriggerEnter(Collider other)
