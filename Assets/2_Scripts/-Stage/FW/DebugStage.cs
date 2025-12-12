@@ -22,7 +22,6 @@ namespace LUP
 
         void Start()
         {
-            testInventory.LoadInventory(saveFileName);
             gold = ItemManager.Instance.GetItem("gold");
             if (gold != null)
                 testInventory.AddItem(gold, 50);
@@ -35,7 +34,6 @@ namespace LUP
                 gold = ItemManager.Instance.GetItem("gold");
                 testInventory.AddItem(gold, 50);
 
-                testInventory.SaveInventory(saveFileName);
                 Debug.Log($"[DebugStage] 인벤토리 세이브 완료: {saveFileName}");
             }
 
@@ -44,7 +42,6 @@ namespace LUP
             {
                 if (testInventory != null)
                 {
-                    testInventory.LoadInventory(saveFileName);
                     Debug.Log($"[DebugStage] 인벤토리 로드 완료: {saveFileName}");
                 }
                 else

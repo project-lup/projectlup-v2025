@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
+
 namespace LUP
 {
     public class MainStage : BaseStage
@@ -54,11 +54,25 @@ namespace LUP
 
             if (Input.GetKeyDown(KeyCode.O))
             {
-                IItemable item = ItemManager.Instance.GetItem("체력포션"); 
+                IItemable item = ItemManager.Instance.GetItem("체력포션");
                 if (item != null)
                 {
-                    inven.AddItem(item, 1);
+                    inven.AddItem(item, 1);  // ← 0.5초 후 자동 저장!
+                    Debug.Log("[MainStage] 아이템 추가 (0.5초 후 자동 저장)");
                 }
+            }
+
+            // S키: 즉시 저장 (자동 저장 대기 없이)
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                inven.SaveData();  // ← BaseRuntimeData의 즉시 저장
+                Debug.Log("[MainStage] 인벤토리 즉시 저장 완료");
+            }
+
+            // L키: 인벤토리 로드
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                Debug.Log("[MainStage] 인벤토리 로드 완료");
             }
         }
 
@@ -66,7 +80,33 @@ namespace LUP
         {
             yield return base.OnStageEnter();
 
-            inven = new Inventory();
+            // Inventory 생성 및 파일명 설정
+            string inventoryFilename = "inventory.json";
+
+            if (JsonDataHelper.FileExists(inventoryFilename))
+            {
+                // 기존 인벤토리 로드
+                inven = JsonDataHelper.LoadData<Inventory>(inventoryFilename);
+                if (inven != null)
+                {
+                    inven.filename = inventoryFilename;
+                    inven.InitializeFromJson();  // Dictionary 복원
+                    Debug.Log("[MainStage] 인벤토리 로드 완료");
+                }
+                else
+                {
+                    Debug.LogWarning("[MainStage] 인벤토리 로드 실패, 새로 생성");
+                    inven = new Inventory();
+                    inven.filename = inventoryFilename;
+                }
+            }
+            else
+            {
+                // 새 인벤토리 생성
+                inven = new Inventory();
+                inven.filename = inventoryFilename;
+                Debug.Log("[MainStage] 새 인벤토리 생성");
+            }
 
             yield return null;
         }

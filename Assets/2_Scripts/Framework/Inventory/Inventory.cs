@@ -5,8 +5,14 @@ using UnityEngine;
 
 namespace LUP
 {
-    public class Inventory
+    [Serializable]
+    public class Inventory : BaseRuntimeData, UnityEngine.ISerializationCallbackReceiver
     {
+        // 직렬화용 필드 (JsonUtility 호환)
+        [SerializeField]
+        private List<InventorySlotData> _serializedSlots = new List<InventorySlotData>();
+
+        [System.NonSerialized]
         private Dictionary<string, InventorySlot> slots;
 
         public event Action<IItemable, int> OnItemAdded;
@@ -15,7 +21,8 @@ namespace LUP
 
         public Inventory()
         {
-            slots = new Dictionary<string, InventorySlot>();
+            if (slots == null)
+                slots = new Dictionary<string, InventorySlot>();
         }
 
         public bool AddItem(IItemable item, int quantity = 1)
@@ -26,34 +33,55 @@ namespace LUP
                 return false;
             }
 
-            if (slots.TryGetValue(item.ItemID.ToString(), out var existingSlot))
+            // slots가 null이면 초기화
+            if (slots == null)
+                slots = new Dictionary<string, InventorySlot>();
+
+            // 기존 스택 가능한 슬롯 찾기
+            InventorySlot stackableSlot = null;
+            foreach (var slot in slots.Values)
             {
-                if (existingSlot.CanStack)
+                if (slot.Item.ItemID == item.ItemID && slot.CanStack)
                 {
-                    if (existingSlot.TryAddQuantity(quantity))
-                    {
-                        OnItemAdded?.Invoke(item, quantity);
-                        return true;
-                    }
-
-                    int remaining = quantity - (item.MaxStackSize - existingSlot.Quantity);
-                    existingSlot.TryAddQuantity(item.MaxStackSize - existingSlot.Quantity);
-
-                    return AddItem(item, remaining);
+                    stackableSlot = slot;
+                    break;
                 }
             }
 
+            // 스택 추가
+            if (stackableSlot != null)
+            {
+                if (stackableSlot.TryAddQuantity(quantity))
+                {
+                    OnItemAdded?.Invoke(item, quantity);
+                    Debug.Log($"[Inventory] AddItem: {item.ItemName} x{quantity} (스택 추가)");
+                    NotifyValueChanged();  // ← 자동 저장 트리거!
+                    return true;
+                }
+
+                int remaining = quantity - (item.MaxStackSize - stackableSlot.Quantity);
+                stackableSlot.TryAddQuantity(item.MaxStackSize - stackableSlot.Quantity);
+
+                OnItemAdded?.Invoke(item, item.MaxStackSize - stackableSlot.Quantity);
+                Debug.Log($"[Inventory] AddItem: {item.ItemName} 일부 추가, 남은 수량: {remaining}");
+                NotifyValueChanged();  
+
+                return AddItem(item, remaining);
+            }
+
+            // 새 슬롯 생성
             string slotKey = GenerateSlotKey(item.ItemID);
             slots[slotKey] = new InventorySlot(item, quantity);
 
             OnItemAdded?.Invoke(item, quantity);
+            Debug.Log($"[Inventory] AddItem: {item.ItemName} x{quantity} (새 슬롯: {slotKey})");
+            NotifyValueChanged();  
             return true;
         }
 
-
         public bool UseItem(int itemID, int quantity = 1)
         {
-            if (!slots.TryGetValue(itemID.ToString(), out var slot))
+            if (slots == null || !slots.TryGetValue(itemID.ToString(), out var slot))
             {
                 Debug.LogWarning($"Item {itemID} not found");
                 return false;
@@ -77,13 +105,15 @@ namespace LUP
                 OnItemUsed?.Invoke(slot.Item);
             }
 
-            RemoveItem(itemID, quantity);
-
+            RemoveItem(itemID, quantity);  // RemoveItem이 NotifyValueChanged 호출
             return true;
         }
 
         public bool RemoveItem(int itemID, int quantity = 1)
         {
+            if (slots == null)
+                return false;
+
             string key = itemID.ToString();
             if (!slots.TryGetValue(key, out var slot))
                 return false;
@@ -99,13 +129,16 @@ namespace LUP
             }
 
             OnItemRemoved?.Invoke(slot.Item, quantity);
+            NotifyValueChanged();  // ← 자동 저장 트리거!
             return true;
         }
 
         public int GetItemCount(int itemID)
         {
-            int total = 0;
+            if (slots == null)
+                return 0;
 
+            int total = 0;
             foreach (var slot in slots.Values)
             {
                 if (slot.Item.ItemID == itemID)
@@ -113,7 +146,6 @@ namespace LUP
                     total += slot.Quantity;
                 }
             }
-
             return total;
         }
 
@@ -124,12 +156,19 @@ namespace LUP
 
         public List<InventorySlot> GetAllItems()
         {
+            if (slots == null)
+                return new List<InventorySlot>();
+
             return slots.Values.ToList();
         }
 
         public void Clear()
         {
+            if (slots == null)
+                slots = new Dictionary<string, InventorySlot>();
+
             slots.Clear();
+            NotifyValueChanged();  // ← 자동 저장 트리거!
         }
 
         private string GenerateSlotKey(int itemID)
@@ -146,13 +185,39 @@ namespace LUP
             return key;
         }
 
-        public void SaveInventory(string filename)
+        public override void ResetData()
         {
-            InventoryData data = new InventoryData();
+            if (slots == null)
+                slots = new Dictionary<string, InventorySlot>();
+
+            slots.Clear();
+            _serializedSlots.Clear();
+        }
+
+        public void OnBeforeSerialize()
+        {
+            Debug.Log($"[Inventory] OnBeforeSerialize 호출 - slots.Count: {slots?.Count ?? 0}");
+            SyncToSerializedList();
+        }
+
+        public void OnAfterDeserialize()
+        {
+            Debug.Log($"[Inventory] OnAfterDeserialize 호출 - _serializedSlots.Count: {_serializedSlots?.Count ?? 0}");
+        }
+
+        private void SyncToSerializedList()
+        {
+            _serializedSlots.Clear();
+
+            if (slots == null)
+            {
+                Debug.LogWarning("[Inventory] SyncToSerializedList: slots가 null입니다!");
+                return;
+            }
 
             foreach (var kvp in slots)
             {
-                data.slots.Add(new TestInvenRuntimeData
+                _serializedSlots.Add(new InventorySlotData
                 {
                     slotKey = kvp.Key,
                     itemID = kvp.Value.Item.ItemID,
@@ -160,75 +225,54 @@ namespace LUP
                 });
             }
 
-            JsonDataHelper.SaveData(data, filename);
+            Debug.Log($"[Inventory] SyncToSerializedList 완료: {_serializedSlots.Count}개 슬롯");
         }
 
-
-        public class InventoryData
+        public void InitializeFromJson()
         {
-            public List<TestInvenRuntimeData> slots = new List<TestInvenRuntimeData>();
-        }
-
-        public void LoadInventory(string filename)
-        {
-            if (!JsonDataHelper.FileExists(filename))
-            {
-                Debug.LogWarning($"인벤토리 파일이 없습니다: {filename}. 빈 인벤토리로 시작합니다.");
-                slots.Clear();
-                return;
-            }
-
-            InventoryData data = JsonDataHelper.LoadData<InventoryData>(filename);
-
-            if (data == null)
-            {
-                Debug.LogError($"인벤토리 데이터 로드 실패: {filename}");
-                return;
-            }
+            if (slots == null)
+                slots = new Dictionary<string, InventorySlot>();
 
             slots.Clear();
 
-            // slots가 null이거나 비어있을 경우 대비
-            if (data.slots == null || data.slots.Count == 0)
+            if (_serializedSlots == null || _serializedSlots.Count == 0)
             {
-                Debug.LogWarning("인벤토리에 저장된 아이템이 없습니다.");
+                Debug.Log("[Inventory] 저장된 슬롯이 없습니다.");
                 return;
             }
 
             // ItemManager 초기화 체크
             if (ItemManager.Instance == null)
             {
-                Debug.LogError("ItemManager가 초기화되지 않았습니다!");
+                Debug.LogError("[Inventory] ItemManager가 초기화되지 않았습니다!");
                 return;
             }
 
             int loadedCount = 0;
+            int failedCount = 0;
 
-            foreach (var slotData in data.slots)
+            foreach (var slotData in _serializedSlots)
             {
                 if (slotData == null || slotData.itemID == 0)
                 {
-                    Debug.LogWarning("잘못된 슬롯 데이터를 건너뜁니다.");
+                    failedCount++;
                     continue;
                 }
 
                 IItemable item = ItemManager.Instance.GetItem(slotData.itemID);
-
                 if (item != null)
                 {
                     slots[slotData.slotKey] = new InventorySlot(item, slotData.quantity);
-                    Debug.Log($"아이템 로드 성공: {item.ItemName} x{slotData.quantity}");
                     loadedCount++;
                 }
                 else
                 {
-                    Debug.LogWarning($"아이템을 찾을 수 없습니다: {slotData.itemID}");
+                    Debug.LogWarning($"[Inventory] 아이템을 찾을 수 없습니다: {slotData.itemID}");
+                    failedCount++;
                 }
             }
 
-            Debug.Log($"인벤토리 로드 완료: 총 {loadedCount}/{data.slots.Count}개 슬롯");
+            Debug.Log($"[Inventory] 로드 완료: {loadedCount}개 성공, {failedCount}개 실패");
         }
     }
 }
-
-

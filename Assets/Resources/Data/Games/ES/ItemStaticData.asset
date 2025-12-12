@@ -20,14 +20,14 @@ MonoBehaviour:
     ItemName: "\uCCB4\uB825\uD3EC\uC158"
     ItemType: 
     IconPath: 999
-    MaxStackSize: 1
+    MaxStackSize: 5
     IsUsable: 0
     Description: "\uCCB4\uB825\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4"
   - ItemID: 2
     ItemName: "\uB9C8\uB098\uD3EC\uC158"
     ItemType: 2
     IconPath: 999
-    MaxStackSize: 1
+    MaxStackSize: 5
     IsUsable: 0
     Description: "\uB9C8\uB098\uB97C \uD68C\uBCF5\uD569\uB2C8\uB2E4"
   - ItemID: 3

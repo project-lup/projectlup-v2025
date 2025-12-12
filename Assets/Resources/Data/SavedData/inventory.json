@@ -1,0 +1,15 @@
+{
+    "filename": "inventory.json",
+    "_serializedSlots": [
+        {
+            "slotKey": "1",
+            "itemID": 1,
+            "quantity": 5
+        },
+        {
+            "slotKey": "1_1",
+            "itemID": 1,
+            "quantity": 2
+        }
+    ]
+}
