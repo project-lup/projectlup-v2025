@@ -221,6 +221,10 @@ namespace LUP.ST
                 cameraController?.FocusOnPoint(camPoint);
             }
 
+            // 5) 줌 가능 여부 갱신 (원거리만 줌 허용)
+            bool canZoom = ranged != null;   // 원거리면 true, 근거리면 false
+            cameraController?.SetZoomEnabled(canZoom);
+
             currentSelectedIndex = index;
             UpdateCharacterPanelColors();
         }
@@ -295,6 +299,7 @@ namespace LUP.ST
 
             // 카메라 전체 보기로 복귀
             cameraController?.SetOverviewMode();
+            cameraController?.SetZoomEnabled(false);
 
             Debug.Log("수동 조작 캐릭터 없음 → 전체 풀 오토 + 카메라 오버뷰");
         }
