@@ -5,13 +5,14 @@ namespace LUP.ES
 {
     public class PlayerOverheadUI : MonoBehaviour
     {
-        public EventBroker eventBroker;
         [SerializeField]
         private GameObject OverheadUIPrefab;
         [SerializeField]
         private GameObject canvas;
         [SerializeField]
         private float YOffset = 50.0f;
+        [HideInInspector]
+        public EventBroker eventBroker;
 
         private Slider hpSlider;
         private Slider ammoSlider;
@@ -28,6 +29,7 @@ namespace LUP.ES
         }
         void Start()
         {
+            eventBroker = FindAnyObjectByType<EventBroker>();
             eventBroker.OnReloadTimeUpdate += UpdateReloadUI;
             mainCamera = Camera.main;
 

@@ -362,6 +362,7 @@ MonoBehaviour:
   isReloadButtonPressed: 0
   playerOverheadUI: {fileID: 0}
   weaponEquip: {fileID: 0}
+  playerIK: {fileID: 0}
 --- !u!114 &884996925007334372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,7 +378,7 @@ MonoBehaviour:
   eventBroker: {fileID: 0}
   OverheadUIPrefab: {fileID: 2506230549702261924, guid: 3317ddb0f6e85474c81374de37eabbe3, type: 3}
   canvas: {fileID: 0}
-  YOffset: 80
+  YOffset: 140
 --- !u!114 &3145711136167374506
 MonoBehaviour:
   m_ObjectHideFlags: 0

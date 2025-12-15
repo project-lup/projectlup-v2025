@@ -8,6 +8,7 @@ namespace LUP.ES
     {
         IDLE,
         MOVING,
+        INTERACTING
     }
 
 
@@ -16,8 +17,9 @@ namespace LUP.ES
         public float InteractionRadius = 2.0f;
         public FixedJoystick leftJoystick;
         public FixedJoystick rightJoystick;
-        public EventBroker eventBroker;
         public int CurrentWeaponID = 2;
+        [HideInInspector]
+        public EventBroker eventBroker;
         [HideInInspector]
         public Weapon weapon;
         public InteractionDetector InteractionDetector;
@@ -35,6 +37,9 @@ namespace LUP.ES
         public PlayerOverheadUI playerOverheadUI;
         [HideInInspector]
         public WeaponEquip weaponEquip;
+        [HideInInspector]
+        public PlayerIK playerIK;
+    
         public void ResetInteractionState()
         {
             //isCastingInteraction = false;
@@ -44,6 +49,14 @@ namespace LUP.ES
         private void Start()
         {
             animator = GetComponentInChildren<Animator>();
+            playerIK = GetComponentInChildren<PlayerIK>();
+            eventBroker = FindAnyObjectByType<EventBroker>();
+        }
+
+        public void SetWeaponVisible(bool isVisible)
+        {
+            weapon.SetWeaponVisible(isVisible);
+            playerIK.SetIsActivateIK(isVisible);
         }
     }
 }

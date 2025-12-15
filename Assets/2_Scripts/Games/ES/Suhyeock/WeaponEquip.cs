@@ -9,6 +9,7 @@ namespace LUP.ES
         public PrefabDataBase prefabDataBase;
         private Animator animator;
         private PlayerBlackboard blackboard;
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         public void Init()
         {
@@ -26,9 +27,15 @@ namespace LUP.ES
             newWeapon.transform.localPosition = weaponEntry.positionOffset;
             newWeapon.transform.localRotation = Quaternion.Euler(weaponEntry.rotationOffset);
             newWeapon.transform.localScale = Vector3.one;
-            Gun newWeaponComp = newWeapon.GetComponent<Gun>();
-            newWeaponComp.Init(blackboard.CurrentWeaponID);
-            blackboard.weapon = newWeaponComp;
+            Weapon newWeaponComp = newWeapon.GetComponent<Weapon>();
+            if (newWeaponComp != null)
+            {
+                newWeaponComp.Init(blackboard.CurrentWeaponID);
+                blackboard.weapon = newWeaponComp;
+            }
+            MeleeAnimationBridge meleeAnimationBridge = GetComponentInChildren<MeleeAnimationBridge>();
+            if (meleeAnimationBridge != null)
+                meleeAnimationBridge.SetWeapon();
         }
 
     }
