@@ -10079,6 +10079,9 @@ MonoBehaviour:
   selectedChapter: {fileID: 0}
   selectedCharacter: {fileID: 0}
   IsInitializeReady: 0
+  InventoryWood: {fileID: 7806600654793253757}
+  InventoryMeat: {fileID: 7806600655513864290}
+  InventoryCoin: {fileID: 7806600654935238358}
 --- !u!4 &1088144377
 Transform:
   m_ObjectHideFlags: 0
@@ -16052,7 +16055,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 532020069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.2}
+  m_AnchorMin: {x: 0, y: 0.35}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -17963,7 +17966,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: E
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -21495,7 +21498,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7755714257941046006}
   m_Layer: 5
-  m_Name: accountRogeLikeMoney
+  m_Name: accountRogeLikeWood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21511,7 +21514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7755714257822787421}
   m_Layer: 5
-  m_Name: accountEnerge
+  m_Name: accountCoin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21543,7 +21546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7755714258401675753}
   m_Layer: 5
-  m_Name: accountCashe
+  m_Name: accountRogeLikeMeat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23384,7 +23387,7 @@ RectTransform:
   m_GameObject: {fileID: 4645218914439962503}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7755714257822787421}
@@ -24178,7 +24181,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -31931,7 +31934,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: -1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -32022,7 +32025,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 20/20
+  m_text: -1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -32113,7 +32116,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: -1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -32888,7 +32891,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3db15a4e0994d0e4486977573e8afa5d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 52630efd836ca1d4a98c8fa121dc9f30, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -19,11 +19,7 @@ namespace LUP.RL
         [SerializeField]
         private Canvas mainCanvas;
 
-        //private CircleButton CharacterSelectBtn;
-        //private CircleButton QuestListBtn;
-        //private CircleButton ReturnMainGame;
         public Button ChapterSelectBtn;
-        //private Button GameStartBtn;
 
         public GameObject ChapterInfoText;
         public ChapterData[] chapterDatas { get; private set; }
@@ -46,14 +42,9 @@ namespace LUP.RL
 
         PannelController pannelController;
 
-        //private int CharacterScrollSelectionOffset = 0;
-
-        //private void OnEnable()
-        //{
-        //    InitLobbyUIElement();
-        //}
-
-
+        public TextMeshProUGUI InventoryWood;
+        public TextMeshProUGUI InventoryMeat;
+        public TextMeshProUGUI InventoryCoin;
 
         public void Start()
         {
@@ -93,9 +84,6 @@ namespace LUP.RL
                     SetPastGameData(0, 0);
                     ChapterDisplayedOffset = 0;
                 }
-
-                
-                //CharacterScrollSelectionOffset = savedLastSeletedCharacter < 0 ? 0 : savedLastSeletedCharacter;
             }
 
             if (mainCanvas == null)
@@ -108,8 +96,6 @@ namespace LUP.RL
             IsInitializeReady = true;
 
             Time.timeScale = 1;
-
-            //var test = stage.inventory.GetAllItems();
         }
 
         void Update()
@@ -139,25 +125,6 @@ namespace LUP.RL
                     break;
             }
 
-        }
-
-
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-
-        //private void OnCharacterSelect()
-        //{
-        //    CharacterSelectionScrollPanel scrollAblePanel = mainCanvas.GetComponentInChildren<CharacterSelectionScrollPanel>(true);
-        //    scrollAblePanel.SetScrollPanelType(ScrollRect.MovementType.Elastic, LayoutDirection.Grid);
-        //    scrollAblePanel.OpenPanel(characterDatas, DisplayableDataType.CharacterData);
-        //    scrollAblePanel.InitPreviewData(selectedCharacter);
-        //}
-
-        private void OnChapterSelect()
-        {
-            //ChapterSelectionScrollPanel scrollAblePanel = mainCanvas.GetComponentInChildren<ChapterSelectionScrollPanel>(true);
-            //scrollAblePanel.SetScrollPanelType(ScrollRect.MovementType.Elastic, LayoutDirection.Horizontal);
-            //scrollAblePanel.OpenPanel(chapterDatas, DisplayableDataType.ChapterData, ChapterDisplayedOffset);
         }
 
         private void OnGameStart()
@@ -205,57 +172,16 @@ namespace LUP.RL
                 pannelController.InitPannelCntroller();
             }
 
-            //{
-            //    ButtonRule[] uiButtons = mainCanvas.GetComponentsInChildren<ButtonRule>();
+            //계정 재화  표시
+            {
+                int Num_Wood = platformAdapter.GetItemAmountInInventory(RLItemID.Wood);
+                int Num_Meat = platformAdapter.GetItemAmountInInventory(RLItemID.Meat);
+                int Num_Coin = platformAdapter.GetItemAmountInInventory(RLItemID.Coin);
 
-            //    for (int i = 0; i < uiButtons.Length; i++)
-            //    {
-            //        ButtonRole buttonRole = uiButtons[i].buttonRole;
-
-            //        switch (buttonRole)
-            //        {
-            //            case ButtonRole.None:
-            //                UnityEngine.Debug.LogError("ButtonRole Is Not Assine", this.gameObject);
-            //                break;
-
-            //            case ButtonRole.BackToMainBtn:
-            //                ReturnMainGame = uiButtons[i].GetComponent<CircleButton>();
-            //                break;
-
-            //            case ButtonRole.ChapterSelectionBtn:
-            //                ChapterSelectBtn = uiButtons[i].GetComponent<Button>();
-            //                break;
-
-            //            case ButtonRole.CharacterSelectionBtn:
-            //                CharacterSelectBtn = uiButtons[i].GetComponent<CircleButton>();
-            //                break;
-
-            //            case ButtonRole.QuestselectionBtn:
-            //                QuestListBtn = uiButtons[i].GetComponent<CircleButton>();
-            //                break;
-
-            //            case ButtonRole.GameStartBtn:
-            //                GameStartBtn = uiButtons[i].GetComponent<Button>();
-            //                break;
-            //        }
-            //    }
-            //}
-
-            //{
-            //    if (CharacterSelectBtn && ChapterSelectBtn && GameStartBtn)
-            //    {
-            //        CheckCircleBtnValid();
-
-            //        CharacterSelectBtn.button.onClick.AddListener(OnCharacterSelect);
-            //        ChapterSelectBtn.onClick.AddListener(OnChapterSelect);
-            //        GameStartBtn.onClick.AddListener(OnGameStart);
-            //    }
-
-            //    else
-            //    {
-            //        UnityEngine.Debug.LogWarning("Check Selection Btn", this.gameObject);
-            //    }
-            //}
+                InventoryWood.SetText(Num_Wood.ToString());
+                InventoryMeat.SetText(Num_Meat.ToString());
+                InventoryCoin.SetText(Num_Coin.ToString());
+            }
         }
 
         void SetPastGameData(int savedLastSeletedChapter, int savedLastSeletedCharacter)
@@ -287,16 +213,6 @@ namespace LUP.RL
         {
             return ChapterDisplayedOffset;
         }
-
-        //bool CheckCircleBtnValid()
-        //{
-        //    if(CharacterSelectBtn.button == null)
-        //    {
-        //        CharacterSelectBtn.ManualAwkae();
-        //    }
-
-        //    return true;
-        //}
     }
 
 }

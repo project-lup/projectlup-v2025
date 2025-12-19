@@ -95,7 +95,7 @@ namespace Roguelike.Define
         Max
 
     }
-    public enum RLSpanableItem
+    public enum RLItemID
     {
         Wood = 10001,
         Meat = 10002,

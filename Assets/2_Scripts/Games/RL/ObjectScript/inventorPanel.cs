@@ -23,8 +23,6 @@ namespace LUP.RL
         new void Start()
         {
             base.Start();
-
-            //StartCoroutine(RoguelikeUtil.DelayOneFrame(() => PostPanelInitShop()));
         }
 
         public override void InitPanel()
@@ -44,17 +42,6 @@ namespace LUP.RL
 
             CharacterSelectPanel.gameObject.SetActive(false);
         }
-        //void Init()
-        //{
-        //    if (ItemInventoryPanel == null || CharacterSelectPanel == null)
-        //    {
-        //        UnityEngine.Debug.LogError("Fail To Find Inventory's Panel");
-        //    }
-
-        //    activatedVecticScrollbar = scrollbars[0];
-
-        //    CharacterSelectPanel.gameObject.SetActive(false);
-        //}
 
         public void ReciveBtnActioFromSelectPanel(int index)
         {
@@ -67,7 +54,6 @@ namespace LUP.RL
 
                 OnCharacterSelect();
             }
-            //pannelController.SetActiveInputcacher(false);
             pannelController.SetAllMainScrollActive(false);
             pannelController.SetActiveVerticScroll(activatedVecticScrollbar);
         }

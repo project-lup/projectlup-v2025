@@ -17,14 +17,6 @@ namespace LUP.RL
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-
-            //Init();
-
-            //StartCoroutine(RoguelikeUtil.DelayOneFrame(() =>
-            //{
-            //    FitToParentSize();
-            //}
-            //));
         }
 
         public bool Init()
@@ -58,10 +50,10 @@ namespace LUP.RL
             gridLayoutGroup.constraintCount = holizonConstrain;
             gridLayoutGroup.cellSize = new Vector2(prefabWidth, prefabWidth);
 
-            LoadPlatFormData();
+            LoadInventoryItemData();
         }
 
-        void LoadPlatFormData()
+        void LoadInventoryItemData()
         {
             platformAdapter = new PlatformAdapter();
 
@@ -70,10 +62,15 @@ namespace LUP.RL
                 platformAdapter.LinkToPlatform();
             }
 
+            ClearInventoryGrid();
+
             ItemData[] InventoryItmes = platformAdapter.GetInventoryItems();
 
             for (int i = 0; i < InventoryItmes.Length; i++)
             {
+                if (InventoryItmes[i].itemType == Define.ItemType.Material)
+                    continue;
+
                 GameObject Itembox = Instantiate(ItemBoxPrefab, gameObject.transform);
                 TextImageBtn itemTextImageBtn = Itembox.GetComponent<TextImageBtn>();
                 itemTextImageBtn.SetUseDefaultInteractColor(false);
@@ -83,21 +80,32 @@ namespace LUP.RL
                     itemTextImageBtn.btnBackGroundImage.sprite = InventoryItmes[i].GetDisplayableImage();
                     Itembox.GetComponent<Image>().sprite = InventoryItmes[i].GetDisplayableImage();
 
-                    if (InventoryItmes[i].itemType == Define.ItemType.Material)
-                    {
-                        itemTextImageBtn.btnText.SetText(InventoryItmes[i].GetExtraInfo().ToString());
-                        itemTextImageBtn.btnText.alignment = TextAlignmentOptions.Right;
-                    }
+                    //if (InventoryItmes[i].itemType == Define.ItemType.Material)
+                    //{
+                    //    itemTextImageBtn.btnText.SetText(InventoryItmes[i].GetExtraInfo().ToString());
+                    //    itemTextImageBtn.btnText.alignment = TextAlignmentOptions.Right;
+                    //}
  
-                    else if (InventoryItmes[i].itemType == Define.ItemType.Material)
-                    {
+                    //else if (InventoryItmes[i].itemType == Define.ItemType.Material)
+                    //{
 
-                    }
+                    //}
                         
                 }
 
             }
 
+        }
+
+        void ClearInventoryGrid()
+        {
+            Transform gridTransform = gameObject.transform;
+
+            for (int i = gridTransform.childCount - 1; i >= 0; i--)
+            {
+                GameObject child = gridTransform.GetChild(i).gameObject;
+                GameObject.Destroy(child);
+            }
         }
 
         // Update is called once per frame

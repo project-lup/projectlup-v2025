@@ -72,9 +72,9 @@ namespace LUP.RL
 
         public void SpawnItem(Transform spawnPos)
         {
-            Array values = Enum.GetValues(typeof(RLSpanableItem));
+            Array values = Enum.GetValues(typeof(RLItemID));
 
-            RLSpanableItem randomSpawnItem = (RLSpanableItem)values.GetValue(UnityEngine.Random.Range(0, values.Length - 1));
+            RLItemID randomSpawnItem = (RLItemID)values.GetValue(UnityEngine.Random.Range(0, values.Length - 1));
             ItemType spanwedItemType = (ItemType)((int)randomSpawnItem / 10000);
 
             GameObject obj = poolDictionaray[spanwedItemType].Dequeue();
