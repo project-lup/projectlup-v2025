@@ -1,24 +1,27 @@
 using UnityEngine;
 
-
 namespace LUP.ES
 {
-    public class MeleeAnimationBridge : MonoBehaviour
+    public class AnimationBridge : MonoBehaviour
     {
         private Weapon weapon;
         private PlayerBlackboard blackboard;
-
         public void SetWeapon()
         {
             weapon = GetComponentInChildren<Weapon>();
             blackboard = GetComponentInParent<PlayerBlackboard>();
         }
-        
+
         public void OnAttackStart()
         {
             if (weapon != null)
             {
+                Debug.Log("OnAttackStart");
                 weapon.Attack();
+            }
+            else
+            {
+                Debug.Log("weapon != null");
             }
         }
 
