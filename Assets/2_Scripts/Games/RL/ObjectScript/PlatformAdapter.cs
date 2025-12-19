@@ -1,11 +1,11 @@
 using LUP;
+using LUP.ES;
 using Roguelike.Define;
 using Roguelike.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace LUP.RL
@@ -204,6 +204,22 @@ namespace LUP.RL
             }
 
             return RLInventory;
+        }
+
+        public EquipData[] GetInventoryEquips()
+        {
+            List<InventorySlot> inventorySlots = roguelikeStage.inventory.GetAllItems();
+
+            for(int i = 0; i < inventorySlots.Count;i++)
+            {
+                InventorySlot slot = inventorySlots[i];
+                if (slot.Item.Type != Define.ItemType.Weapon || slot.Item.Type != Define.ItemType.Armor)
+                    continue;
+
+
+            }
+
+            return new EquipData[inventorySlots.Count];
         }
 
         public async Task waitUntilPlatformDataReady()
