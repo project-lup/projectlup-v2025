@@ -30,6 +30,8 @@ namespace LUP.DSG
         public int IconCacheKey { get; private set; }
         public Sprite BattleIcon { get; private set; }
 
+        private bool isEventBound = false;
+
         private void Awake()
         {
             InitComponents();
@@ -58,16 +60,21 @@ namespace LUP.DSG
         {
             InitComponents();
 
-            battleComp.OnAttackStarted += animationComp.StartAttackAnimation;
-            battleComp.OnDamaged += animationComp.PlayHittedAnimation;
-            battleComp.OnDie += animationComp.PlayDiedAnimation;
-            battleComp.OnStartDash += animationComp.StartDashAnimation;
+            if(!isEventBound)
+            {
+                battleComp.OnAttackStarted += animationComp.StartAttackAnimation;
+                battleComp.OnDamaged += animationComp.PlayHittedAnimation;
+                battleComp.OnDie += animationComp.PlayDiedAnimation;
+                battleComp.OnStartDash += animationComp.StartDashAnimation;
 
-            animationComp.OnHitAttack += battleComp.ApplyDamageOnce;
-            animationComp.OnShootRangeAttack += battleComp.TrySpawnProjectileForRangedAttack;
-            animationComp.OnAttackStart += battleComp.AttackStart;
+                animationComp.OnHitAttack += battleComp.ApplyDamageOnce;
+                animationComp.OnShootRangeAttack += battleComp.TrySpawnProjectileForRangedAttack;
+                animationComp.OnAttackStart += battleComp.AttackStart;
 
-            BattleComp.OnDie += statusEffectComp.HandleOwnerDie;
+                BattleComp.OnDie += statusEffectComp.HandleOwnerDie;
+
+                isEventBound = true;
+            }
 
             EnsureCharacterUI();
         }
