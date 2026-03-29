@@ -4,7 +4,7 @@ using UnityEngine.Pool;
 
 namespace LUP.DSG
 {
-    public class CharacterFactory : MonoBehaviour
+    public class CharacterFactory
     {
         private readonly DeckStrategyStage deckStage;
         private readonly Dictionary<int, IObjectPool<Character>> characterPools = new();
@@ -18,19 +18,18 @@ namespace LUP.DSG
         {
             if (info == null || deckStage == null) return null;
 
-            int modelId = info.characterModelID;
-            IObjectPool<Character> pool = GetOrCreatePool(modelId, parentTransform);
-
+            IObjectPool<Character> pool = GetOrCreatePool(info.characterModelID, parentTransform);
             Character character = pool.Get();
             if (character == null) return null;
 
-            character.transform.SetParent(parentTransform);
-            character.transform.localPosition = Vector3.zero;
-            character.transform.localRotation = Quaternion.identity;
+            Transform charTransform = character.transform;
+
+            charTransform.SetParent(parentTransform);
+            charTransform.localPosition = Vector3.zero;
+            charTransform.localRotation = Quaternion.identity;
 
             float parentScaleX = parentTransform.lossyScale.x;
-            if (Mathf.Approximately(parentScaleX, 0f)) parentScaleX = 1f;
-            character.transform.localScale = Vector3.one / parentScaleX;
+            charTransform.localScale = Vector3.one / (Mathf.Approximately(parentScaleX, 0f) ? 1f : parentScaleX);
 
             character.ManualInitializeAfterSpawn();
             character.isEnemy = isEnemy;

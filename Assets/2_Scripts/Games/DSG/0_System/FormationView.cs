@@ -28,6 +28,9 @@ namespace LUP.DSG
         {
             CacheLineupSlots();
             RegisterTeamButtons();
+
+            if (characterList != null)
+                characterList.BindCallbacks(RequestPlaceCharacter, RequestReleaseCharacter);
         }
 
         private void OnEnable()
@@ -88,30 +91,21 @@ namespace LUP.DSG
         }
 
         public void RequestPlaceCharacter(int characterId, CharacterSelectButton button)
-        {
-            OnCharacterIconSelected?.Invoke(characterId, button);
-        }
+            => OnCharacterIconSelected?.Invoke(characterId, button);
 
         public void RequestReleaseCharacter(int characterId, CharacterSelectButton button)
-        {
-            OnCharacterIconReleased?.Invoke(characterId, button);
-        }
+            => OnCharacterIconReleased?.Invoke(characterId, button);
 
         public void RequestApplyFilter(CharacterFilterState filter)
-        {
-            OnFilterRequested?.Invoke(filter);
-        }
+            => OnFilterRequested?.Invoke(filter);
 
-        public void TeamReset()
-        {
-            characterFilterPanel?.ResetAllFilter();
-        }
+        public void TeamReset() => characterFilterPanel?.ResetAllFilter();
 
         private void CacheLineupSlots()
         {
             lineupSlots = new LineupSlot[slotObjects.Length];
             for (int i = 0; i < slotObjects.Length; i++)
-                lineupSlots[i] = slotObjects[i] != null ? slotObjects[i].GetComponent<LineupSlot>() : null;
+                lineupSlots[i] = slotObjects[i]?.GetComponent<LineupSlot>();
         }
 
         private void RegisterTeamButtons()
@@ -122,9 +116,6 @@ namespace LUP.DSG
                 if (button != null) button.OnTeamSelected += TeamSelected;
         }
 
-        private void TeamSelected(int index)
-        {
-            OnTeamButtonClicked?.Invoke(index);
-        }
+        private void TeamSelected(int index) => OnTeamButtonClicked?.Invoke(index);
     }
 }

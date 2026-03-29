@@ -31,8 +31,7 @@ namespace LUP.DSG
 
         public void ActivateBattleUI()
         {
-            if (character != null)
-                character.ActiveBattleUI();
+            character?.ActiveBattleUI();
         }
     }
 }

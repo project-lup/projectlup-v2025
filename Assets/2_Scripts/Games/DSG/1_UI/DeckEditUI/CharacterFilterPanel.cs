@@ -72,7 +72,7 @@ namespace LUP.DSG
         {
             CharacterFilterState filter = new CharacterFilterState();
 
-            foreach (var populator in statePopulators)
+            foreach (Action<CharacterFilterState> populator in statePopulators)
                 populator.Invoke(filter);
 
             OnConfirmFilter?.Invoke(filter.ContainsCheckedFilters() ? filter : null);

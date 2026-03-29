@@ -14,7 +14,7 @@ namespace LUP.DSG
 
         [Header("보정 설정")]
         [Range(0f, 0.2f)]
-        public float distortionFactor = 0.00f;
+        public float distortionFactor = 0f;
 
         private CanvasGroup canvasGroup;
 
@@ -45,14 +45,12 @@ namespace LUP.DSG
 
         public void InitInfoUI(EAttributeType type, int level)
         {
-            if (characterInfoUI == null) return;
-            characterInfoUI.SetCharacterInfo(type, level);
+            characterInfoUI?.SetCharacterInfo(type, level);
         }
 
         public void InitBattleUI(Character character)
         {
-            if (characterBattleUI == null) return;
-            characterBattleUI.Init(character);
+            characterBattleUI?.Init(character);
         }
 
         private void LateUpdate()

@@ -10,18 +10,14 @@ namespace LUP.DSG
         private CharacterHeadupUI uiPrefab;
         [SerializeField]
         private Canvas targetCanvas;
-        private Transform uiRoot;
 
+        private Transform uiRoot;
         private IObjectPool<CharacterHeadupUI> pool;
         public Canvas TargetCanvas => targetCanvas;
 
         void Awake()
         {
-            if (targetCanvas == null)
-                targetCanvas = GameObject.Find("Canvas_CharacterUI").GetComponent<Canvas>();
-
-            if (uiRoot == null && targetCanvas != null)
-                uiRoot = targetCanvas.transform;
+            ResolveCanvas();
 
             pool = new ObjectPool<CharacterHeadupUI>(
                 createFunc: CreatePooledItem,
@@ -57,13 +53,11 @@ namespace LUP.DSG
 
         public CharacterHeadupUI GetUI(Transform target, Vector3 uiOffset)
         {
-            if (targetCanvas == null) targetCanvas = GameObject.Find("Canvas_CharacterUI").GetComponent<Canvas>();
+            ResolveCanvas();
             if (targetCanvas == null || uiPrefab == null) return null;
 
             CharacterHeadupUI uiObject = pool.Get();
-
             if (uiObject == null) return null;
-            if (uiRoot == null) uiRoot = targetCanvas.transform;
 
             uiObject.transform.SetParent(uiRoot, false);
             uiObject.SetTarget(targetCanvas, target, uiOffset);
@@ -77,10 +71,17 @@ namespace LUP.DSG
 
             pool.Release(ui);
 
+            ResolveCanvas();
+            if (uiRoot != null) ui.transform.SetParent(uiRoot, false);
+        }
+
+        private void ResolveCanvas()
+        {
+            if (targetCanvas == null)
+                targetCanvas = GameObject.Find("Canvas_CharacterUI")?.GetComponent<Canvas>();
+
             if (uiRoot == null && targetCanvas != null)
                 uiRoot = targetCanvas.transform;
-
-            if (uiRoot != null) ui.transform.SetParent(uiRoot, false);
         }
     }
 }

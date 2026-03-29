@@ -9,6 +9,8 @@ namespace LUP.DSG
 {
     public class FormationPresenter : MonoBehaviour
     {
+        private const int MaxTeamSize = 5;
+
         [SerializeField]
         private FormationView view;
 
@@ -85,7 +87,7 @@ namespace LUP.DSG
             currentTeam = stage.GetSelectedTeam();
             selectedCount = 0;
 
-            if (currentTeam == null || currentTeam.characters == null || !view) return;
+            if (currentTeam?.characters == null || !view) return;
 
             view.UpdateSelectedTeamButtonUI(teamIndex);
             currentFilter = null;
@@ -97,7 +99,7 @@ namespace LUP.DSG
         public void SaveCurrentTeam()
         {
             DeckStrategyRuntimeData runtimeData = stage?.DSGRuntimeData;
-            if (runtimeData != null && runtimeData.Teams != null)
+            if (runtimeData?.Teams != null)
                 runtimeData.Teams[runtimeData.SelectedTeamIndex] = currentTeam;
         }
 
@@ -132,15 +134,13 @@ namespace LUP.DSG
 
         private void PlaceCharacter(int characterId, CharacterSelectButton button)
         {
-            if (selectedCount >= 5 || !view) return;
+            if (selectedCount >= MaxTeamSize || !view) return;
+            if (!ownedInfoDict.TryGetValue(characterId, out CharacterInfo characterInfo)) return;
 
             for (int i = 0; i < view.lineupSlots.Length; ++i)
             {
                 LineupSlot slotView = view.lineupSlots[i];
                 if (!slotView || slotView.isPlaced) continue;
-
-                ownedInfoDict.TryGetValue(characterId, out CharacterInfo characterInfo);
-                if (characterInfo == null) continue;
 
                 currentTeam.characters[i] = characterInfo;
                 Character newCharacter = characterFactory.GetCharacter(characterInfo, slotView.transform, false);
@@ -163,11 +163,9 @@ namespace LUP.DSG
             {
                 LineupSlot slotView = view.lineupSlots[i];
                 if (!slotView || !slotView.isPlaced || !slotView.character) continue;
-                if (slotView.character.characterData == null || 
-                    slotView.character.characterData.ID != characterId) continue;
+                if (slotView.character.characterData?.ID != characterId) continue;
 
                 currentTeam.characters[i] = null;
-
                 characterFactory.ReturnCharacter(slotView.character);
                 slotView.ClearCharacter();
 
@@ -189,7 +187,7 @@ namespace LUP.DSG
         private void RefreshCharacterListUI()
         {
             DeckStrategyRuntimeData runtimeData = stage?.DSGRuntimeData;
-            if (runtimeData == null || runtimeData.OwnedCharacterList == null) return;
+            if (runtimeData?.OwnedCharacterList == null) return;
 
             filteredList.Clear();
 
@@ -203,10 +201,8 @@ namespace LUP.DSG
                     CharacterData data = stage.FindCharacterData(info.characterID, info.characterLevel);
                     if (data == null) continue;
 
-                    bool matchAttribute = currentFilter.CheckFilterMatch(data.type);
-                    bool matchRange = currentFilter.CheckFilterMatch(data.rangeType);
-
-                    if (!matchAttribute || !matchRange) continue;
+                    if (!currentFilter.CheckFilterMatch(data.type) || 
+                        !currentFilter.CheckFilterMatch(data.rangeType)) continue;
                 }
 
                 filteredList.Add(info);
