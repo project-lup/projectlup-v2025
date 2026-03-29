@@ -8,10 +8,8 @@ namespace LUP.DSG
 {
     public class CharacterInfoUI : MonoBehaviour
     {
-        [SerializeField]
-        private TextMeshProUGUI levelText;
-        [SerializeField]
-        private Image attributeIcon;
+        [SerializeField] private TextMeshProUGUI levelText;
+        [SerializeField] private Image attributeIcon;
 
         private AttributeIconContainer iconContainer;
         public void SetCharacterInfo(EAttributeType attribute, int level)
@@ -20,11 +18,8 @@ namespace LUP.DSG
 
             if(iconContainer == null)
             {
-                DeckStrategyStage stage = LUP.StageManager.Instance != null
-                                          ? (LUP.StageManager.Instance.GetCurrentStage() as DeckStrategyStage)
-                                          : null;
-
-                iconContainer = stage != null ? stage.GetComponent<AttributeIconContainer>() : null;
+                DeckStrategyStage stage = LUP.StageManager.Instance?.GetCurrentStage() as DeckStrategyStage;
+                iconContainer = stage?.GetComponent<AttributeIconContainer>();
             }
             if (iconContainer == null || attributeIcon == null) return;
 

@@ -411,16 +411,6 @@ namespace LUP.DSG
                 DeckStrategyStage currentStage = LUP.StageManager.Instance.GetCurrentStage() as DeckStrategyStage;
                 BattleSystem battleSystem = currentStage != null ? currentStage.GetBattleSystem() : null;
                 battleSystem?.BackupDeadCharacter(owner);
-
-                //DeckStrategyStage stage = LUP.StageManager.Instance.GetCurrentStage() as DeckStrategyStage;
-                //if (stage != null)
-                //{
-                //    BattleSystem battleSystem = stage.GetBattleSystem();
-                //    if(battleSystem != null)
-                //    {
-                //        battleSystem.BackupDeadCharacter(owner);
-                //    }
-                //}
             }
 
             owner?.ClearCharacterInfo();
@@ -475,15 +465,6 @@ namespace LUP.DSG
         {
             OnAttackStarted?.Invoke(weaponType);
         }
-
-        //public IEnumerator FocusSkillCaster()
-        //{
-        //    Transform cameraOrigin = Camera.main.transform;
-
-        //    yield return battleCameraDirector.FocusOnSkillCaster(transform, cameraOrigin).WaitForCompletion();
-
-        //    battleCameraDirector.FocusOnTarget(targetPosition);
-        //}
 
         private void ShakeCamera()
         {
