@@ -76,7 +76,7 @@ namespace LUP.ES
             MovingCondition movingCondition = new MovingCondition(blackboard);
             MoveAction moveAction = new MoveAction(blackboard, characterController);
             UpdateAimDirectionAction updateAimDirectionAction = new UpdateAimDirectionAction(blackboard);
-            Parallel combatParallel = new Parallel(new List<BTNode> { updateAimDirectionAction, handleActionsSelector, movingCondition, moveAction });
+            Parallel combatParallel = new Parallel(new List<BTNode> { updateAimDirectionAction, handleActionsSelector, moveAction });
 
 
             rootNode = new Selector(new List<BTNode>

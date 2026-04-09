@@ -16,8 +16,7 @@ namespace LUP.ES
         {
             for (int i = 0; i < children.Count; i++)
             {
-                BTNode child = children[i];
-                switch (child.Evaluate())
+                switch (children[i].Evaluate())
                 {
                     case NodeState.Failure:
                         continue;
