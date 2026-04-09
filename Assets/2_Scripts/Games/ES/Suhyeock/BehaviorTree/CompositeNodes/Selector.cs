@@ -5,7 +5,7 @@ namespace LUP.ES
     public class Selector : BTNode
     {
         private List<BTNode> children = new List<BTNode>();
-        private BTNode lastRunningNode = null;
+        private int lastRunningIndex = -1;
 
         public Selector(List<BTNode> children)
         {
@@ -20,43 +20,37 @@ namespace LUP.ES
                 switch (child.Evaluate())
                 {
                     case NodeState.Failure:
-                        child.Reset();
-                        continue; // 다음 노드로 이동
+                        continue;
                     case NodeState.Running:
-                        if (lastRunningNode != null && lastRunningNode != child)
+                        if (lastRunningIndex != -1 && lastRunningIndex != i)
                         {
-                            lastRunningNode.Reset();
+                            children[lastRunningIndex].Reset();
                         }
-                        lastRunningNode = child;
-                        return NodeState.Running; // 실행 중이면 즉시 반환
+                        lastRunningIndex = i;
+                        return NodeState.Running;
                     case NodeState.Success:
-                        if(lastRunningNode != null)
+                        if(lastRunningIndex != -1 && lastRunningIndex != i)
                         {
-                            lastRunningNode.Reset();
-                            lastRunningNode = null;
+                            children[lastRunningIndex].Reset();
                         }
-                        return NodeState.Success; // 성공하면 전체 성공
+                        lastRunningIndex = -1;
+                        return NodeState.Success;
                 }
             }
 
-            if (lastRunningNode != null)
+            if (lastRunningIndex != -1)
             {
-                lastRunningNode.Reset();
-                lastRunningNode = null;
+                children[lastRunningIndex].Reset();
+                lastRunningIndex = -1;
             }
 
-            // 모든 노드가 실패하면 전체 실패
             return NodeState.Failure;
         }
 
         public override void Reset()
         {
-            if (lastRunningNode != null)
-            {
-                lastRunningNode.Reset();
-                lastRunningNode = null;
-            }
-            for (int i = 0;i < children.Count;i++)
+            lastRunningIndex = -1;
+            for (int i = 0; i < children.Count; i++)
             {
                 children[i].Reset();
             }
