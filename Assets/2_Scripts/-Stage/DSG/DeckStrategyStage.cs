@@ -32,6 +32,9 @@ namespace LUP.DSG
         public DeckStrategyRuntimeData DSGRuntimeData { get; private set; }
         public DSGEnemyStageRuntimeData DSGEnemyRuntimeData { get; private set; }
 
+        private Dictionary<int, DeckCharacterStaticData> charDataById;
+        private Dictionary<int, DeckStaticData> statusDataByKey;
+
         protected override void Awake() 
         {
             base.Awake();
@@ -101,6 +104,7 @@ namespace LUP.DSG
         {
             LoadStaticDatas();
             LoadRuntimeDatas();
+            BuildLookupCaches();
 
             if (RuntimeData is not DeckStrategyRuntimeData deckStrategyRuntimeData) return;
             if (deckStrategyRuntimeData.Teams.Count > 0) return;
@@ -163,6 +167,23 @@ namespace LUP.DSG
             }
         }
 
+        private void BuildLookupCaches()
+        {
+            charDataById = new Dictionary<int, DeckCharacterStaticData>(CharacterDataList?.Count ?? 0);
+            if (CharacterDataList != null)
+            {
+                foreach (DeckCharacterStaticData data in CharacterDataList)
+                    charDataById[data.CharacterId] = data;
+            }
+
+            statusDataByKey = new Dictionary<int, DeckStaticData>(DeckDataList?.Count ?? 0);
+            if (DeckDataList != null)
+            {
+                foreach (DeckStaticData data in DeckDataList)
+                    statusDataByKey[data.tableId] = data;
+            }
+        }
+
         private void LoadCharacterPrefabs(List<DeckCharacterModelStaticData> modelDataList)
         {
             if (modelDataList == null) return;
@@ -194,37 +215,25 @@ namespace LUP.DSG
 
         public CharacterData FindCharacterData(int id, int level)
         {
-            if (CharacterDataList == null || DeckDataList == null) return null;
-
-            DeckCharacterStaticData charData = null;
-
-            foreach (DeckCharacterStaticData data in CharacterDataList)
-            {
-                if (data.CharacterId == id) { charData = data; break; }
-            }
-            if (charData == null) return null;
+            if (charDataById == null || statusDataByKey == null) return null;
             if (DSGRuntimeData?.OwnedCharacterList is not { Count: > 0 }) return null;
 
+            if (!charDataById.TryGetValue(id, out DeckCharacterStaticData charData)) return null;
+
             int statusId = id * 100 + level;
-            foreach (DeckStaticData statusData in DeckDataList)
+            if (!statusDataByKey.TryGetValue(statusId, out DeckStaticData statusData)) return null;
+
+            return new CharacterData
             {
-                if (statusData.tableId != statusId) continue;
-
-                CharacterData characterData = new CharacterData {
-                    ID = id,
-                    characterName = charData.CharacterName,
-                    type = (EAttributeType)charData.AttributeType,
-                    rangeType = (ERangeType)charData.RangeType,
-                    maxHp = statusData.hp,
-                    attack = statusData.attack,
-                    defense = statusData.defense,
-                    speed = statusData.speed
-                };
-
-                return characterData;
-            }
-
-            return null;
+                ID = id,
+                characterName = charData.CharacterName,
+                type = (EAttributeType)charData.AttributeType,
+                rangeType = (ERangeType)charData.RangeType,
+                maxHp = statusData.hp,
+                attack = statusData.attack,
+                defense = statusData.defense,
+                speed = statusData.speed
+            };
         }
 
         public EnemyStageData GetEnemyStage() => DSGEnemyRuntimeData?.SelectedEnemyStage;

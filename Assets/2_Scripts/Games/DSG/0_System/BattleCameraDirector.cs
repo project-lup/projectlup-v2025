@@ -7,6 +7,7 @@ namespace LUP.DSG
     public class BattleCameraDirector : MonoBehaviour
     {
         private Vector3 originPosition;
+        private Quaternion originRotation;
         private Tween activeCameraTween;
 
         [SerializeField]
@@ -24,6 +25,7 @@ namespace LUP.DSG
         private void Awake()
         {
             originPosition = transform.position;
+            originRotation = transform.rotation;
         }
 
         private void OnDestroy()
@@ -59,6 +61,8 @@ namespace LUP.DSG
 
         public Tween PlayBattleIntroSequence()
         {
+            KillTween();
+
             Vector3 originPos = transform.position;
             Quaternion originRot = transform.rotation;
 
@@ -91,6 +95,7 @@ namespace LUP.DSG
             Sequence seq = DOTween.Sequence();
             if (delay > 0f) seq.AppendInterval(delay);
             seq.Append(transform.DOMove(originPosition, 0.5f));
+            seq.Join(transform.DORotateQuaternion(originRotation, 0.5f));   // ¡ç Ãß°¡
 
             activeCameraTween = seq;
         }
