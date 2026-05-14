@@ -737,8 +737,8 @@
     "m_ObjectId": "04c426311b2a40aa8a03def1ab741e39",
     "m_Title": "Read Albedo Texture & Calculate Pixel Opacity",
     "m_Position": {
-        "x": -1895.0001220703125,
-        "y": -229.00003051757813
+        "x": -1895.0,
+        "y": -229.0
     }
 }
 
@@ -3034,8 +3034,8 @@
     "m_ObjectId": "9b8c148bf5f442b686a3776dbebd1c7b",
     "m_Title": "Metallic & Smoothness",
     "m_Position": {
-        "x": -1898.0001220703125,
-        "y": 232.00003051757813
+        "x": -1898.0,
+        "y": 232.0
     }
 }
 
@@ -3093,8 +3093,8 @@
     "m_ObjectId": "a20abba7c2fa4eaf917d134705c1ba7d",
     "m_Title": "Emission",
     "m_Position": {
-        "x": -1897.0001220703125,
-        "y": 533.9999389648438
+        "x": -1897.0,
+        "y": 534.0
     }
 }
 
@@ -4509,7 +4509,7 @@
     "m_ObjectId": "e96d6e7115664e99ae494c2c06786fc0",
     "m_Title": "Apply Dither",
     "m_Position": {
-        "x": -1121.0001220703125,
+        "x": -1121.0,
         "y": 574.0
     }
 }

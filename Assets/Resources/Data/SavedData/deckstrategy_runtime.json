@@ -100,14 +100,19 @@
         {
             "characters": [
                 {
-                    "characterID": 2,
-                    "characterModelID": 2,
-                    "characterLevel": 5
+                    "characterID": 1,
+                    "characterModelID": 1,
+                    "characterLevel": 1
                 },
                 {
                     "characterID": 3,
                     "characterModelID": 3,
                     "characterLevel": 10
+                },
+                {
+                    "characterID": 2,
+                    "characterModelID": 2,
+                    "characterLevel": 5
                 },
                 {
                     "characterID": 4,
@@ -118,11 +123,6 @@
                     "characterID": 5,
                     "characterModelID": 5,
                     "characterLevel": 7
-                },
-                {
-                    "characterID": 7,
-                    "characterModelID": 7,
-                    "characterLevel": 8
                 }
             ]
         },
@@ -272,5 +272,5 @@
             ]
         }
     ],
-    "selectedTeamIndex": 0
+    "selectedTeamIndex": 2
 }

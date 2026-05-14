@@ -32,7 +32,9 @@ namespace LUP.DSG
             cachedFilters = GetComponentsInChildren<IFilterable>(includeInactive: true);
         }
 
-        private void CreateButtons<TButton, TEnum>(Transform area) where TButton : BaseFilterButton<TEnum> where TEnum : unmanaged, Enum
+        private void CreateButtons<TButton, TEnum>(Transform area) 
+            where TButton : BaseFilterButton<TEnum> 
+            where TEnum : unmanaged, Enum
         {
             if (filterButtonPrefab == null || area == null) return;
 
@@ -56,16 +58,11 @@ namespace LUP.DSG
             statePopulators.Add((filterState) =>
             {
                 for (int i = 0; i < enumValues.Length; i++)
-                {
                     if (localState[i]) filterState.AddFilter(enumValues[i]);
-                }
             });
 
             // reset
-            dataResets.Add(() =>
-            {
-                Array.Clear(localState, 0, localState.Length);
-            });
+            dataResets.Add(() => { Array.Clear(localState, 0, localState.Length); });
         }
 
         public void ConfirmFilter()

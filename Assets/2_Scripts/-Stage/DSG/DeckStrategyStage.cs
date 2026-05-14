@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace LUP.DSG
@@ -26,13 +27,15 @@ namespace LUP.DSG
 
         public List<DeckStaticData> DeckDataList;
         public List<DeckCharacterStaticData> CharacterDataList;
-        //private List<DeckCharacterModelStaticData> CharacterModelDataList;
         public TeamMVPData mvpData;
 
         public List<CharacterPrefabData> characterPrefabList = new List<CharacterPrefabData>();
 
         public DeckStrategyRuntimeData DSGRuntimeData { get; private set; }
         public DSGEnemyStageRuntimeData DSGEnemyRuntimeData { get; private set; }
+
+        private Dictionary<int, DeckStaticData> _statusByKey;
+        private Dictionary<int, DeckCharacterStaticData> _charById;
 
         protected override void Awake() 
         {
@@ -131,10 +134,12 @@ namespace LUP.DSG
                     if (loader is DeckStaticDataLoader deckLoader)
                     {
                         DeckDataList = deckLoader.GetDataList();
+                        _statusByKey = DeckDataList.ToDictionary(d => d.tableId);
                     }
                     else if (loader is DeckCharacterStaticDataLoader charLoader)
                     {
                         CharacterDataList = charLoader.GetDataList();
+                        _charById = CharacterDataList.ToDictionary(d => d.CharacterId);
                     }
                     else if (loader is DeckCharacterModelStaticDataLoader modelLoader)
                     {
@@ -226,35 +231,24 @@ namespace LUP.DSG
         }
         public CharacterData FindCharacterData(int id, int level)
         {
-            foreach (DeckCharacterStaticData data in CharacterDataList)
-            {
-                if (data.CharacterId == id)
-                {
-                    if (DSGRuntimeData == null || DSGRuntimeData.OwnedCharacterList.Count == 0) return null;
+            if (_charById == null || _statusByKey == null) return null;
+            if (DSGRuntimeData == null || DSGRuntimeData.OwnedCharacterList.Count == 0) return null;
 
-                    int statusId = id * 100 + level;
+            if (!_charById.TryGetValue(id, out var data)) return null;
+            int statusId = id * 100 + level;
+            if (!_statusByKey.TryGetValue(statusId, out var statusData)) return null;
 
-                    foreach (DeckStaticData statusData in DeckDataList)
-                    {
-                        if (statusData.tableId == statusId)
-                        {
-                            CharacterData characterData = new CharacterData();
-                            characterData.ID = id;
-                            characterData.characterName = data.CharacterName;
-                            characterData.type = (EAttributeType)data.AttributeType;
-                            characterData.rangeType = (ERangeType)data.RangeType;
-                            characterData.maxHp = statusData.hp;
-                            characterData.attack = statusData.attack;
-                            characterData.defense = statusData.defense;
-                            characterData.speed = statusData.speed;
+            CharacterData characterData = new CharacterData();
+            characterData.ID = id;
+            characterData.characterName = data.CharacterName;
+            characterData.type = (EAttributeType)data.AttributeType;
+            characterData.rangeType = (ERangeType)data.RangeType;
+            characterData.maxHp = statusData.hp;
+            characterData.attack = statusData.attack;
+            characterData.defense = statusData.defense;
+            characterData.speed = statusData.speed;
 
-                            return characterData;
-                        }
-                    }
-                }
-            }
-
-            return null;
+            return characterData;
         }
 
         public EnemyStageData GetEnemyStage()

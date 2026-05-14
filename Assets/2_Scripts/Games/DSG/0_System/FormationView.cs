@@ -28,6 +28,12 @@ namespace LUP.DSG
         {
             CacheLineupSlots();
             RegisterTeamButtons();
+
+            if (characterList != null)
+            {
+                characterList.OnIconSelected = RequestPlaceCharacter;
+                characterList.OnIconDeselected = RequestReleaseCharacter;
+            }
         }
 
         private void OnEnable()

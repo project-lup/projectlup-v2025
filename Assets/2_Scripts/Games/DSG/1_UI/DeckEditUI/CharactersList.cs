@@ -1,4 +1,4 @@
-﻿using LUP.DSG.Utils.Enums;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +15,10 @@ namespace LUP.DSG
         private readonly List<CharacterIcon> iconPool = new List<CharacterIcon>();
 
         private int activeCount = 0;
+
+        // 외부(FormationView)에서 주입받는 콜백
+        public Action<int, CharacterSelectButton> OnIconSelected;
+        public Action<int, CharacterSelectButton> OnIconDeselected;
 
         public void ResetSelectedStatus()
         {
@@ -86,27 +90,10 @@ namespace LUP.DSG
                 return null;
             }
 
-            icon.Init();
+            icon.Init(OnIconSelected, OnIconDeselected);
             iconPool.Add(icon);
             activeCount++;
             return icon;
-        }
-
-        private void BindIcon(CharacterInfo characterInfo, AttributeTypeImage typeIcon)
-        {
-            if (characterInfo == null || typeIcon.typeIcon == null) return;
-
-            CharacterIcon icon = GetOrCreateIcon();
-            if (icon == null) return;
-
-            icon.transform.SetParent(contentParent, false);
-            icon.gameObject.SetActive(true);
-            icon.SetIconData(characterInfo.characterID, characterInfo.characterLevel, typeIcon);
-
-            if (icon.selectedButton == null) return;
-
-            bool isSelected = selectedOwnedMap.TryGetValue(characterInfo.characterID, out bool value) && value;
-            icon.selectedButton.SetSelected(isSelected);
         }
     }
 }

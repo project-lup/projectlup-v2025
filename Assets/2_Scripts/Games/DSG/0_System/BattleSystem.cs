@@ -812,8 +812,7 @@ namespace LUP.DSG
         {
             foreach(ObjectFader fader in fadedList)
             {
-                if (fader != null)
-                    fader.doFade = true;
+                if (fader != null) fader.FadeOut();
             }
         }
 
@@ -821,8 +820,7 @@ namespace LUP.DSG
         {
             foreach (ObjectFader fader in fadedList)
             {
-                if (fader != null)
-                    fader.doFade = false;
+                if (fader != null) fader.FadeIn();
             }
 
             fadedList.Clear();

@@ -1,6 +1,7 @@
 using LUP.DSG.Utils.Enums;
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,14 +37,18 @@ namespace LUP.DSG
         {
             IconBootstrapper.OnAllIconsGenerated -= RefreshIcon;
         }
-        public void Init()
+        public void Init(Action<int, CharacterSelectButton> onSelected,
+                         Action<int, CharacterSelectButton> onDeselected)
         {
-            FormationView formationView = FindAnyObjectByType<FormationView>();
-            if(formationView != null)
-            {
-                OnSelected = formationView.RequestPlaceCharacter;
-                OnDeselected = formationView.RequestReleaseCharacter;
-            }
+            //FormationView formationView = FindAnyObjectByType<FormationView>();
+            //if(formationView != null)
+            //{
+            //    OnSelected = formationView.RequestPlaceCharacter;
+            //    OnDeselected = formationView.RequestReleaseCharacter;
+            //}
+
+            OnSelected = onSelected;
+            OnDeselected = onDeselected;
 
             selectedButton.Init();
             selectedButton.button.onClick.AddListener(OnButtonClicked);
