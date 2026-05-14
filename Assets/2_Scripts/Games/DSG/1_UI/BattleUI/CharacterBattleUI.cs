@@ -26,6 +26,7 @@ namespace LUP.DSG
         private readonly Dictionary<EStatusEffectType, Image> activeIcons = new();
         private readonly int CycleTimeId = Shader.PropertyToID("_CycleTime");
 
+        private Material instancedMaterial;
         private Image gaugeImage;
         private BattleComponent battleComp;
 
@@ -50,6 +51,11 @@ namespace LUP.DSG
         private void OnDestroy()
         {
             Unsubscribe();
+            if (instancedMaterial != null)
+            {
+                Destroy(instancedMaterial);
+                instancedMaterial = null;
+            }
         }
 
         public void Init(Character character)
@@ -76,8 +82,9 @@ namespace LUP.DSG
                 gaugeImage = gaugeSlider.fillRect != null ? gaugeSlider.fillRect.GetComponent<Image>() : null;
                 if (gaugeImage?.material != null)
                 {
-                    // 각 UI마다 개별 머티리얼을 새로 생성하여 UI 이펙트를 개별 적용
-                    gaugeImage.material = new Material(gaugeImage.material);
+                    if (instancedMaterial != null) Destroy(instancedMaterial);
+                    instancedMaterial = new Material(gaugeImage.material);
+                    gaugeImage.material = instancedMaterial;
                 }
             }
 
