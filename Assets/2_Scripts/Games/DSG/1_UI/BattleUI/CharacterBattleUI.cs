@@ -26,12 +26,8 @@ namespace LUP.DSG
         private readonly Dictionary<EStatusEffectType, Image> activeIcons = new();
         private readonly int CycleTimeId = Shader.PropertyToID("_CycleTime");
 
-        private readonly Stack<Image> pooledIcons = new();
-
         private Image gaugeImage;
-
         private BattleComponent battleComp;
-        private StatusEffectComponent statusEffectComp;
 
         private void Awake()
         {
@@ -78,7 +74,7 @@ namespace LUP.DSG
                 gaugeSlider.value = battleComp.currGauge;
 
                 gaugeImage = gaugeSlider.fillRect != null ? gaugeSlider.fillRect.GetComponent<Image>() : null;
-                if (gaugeImage != null && gaugeImage.material != null)
+                if (gaugeImage?.material != null)
                 {
                     // 각 UI마다 개별 머티리얼을 새로 생성하여 UI 이펙트를 개별 적용
                     gaugeImage.material = new Material(gaugeImage.material);
@@ -105,15 +101,15 @@ namespace LUP.DSG
         {
             if (healthSlider != null) healthSlider.value = currHp;
         }
+
         private void GaugeUpdate(float currGauge)
         {
-            if (gaugeImage == null || gaugeImage.material == null || gaugeSlider == null) return;
+            if (gaugeImage?.material == null || gaugeSlider == null) return;
 
             gaugeSlider.value = currGauge;
-
-            bool isFull = currGauge >= gaugeSlider.maxValue;
-            gaugeImage.material.SetFloat(CycleTimeId, isFull ? 1f : 0f);
+            gaugeImage.material.SetFloat(CycleTimeId, currGauge >= gaugeSlider.maxValue ? 1f : 0f);
         }
+
         private void OnEffectAdded(StatusEffect effect)
         {
             if (panel == null) return;
@@ -168,7 +164,6 @@ namespace LUP.DSG
             icon.gameObject.SetActive(false);
             icon.sprite = null;
             UpdateStackLabel(icon, 0f, clearOnly: true);
-            pooledIcons.Push(icon);
         }
 
         private void ClearStatusIcons()

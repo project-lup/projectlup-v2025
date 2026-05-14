@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace LUP.DSG
@@ -28,14 +27,10 @@ namespace LUP.DSG
         public List<DeckStaticData> DeckDataList;
         public List<DeckCharacterStaticData> CharacterDataList;
         public TeamMVPData mvpData;
-
         public List<CharacterPrefabData> characterPrefabList = new List<CharacterPrefabData>();
 
         public DeckStrategyRuntimeData DSGRuntimeData { get; private set; }
         public DSGEnemyStageRuntimeData DSGEnemyRuntimeData { get; private set; }
-
-        private Dictionary<int, DeckStaticData> _statusByKey;
-        private Dictionary<int, DeckCharacterStaticData> _charById;
 
         protected override void Awake() 
         {
@@ -44,45 +39,30 @@ namespace LUP.DSG
 
         }
 
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
         public override IEnumerator OnStageEnter()
         {
             yield return base.OnStageEnter();
+            
+            DSGRuntimeData ??= (DeckStrategyRuntimeData)RuntimeData;
+            DSGEnemyRuntimeData ??= (DSGEnemyStageRuntimeData)enemyStageRuntimeData;
 
-            if(DSGRuntimeData == null)
-               DSGRuntimeData = (DeckStrategyRuntimeData)RuntimeData;
-
-            if (DSGEnemyRuntimeData != null && (DSGRuntimeData.OwnedCharacterList == null || DSGRuntimeData.OwnedCharacterList.Count <= 0))
+            if (DSGRuntimeData?.OwnedCharacterList is { Count: <= 0 })
             {
-                OwnedCharacterTable testCharacterTable
-                    = Resources.Load<OwnedCharacterTable>("Data/Games/DSG/ScriptableObjects/OwnedCharacter/OwnedCharacterListTable");
-                if (testCharacterTable != null)
-                    DSGRuntimeData.OwnedCharacterList = testCharacterTable.ownedCharacterList;
+                OwnedCharacterTable characterTable = Resources.Load<OwnedCharacterTable>(
+                    "Data/Games/DSG/ScriptableObjects/OwnedCharacter/OwnedCharacterListTable");
+                if (characterTable != null)
+                    DSGRuntimeData.OwnedCharacterList = characterTable.ownedCharacterList;
             }
 
-            if(DSGEnemyRuntimeData == null)
-               DSGEnemyRuntimeData = (DSGEnemyStageRuntimeData)enemyStageRuntimeData;
-
-            if (DSGEnemyRuntimeData != null && DSGEnemyRuntimeData.SelectedEnemyStage == null)
+            if (DSGEnemyRuntimeData?.SelectedEnemyStage != null)
             {
-                EnemyStageData enemyStageData
-                    = Resources.Load<EnemyStageData>("Data/Games/DSG/ScriptableObjects/EnemyStageData1");
+                EnemyStageData enemyStageData = Resources.Load<EnemyStageData>(
+                    "Data/Games/DSG/ScriptableObjects/EnemyStageData1");
                 if (enemyStageData != null)
-                {
                     DSGEnemyRuntimeData.SelectedEnemyStage = enemyStageData;
-                    SaveDatas();
-                }
             }
+
+            SaveDatas();
 
             // PCR 인벤토리 접근 가능 여부 확인
             if (InventoryManager.Instance.HasInventory("PCR"))
@@ -96,10 +76,7 @@ namespace LUP.DSG
         }
 
         // PCR 팀의 공유 인벤토리 가져오기
-        public Inventory GetSharedInventory()
-        {
-            return InventoryManager.Instance.GetInventory("PCR");
-        }
+        public Inventory GetSharedInventory() => InventoryManager.Instance.GetInventory("PCR");
 
         public override IEnumerator OnStageStay()
         {
@@ -122,94 +99,88 @@ namespace LUP.DSG
 
         protected override void GetDatas()
         {
-            List<BaseStaticDataLoader> loaders = base.GetStaticData(this, 1);
-            List<BaseRuntimeData> runtimeDatas = base.GetRuntimeData(this, 1);
-            List<BaseRuntimeData> enemyRuntimeDatas = base.GetRuntimeData(this, 2);
+            LoadStaticDatas();
+            LoadRuntimeDatas();
 
-            // 일단 타입별로 가져오는 예시
-            if (loaders != null && loaders.Count > 0)
-            {
-                foreach (var loader in loaders)
-                {
-                    if (loader is DeckStaticDataLoader deckLoader)
-                    {
-                        DeckDataList = deckLoader.GetDataList();
-                        _statusByKey = DeckDataList.ToDictionary(d => d.tableId);
-                    }
-                    else if (loader is DeckCharacterStaticDataLoader charLoader)
-                    {
-                        CharacterDataList = charLoader.GetDataList();
-                        _charById = CharacterDataList.ToDictionary(d => d.CharacterId);
-                    }
-                    else if (loader is DeckCharacterModelStaticDataLoader modelLoader)
-                    {
-                        List<DeckCharacterModelStaticData> CharacterModelDataList = modelLoader.GetDataList();
-                        if(CharacterModelDataList != null)
-                        {
-                            foreach(DeckCharacterModelStaticData modelData in CharacterModelDataList)
-                            {
-                                GameObject prefab = Resources.Load(modelData.ModelPath) as GameObject;
-                                if (!prefab) continue;
+            if (RuntimeData is not DeckStrategyRuntimeData deckStrategyRuntimeData) return;
+            if (deckStrategyRuntimeData.Teams.Count > 0) return;
 
-                                CharacterPrefabData prefabData = new();
-                                prefabData.prefab = prefab;
-                                prefabData.ID = modelData.ModelId;
-                                characterPrefabList.Add(prefabData);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // 일단 타입별로 가져오는 예시
-            if (runtimeDatas != null && runtimeDatas.Count > 0)
-            {
-                foreach (var runtimeData in runtimeDatas)
-                {
-                    if (runtimeData is DeckStrategyRuntimeData deckRuntimeData)
-                    {
-                        RuntimeData = deckRuntimeData;
-                    }                    
-                }
-            }
-
-            if (enemyRuntimeDatas != null && enemyRuntimeDatas.Count > 0)
-            {
-                foreach (var runtimeData in enemyRuntimeDatas)
-                {
-                    if (runtimeData is DSGEnemyStageRuntimeData enemyRuntimeData)
-                    {
-                        enemyStageRuntimeData = enemyRuntimeData;
-                    }
-                }
-            }
-
-            if (RuntimeData != null)
-            {
-                DeckStrategyRuntimeData deckStrategyRuntimeData = (DeckStrategyRuntimeData)RuntimeData;
-                if (deckStrategyRuntimeData != null && deckStrategyRuntimeData.Teams.Count == 0)
-                {
-                    deckStrategyRuntimeData.Teams.AddRange(new LUP.DSG.Team[6]);
-                }
-            }
+            deckStrategyRuntimeData.Teams.AddRange(new Team[6]);
         }
 
         protected override void SaveDatas()
         {
             List<BaseRuntimeData> runtimeDataList = new List<BaseRuntimeData>();
 
-            if (RuntimeData != null)
-            {
-                runtimeDataList.Add(RuntimeData);
-            }
-
-            if (enemyStageRuntimeData != null)
-            {
-                runtimeDataList.Add(enemyStageRuntimeData);
-            }
+            if (RuntimeData != null) runtimeDataList.Add(RuntimeData);
+            if (enemyStageRuntimeData != null) runtimeDataList.Add(enemyStageRuntimeData);
 
             base.SaveRuntimeDataList(runtimeDataList);
         }
+
+        private void LoadStaticDatas()
+        {
+            List<BaseStaticDataLoader> loaders = base.GetStaticData(this, 1);
+            if (loaders == null) return;
+
+            foreach (BaseStaticDataLoader loader in loaders)
+            {
+                switch (loader)
+                {
+                    case DeckStaticDataLoader deckLoader:
+                        DeckDataList = deckLoader.GetDataList();
+                        break;
+                    case DeckCharacterStaticDataLoader charLoader:
+                        CharacterDataList = charLoader.GetDataList();
+                        break;
+                    case DeckCharacterModelStaticDataLoader modelLoader:
+                        LoadCharacterPrefabs(modelLoader.GetDataList());
+                        break;
+                }
+            }
+        }
+
+        private void LoadRuntimeDatas()
+        {
+            List<BaseRuntimeData> runtimeDatas = base.GetRuntimeData(this, 1);
+            if (runtimeDatas != null)
+            {
+                foreach (BaseRuntimeData data in runtimeDatas)
+                {
+                    if (data is DeckStrategyRuntimeData deckData)
+                        RuntimeData = deckData;
+                }
+            }
+
+            List<BaseRuntimeData> enemyDatas = base.GetRuntimeData(this, 2);
+            if (enemyDatas != null)
+            {
+                foreach (BaseRuntimeData data in enemyDatas)
+                {
+                    if (data is DSGEnemyStageRuntimeData enemyData)
+                        enemyStageRuntimeData = enemyData;
+                }
+            }
+        }
+
+        private void LoadCharacterPrefabs(List<DeckCharacterModelStaticData> modelDataList)
+        {
+            if (modelDataList == null) return;
+
+            foreach (DeckCharacterModelStaticData modelData in modelDataList)
+            {
+                GameObject prefab = Resources.Load<GameObject>(modelData.ModelPath);
+                if (prefab == null) continue;
+
+                characterPrefabList.Add(new CharacterPrefabData
+                {
+                    prefab = prefab,
+                    ID = modelData.ModelId
+                });
+            }
+        }
+
+        public GameObject GetCharacterPrefab(int modelId) => FindCharacterPrefabData(modelId)?.prefab;
 
         public CharacterPrefabData FindCharacterPrefabData(int prefabId)
         {
@@ -221,41 +192,42 @@ namespace LUP.DSG
             return null;
         }
 
-        public GameObject GetCharacterPrefab(int modelId)
-        {
-            CharacterPrefabData modelData = FindCharacterPrefabData(modelId);
-            if (modelData == null) return null;
-            if (modelData.prefab == null) return null;
-
-            return modelData.prefab;
-        }
         public CharacterData FindCharacterData(int id, int level)
         {
-            if (_charById == null || _statusByKey == null) return null;
-            if (DSGRuntimeData == null || DSGRuntimeData.OwnedCharacterList.Count == 0) return null;
+            if (CharacterDataList == null || DeckDataList == null) return null;
 
-            if (!_charById.TryGetValue(id, out var data)) return null;
+            DeckCharacterStaticData charData = null;
+
+            foreach (DeckCharacterStaticData data in CharacterDataList)
+            {
+                if (data.CharacterId == id) { charData = data; break; }
+            }
+            if (charData == null) return null;
+            if (DSGRuntimeData?.OwnedCharacterList is not { Count: > 0 }) return null;
+
             int statusId = id * 100 + level;
-            if (!_statusByKey.TryGetValue(statusId, out var statusData)) return null;
+            foreach (DeckStaticData statusData in DeckDataList)
+            {
+                if (statusData.tableId != statusId) continue;
 
-            CharacterData characterData = new CharacterData();
-            characterData.ID = id;
-            characterData.characterName = data.CharacterName;
-            characterData.type = (EAttributeType)data.AttributeType;
-            characterData.rangeType = (ERangeType)data.RangeType;
-            characterData.maxHp = statusData.hp;
-            characterData.attack = statusData.attack;
-            characterData.defense = statusData.defense;
-            characterData.speed = statusData.speed;
+                CharacterData characterData = new CharacterData {
+                    ID = id,
+                    characterName = charData.CharacterName,
+                    type = (EAttributeType)charData.AttributeType,
+                    rangeType = (ERangeType)charData.RangeType,
+                    maxHp = statusData.hp,
+                    attack = statusData.attack,
+                    defense = statusData.defense,
+                    speed = statusData.speed
+                };
 
-            return characterData;
+                return characterData;
+            }
+
+            return null;
         }
 
-        public EnemyStageData GetEnemyStage()
-        {
-            if (DSGEnemyRuntimeData == null) return null;
-            return DSGEnemyRuntimeData.SelectedEnemyStage;
-        }
+        public EnemyStageData GetEnemyStage() => DSGEnemyRuntimeData?.SelectedEnemyStage;
 
         public void SetEnemyStage(EnemyStageData enemyStageData)
         {
@@ -275,28 +247,18 @@ namespace LUP.DSG
 
         public void BattleEnd()
         {
-            BattleSystem battleSystem = GetComponent<BattleSystem>();
-
-            if (battleSystem != null)
-            {
+            if (GetComponent<BattleSystem>() != null)
                 ChangeScene(2);
-            }
         }
 
-        public BattleSystem GetBattleSystem() 
-        {
-            return GetComponent<BattleSystem>();
-        }
+        public BattleSystem GetBattleSystem() => GetComponent<BattleSystem>();
 
         public Team GetSelectedTeam()
         {
             if (DSGRuntimeData == null) return null;
-            if (DSGRuntimeData.Teams[DSGRuntimeData.SelectedTeamIndex] == null)
-            {
-                return DSGRuntimeData.Teams[DSGRuntimeData.SelectedTeamIndex] = new Team();
-            }
 
-            return DSGRuntimeData.Teams[DSGRuntimeData.SelectedTeamIndex];
+            int index = DSGRuntimeData.SelectedTeamIndex;
+            return DSGRuntimeData.Teams[index] ??= new Team();
         }
 
         public void SetSelectedTeam(int index)
@@ -311,18 +273,12 @@ namespace LUP.DSG
             if (DSGRuntimeData == null) return null;
 
             DSGRuntimeData.SelectedTeamIndex = index;
-
-            if (DSGRuntimeData.Teams[index] == null)
-            {
-                return DSGRuntimeData.Teams[index] = new Team();
-            }
-
-            return DSGRuntimeData.Teams[DSGRuntimeData.SelectedTeamIndex];
+            return DSGRuntimeData.Teams[index] ??= new Team();
         }
 
         public CharacterInfo GetOwnedCharacterById(int id)
         {
-            if (DSGRuntimeData == null || DSGRuntimeData.OwnedCharacterList == null) return null;
+            if (DSGRuntimeData?.OwnedCharacterList == null) return null;
 
             List<CharacterInfo> ownedList = DSGRuntimeData.OwnedCharacterList;
             for(int i = 0; i < ownedList.Count; ++i)

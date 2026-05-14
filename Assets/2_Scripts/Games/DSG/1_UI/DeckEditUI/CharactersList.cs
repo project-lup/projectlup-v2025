@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LUP.DSG.Utils.Enums;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,14 +12,21 @@ namespace LUP.DSG
         [SerializeField]
         private Transform contentParent;
 
-        Dictionary<int, bool> selectedOwnedMap = new Dictionary<int, bool>();
+        private readonly Dictionary<int, bool> selectedOwnedMap = new Dictionary<int, bool>();
         private readonly List<CharacterIcon> iconPool = new List<CharacterIcon>();
 
         private int activeCount = 0;
 
-        // 외부(FormationView)에서 주입받는 콜백
-        public Action<int, CharacterSelectButton> OnIconSelected;
-        public Action<int, CharacterSelectButton> OnIconDeselected;
+        private Action<int, CharacterSelectButton> OnIconSelected;
+        private Action<int, CharacterSelectButton> OnIconDeselected;
+
+        public void BindCallbacks(
+          Action<int, CharacterSelectButton> onSelected,
+          Action<int, CharacterSelectButton> onDeselected)
+        {
+            OnIconSelected = onSelected;
+            OnIconDeselected = onDeselected;
+        }
 
         public void ResetSelectedStatus()
         {
@@ -26,8 +34,8 @@ namespace LUP.DSG
 
             for (int i = 0; i < iconPool.Count; i++)
             {
-                if (iconPool[i] == null || iconPool[i].selectedButton == null) continue;
-                iconPool[i].selectedButton.SetSelected(false);
+                if (iconPool[i]?.selectedButton != null)
+                    iconPool[i].selectedButton.SetSelected(false);
             }
         }
 
@@ -36,7 +44,7 @@ namespace LUP.DSG
             if (info == null || typeIcon.typeIcon == null) return;
 
             CharacterIcon icon = GetOrCreateIcon();
-            if (icon == null || icon.selectedButton == null) return;
+            if (icon?.selectedButton == null) return;
 
             icon.transform.SetParent(contentParent, false);
             icon.gameObject.SetActive(true);
@@ -60,9 +68,7 @@ namespace LUP.DSG
             {
                 if (iconPool[i] == null) continue;
 
-                if (iconPool[i].selectedButton != null)
-                    iconPool[i].selectedButton.SetSelected(false);
-
+                iconPool[i].selectedButton?.SetSelected(false);
                 iconPool[i].gameObject.SetActive(false);
             }
 
@@ -71,26 +77,21 @@ namespace LUP.DSG
 
         private CharacterIcon GetOrCreateIcon()
         {
-            CharacterIcon icon;
             if (activeCount < iconPool.Count)
-            {
-                icon = iconPool[activeCount];
-                activeCount++;
-                return icon;
-            }
+                return iconPool[activeCount++];
 
             if (iconPrefab == null || contentParent == null)
                 return null;
 
             GameObject newIcon = Instantiate(iconPrefab, contentParent);
-            icon = newIcon.GetComponent<CharacterIcon>();
+            CharacterIcon icon = newIcon.GetComponent<CharacterIcon>();
             if (icon == null)
             {
                 Destroy(newIcon);
                 return null;
             }
 
-            icon.Init(OnIconSelected, OnIconDeselected);
+            icon.Init(OnIconSelected, OnIconDeselected, UpdateCheckedList);
             iconPool.Add(icon);
             activeCount++;
             return icon;

@@ -30,10 +30,5 @@ namespace LUP.DSG
             int intValue = UnsafeUtility.EnumToInt(trait);
             return (mask & (1 << intValue)) != 0;
         }
-
-        public int GetFilterMask<T>() where T : unmanaged, Enum
-        {
-            return filterMasks.TryGetValue(typeof(T), out int mask) ? mask : 0;
-        }
     }
 }

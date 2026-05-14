@@ -1,7 +1,6 @@
 using LUP.DSG.Utils.Enums;
 using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,18 +14,17 @@ namespace LUP.DSG
         private Image attributeIcon;
         [SerializeField]
         private TextMeshProUGUI level;
-
-        public CharacterSelectButton selectedButton;
-
-        private int characterId;
-
-        public Action<int, CharacterSelectButton> OnSelected;
-        public Action<int, CharacterSelectButton> OnDeselected;
-
         [SerializeField]
         private float iconWidth = 400f;
         [SerializeField]
         private float iconHeight = 800f;
+
+        public CharacterSelectButton selectedButton;
+
+        private int characterId;
+        private Action<int, CharacterSelectButton> OnSelected;
+        private Action<int, CharacterSelectButton> OnDeselected;
+        private Action<int, bool> OnCheckedChanged;
 
         private void OnEnable()
         {
@@ -37,18 +35,14 @@ namespace LUP.DSG
         {
             IconBootstrapper.OnAllIconsGenerated -= RefreshIcon;
         }
-        public void Init(Action<int, CharacterSelectButton> onSelected,
-                         Action<int, CharacterSelectButton> onDeselected)
+        public void Init(
+            Action<int, CharacterSelectButton> onSelected,
+            Action<int, CharacterSelectButton> onDeselected,
+            Action<int, bool> onCheckedChanged)
         {
-            //FormationView formationView = FindAnyObjectByType<FormationView>();
-            //if(formationView != null)
-            //{
-            //    OnSelected = formationView.RequestPlaceCharacter;
-            //    OnDeselected = formationView.RequestReleaseCharacter;
-            //}
-
             OnSelected = onSelected;
             OnDeselected = onDeselected;
+            OnCheckedChanged = onCheckedChanged;
 
             selectedButton.Init();
             selectedButton.button.onClick.AddListener(OnButtonClicked);
@@ -79,41 +73,26 @@ namespace LUP.DSG
         public void OnButtonClicked()
         {
             if (selectedButton.isSelected)
-            {
                 OnDeselected?.Invoke(characterId, selectedButton);
-            }
             else
-            {
                 OnSelected?.Invoke(characterId, selectedButton);
-            }
 
-            CharactersList charactersList = gameObject.GetComponentInParent<CharactersList>();
-            if (charactersList != null)
-            {
-                charactersList.UpdateCheckedList(characterId, selectedButton.isSelected);
-            }
+            OnCheckedChanged?.Invoke(characterId, selectedButton.isSelected);
         }
         private void RefreshIcon()
         {
             if (CharacterIconCache.TryGetByCharacterId(characterId, out var sprite))
             {
-                Debug.Log($"[CharacterIcon] Refresh 성공: {characterId}");
-
                 portrait.sprite = sprite;
                 portrait.color = Color.white;
                 portrait.preserveAspect = true;
                 
             }
-            else
-            {
-                Debug.LogWarning($"[CharacterIcon] Refresh 실패(아직 없음): {characterId}");
-            }
-
         }
 
         public void SetIconRectSize(float width, float height)
         {
-            var rt = portrait.rectTransform;
+            RectTransform rt = portrait.rectTransform;
 
             rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
             rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
