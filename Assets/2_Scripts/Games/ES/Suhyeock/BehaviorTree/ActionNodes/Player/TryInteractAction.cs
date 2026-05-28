@@ -29,8 +29,9 @@ namespace LUP.ES
                 return NodeState.Failure;
             }
 
-            target.HideInteractionPrompt();
-            target.ShowInteractionTimerUI();
+            blackboard.eventBroker.UpdateInteractionPrompt(false);
+            blackboard.eventBroker.UpdateInteractionTimer(0f, 1f);
+
             blackboard.interactingObject = target;
             blackboard.StartCoroutine(LookAtTargert(target));
             blackboard.moveState = MoveState.INTERACTING;

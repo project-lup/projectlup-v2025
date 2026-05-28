@@ -11,6 +11,8 @@ namespace LUP.ES
         private SphereCollider detectionCollider;
         private List<IInteractable> nearbyInteractables = new List<IInteractable>();
 
+        private IInteractable currentNearest = null;
+
         private void Start()
         {
             eventBroker = FindAnyObjectByType<EventBroker>();
@@ -22,7 +24,6 @@ namespace LUP.ES
         {
             if(other.TryGetComponent(out IInteractable interactable))
             {
-                interactable.ShowInteractionPrompt();
                 nearbyInteractables.Add(interactable);
                 Debug.Log("Count: " + nearbyInteractables.Count);
             }
@@ -33,13 +34,32 @@ namespace LUP.ES
             if (other.TryGetComponent(out IInteractable interactable))
             {
                 eventBroker.CloseLootDisplay();
-                //lootDisplayCenter.CloseLootPanel();
-                interactable.HideInteractionPrompt();
-                interactable.HideInteractionTimerUI();
                 nearbyInteractables.Remove(interactable);
             }
         }
-   
+
+        private void Update()
+        {
+            IInteractable nearest = GetNearestInteractable();
+
+            // 타겟이 바뀌었을 때만 EventBroker에 방송합니다 (최적화)
+            if (nearest != currentNearest)
+            {
+                currentNearest = nearest;
+
+                if (currentNearest != null && currentNearest.CanInteract())
+                {
+                    // 타겟이 존재하면 "UI 켜라!" 방송
+                    eventBroker.UpdateInteractionPrompt(true, currentNearest.transform);
+                }
+                else
+                {
+                    // 타겟이 범위에서 벗어났거나, 상호작용 불가능해지면 "UI 꺼라!" 방송
+                    eventBroker.UpdateInteractionPrompt(false);
+                }
+            }
+        }
+
         public IInteractable GetNearestInteractable()
         {
             if (nearbyInteractables.Count == 0)

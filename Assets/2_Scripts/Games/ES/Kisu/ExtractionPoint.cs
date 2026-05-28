@@ -41,7 +41,6 @@ namespace LUP.ES
         void Start()
         {
             vfxObjectPool = FindFirstObjectByType<VFXObjectPool>();
-            interactionUI = GetComponent<InteractionUIController>();
             eventBroker = FindAnyObjectByType<EventBroker>();
             // 초기 상태 설정
             if (progressCircle != null)
@@ -65,7 +64,6 @@ namespace LUP.ES
                 PlayOpenFX();
 
                 ShowTimerTextObject();
-                HideInteractionPrompt();
             }
 
             currentTime -= deltaTime;
@@ -121,11 +119,6 @@ namespace LUP.ES
 
             HideTimerTextObject();
         }
-
-        public void ShowInteractionPrompt() { if (!isExtracted) interactionUI.ShowInteractionPrompt(); }
-        public void HideInteractionPrompt() { interactionUI.HideInteractionPrompt(); }
-        public void ShowInteractionTimerUI() { }
-        public void HideInteractionTimerUI() { }
 
         private void UpdateInteractionTimerText(float remainTime)
         {

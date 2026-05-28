@@ -12,7 +12,6 @@ namespace LUP.ES
 
         public override NodeState Evaluate()
         {
-            blackboard.interactingObject.HideInteractionTimerUI();
             blackboard.interactingObject.ResetInteraction();
             blackboard.ResetInteractionState();
             return NodeState.Success;

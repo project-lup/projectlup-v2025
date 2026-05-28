@@ -40,8 +40,8 @@ namespace LUP.ES
                     default:
                         break;
                 }
-                blackboard.playerOverheadUI.UpdateAmmoUI();
-                
+                blackboard.eventBroker.UpdatePlayerHP(blackboard.healthComponent.HP, blackboard.healthComponent.MaxHP);
+
                 return NodeState.Running;
             }
 

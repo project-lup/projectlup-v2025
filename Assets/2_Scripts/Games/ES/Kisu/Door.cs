@@ -16,7 +16,6 @@ namespace LUP.ES
 
         [Header("참조")]
         public EventBroker eventBroker;
-        private InteractionUIController interactionUI;
 
         public bool isOpening;
         public bool IsOpening() { return isOpening; }
@@ -26,21 +25,9 @@ namespace LUP.ES
         public bool InterruptsOnMove => true;
         public bool CanInteract() => !isOpening && !isOpened;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-            interactionUI = GetComponent<InteractionUIController>();
-            HideInteractionPrompt();
-        }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
         public void Interact()
         {
-            HideInteractionPrompt();
-            HideInteractionTimerUI();
 
             Debug.Log("문 열림!!!");
             isOpened = true;
@@ -73,15 +60,13 @@ namespace LUP.ES
                 isOpening = true;
                 currentTime = OpenDoorTime;
 
-                ShowInteractionTimerUI();
-                HideInteractionPrompt();
-
                 return false;
             }
 
             currentTime -= deltaTime;
 
-            interactionUI.UpdateInteractionTimerUI(OpenDoorTime, currentTime);
+            eventBroker.UpdateInteractionTimer(OpenDoorTime - currentTime, OpenDoorTime);
+
             if (currentTime < 0.0f)
             {
                 Interact();
@@ -94,28 +79,7 @@ namespace LUP.ES
         {
             isOpening = false;
             currentTime = 0.0f;
-        }
-
-        public void ShowInteractionPrompt()
-        {
-            if(!isOpened)
-            {
-                interactionUI.ShowInteractionPrompt();
-            } 
-        }
-        public void HideInteractionPrompt()
-        {
-            interactionUI.HideInteractionPrompt();
-        }
-
-        public  void ShowInteractionTimerUI()
-        {
-            interactionUI.ShowInteractionTimerUI();
-        }
-
-        public void HideInteractionTimerUI()
-        {
-            interactionUI.HideInteractionTimerUI();
+            eventBroker.UpdateInteractionTimer(0f, OpenDoorTime);
         }
     }
 }

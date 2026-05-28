@@ -19,7 +19,7 @@ namespace LUP.ES
             if (isDeathHandled == false)
             {
                 isDeathHandled = true;
-                blackboard.playerOverheadUI.UpdateHPUI();
+                blackboard.eventBroker.UpdatePlayerHP(blackboard.healthComponent.HP, blackboard.healthComponent.MaxHP);
                 MonoBehaviour agent = blackboard.gameObject.GetComponent<MonoBehaviour>();
                 agent.StartCoroutine(ShowResultRoutine());
                 if (blackboard.animator != null)

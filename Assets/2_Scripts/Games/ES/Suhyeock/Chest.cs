@@ -17,7 +17,7 @@ namespace LUP.ES
 
         private EventBroker eventBroker;
         public ItemCenter itemCenter;
-        private InteractionUIController InteractionUIController;
+
         private float currentTime = 0.0f;
         [SerializeField]
         private float interactionDuration = 5.0f;
@@ -34,7 +34,6 @@ namespace LUP.ES
         {
             eventBroker = FindAnyObjectByType<EventBroker>();
             itemCenter = FindAnyObjectByType<ItemCenter>();
-            InteractionUIController = GetComponent<InteractionUIController>();
 
             Vector3 originalScale = transform.localScale;
             transform.localScale = Vector3.zero;
@@ -57,8 +56,6 @@ namespace LUP.ES
 
             eventBroker.OpenLootDisplay(dropItems);
             eventBroker.HandleIventoryVisibility(true);
-            HideInteractionTimerUI();
-            ShowInteractionPrompt();
             isInteracted = true;
 
             SoundManager.Instance.PlaySFX("ChestOpen", gameObject);
@@ -82,7 +79,7 @@ namespace LUP.ES
             }
 
             currentTime -= deltaTime;
-            InteractionUIController.UpdateInteractionTimerUI(interactionDuration, currentTime);
+            eventBroker.UpdateInteractionTimer(interactionDuration - currentTime, interactionDuration);
 
             if (currentTime < 0.0f)
             {
@@ -101,35 +98,7 @@ namespace LUP.ES
             StopOpenFX(); // 기수 추가한 코드
 
             currentTime = 0.0f;
-        }
-
-        public void ShowInteractionPrompt()
-        {
-            InteractionUIController.ShowInteractionPrompt();
-        }
-
-        public void HideInteractionPrompt()
-        {
-            InteractionUIController.HideInteractionPrompt();
-            if (isInteracted && (dropItems == null || dropItems.Count == 0))
-            {
-                isInteracting = true;
-                transform.DOScale(Vector3.zero, 0.5f)
-                    .SetEase(Ease.InBack)
-                    .OnComplete(() => {
-                        Destroy(gameObject);
-                    });
-            }
-        }
-
-        public void ShowInteractionTimerUI()
-        {
-            InteractionUIController.ShowInteractionTimerUI();
-        }
-
-        public void HideInteractionTimerUI()
-        {
-            InteractionUIController.HideInteractionTimerUI();
+            eventBroker.UpdateInteractionTimer(0f, interactionDuration);
         }
 
         // 기수 추가한 코드

@@ -84,11 +84,10 @@ namespace LUP.ES
 
             if (other.gameObject.CompareTag(targetTag))
             {
-                if (other.TryGetComponent(out HealthComponent healthComponent))
+                if (other.TryGetComponent(out IDamageable damageableTarget))
                 {
-                    healthComponent.TakeDamage(damage);
+                    damageableTarget.TakeDamage(damage);
                     Deactivate();
-                    //ownerPool.Return(gameObject);
                 }
             }
 

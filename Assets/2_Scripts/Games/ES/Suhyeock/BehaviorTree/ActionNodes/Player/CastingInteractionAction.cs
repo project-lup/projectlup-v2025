@@ -59,7 +59,6 @@ namespace LUP.ES
         {
             if (blackboard.interactingObject != null)
             {
-                blackboard.interactingObject.HideInteractionTimerUI();
                 blackboard.interactingObject.ResetInteraction();
                 blackboard.ResetInteractionState();
 

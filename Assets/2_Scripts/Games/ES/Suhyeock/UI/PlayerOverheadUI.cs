@@ -32,9 +32,19 @@ namespace LUP.ES
         {
             eventBroker = FindAnyObjectByType<EventBroker>();
             eventBroker.OnReloadTimeUpdate += UpdateReloadUI;
+            eventBroker.OnPlayerHPUpdated += UpdateHPUI;
             mainCamera = Camera.main;
 
             Init();
+        }
+
+        private void OnDestroy()
+        {
+            if (eventBroker != null)
+            {
+                eventBroker.OnReloadTimeUpdate -= UpdateReloadUI;
+                eventBroker.OnPlayerHPUpdated -= UpdateHPUI;
+            }
         }
 
         private void LateUpdate()
@@ -66,7 +76,7 @@ namespace LUP.ES
             {
                 hpSlider.maxValue = 1f;
                 hpSlider.minValue = 0f;
-                UpdateHPUI();
+                UpdateHPUI(blackboard.healthComponent.HP, blackboard.healthComponent.MaxHP);
             }
 
             if (ammoSlider != null)
@@ -76,13 +86,13 @@ namespace LUP.ES
                 //UpdateAmmoUI();
             }
         }
-
-        public void UpdateHPUI()
+        public void UpdateHPUI(float currentHP, float maxHP)
         {
-            float hpRatio = blackboard.healthComponent.HP / blackboard.healthComponent.MaxHP;
+            if (maxHP <= 0) return; // 방어 코드
+            float hpRatio = currentHP / maxHP;
             hpSlider.DOValue(hpRatio, 0.2f).SetEase(Ease.OutCubic);
-            //hpSlider.value = hpRatio;
         }
+
 
         public void UpdateAmmoUI()
         {
