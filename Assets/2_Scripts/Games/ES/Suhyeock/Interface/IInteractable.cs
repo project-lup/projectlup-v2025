@@ -11,13 +11,6 @@ namespace LUP.ES
         void Interact();
         void ResetInteraction();
 
-        void ShowInteractionPrompt();
-        void HideInteractionPrompt();
-
-        void ShowInteractionTimerUI();
-
-        void HideInteractionTimerUI();
-
         Transform transform { get; }
     }
 }

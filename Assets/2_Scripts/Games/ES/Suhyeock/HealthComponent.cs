@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LUP.ES
 {
-    public class HealthComponent : MonoBehaviour
+    public class HealthComponent : MonoBehaviour, IDamageable
     {
         public float HP = 0.0f;
         public float MaxHP = 100.0f;

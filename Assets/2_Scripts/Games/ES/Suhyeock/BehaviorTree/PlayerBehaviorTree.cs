@@ -15,8 +15,6 @@ namespace LUP.ES
         {
             characterController = GetComponent<CharacterController>();
             blackboard = GetComponent<PlayerBlackboard>();
-            blackboard.playerOverheadUI = GetComponent<PlayerOverheadUI>();
-            
         }
         void Start()
         {

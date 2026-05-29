@@ -7,6 +7,8 @@ namespace LUP.ES
     {
         private GameObject bullletPrefab;
         public int initialSize = 20;
+        private int currentCreatedCount = 0;
+
         Queue<GameObject> pool = new Queue<GameObject>();
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         public void Init(GameObject bullletPrefab)
@@ -14,25 +16,28 @@ namespace LUP.ES
             this.bullletPrefab = bullletPrefab;
             for (int i = 0; i < initialSize; i++)
             {
-                GameObject bullet = Instantiate(bullletPrefab);
-                bullet.SetActive(false);
-                pool.Enqueue(bullet);
+                CreateNewBullet();
             }
+        }
+
+        private void CreateNewBullet()
+        {
+            GameObject bullet = Instantiate(bullletPrefab);
+            bullet.SetActive(false);
+            pool.Enqueue(bullet);
+            currentCreatedCount++;
         }
 
         public GameObject Get()
         {
             if (pool.Count == 0)
             {
-                GameObject newBullet = Instantiate(bullletPrefab);
-                newBullet.SetActive(false);
-                pool.Enqueue(newBullet);
+                CreateNewBullet();
             }
 
             GameObject bullet = pool.Dequeue();
             bullet.SetActive(true);
             return bullet;
-
         }
 
         public void Return(GameObject bullet)
@@ -48,7 +53,7 @@ namespace LUP.ES
                 GameObject bullet = pool.Dequeue();
                 if (bullet != null)
                 {
-                    UnityEngine.GameObject.Destroy(bullet);
+                    Destroy(bullet);
                 }
             }
         }

@@ -13,6 +13,10 @@ namespace LUP.ES
         public Action OnCloseLootDisplay;
 
         public Action<float, float> OnReloadTimeUpdate;
+        public Action<float, float> OnPlayerHPUpdated;
+
+        public Action<bool, Transform> OnInteractionPromptStateChanged; // 프롬프트 켜기/끄기 및 대상 위치
+        public Action<float, float> OnInteractionTimerUpdated;
 
         // 기수 추가한 코드
         public Action ExtractionSuccess;
@@ -50,6 +54,21 @@ namespace LUP.ES
         {
             Debug.Log("EventBroker: Extraction Success Triggered!");
             ExtractionSuccess?.Invoke();
+        }
+
+        public void UpdatePlayerHP(float currentHP, float maxHP)
+        {
+            OnPlayerHPUpdated?.Invoke(currentHP, maxHP);
+        }
+
+        public void UpdateInteractionPrompt(bool isVisible, Transform targetTransform = null)
+        {
+            OnInteractionPromptStateChanged?.Invoke(isVisible, targetTransform);
+        }
+
+        public void UpdateInteractionTimer(float currentTime, float maxTime)
+        {
+            OnInteractionTimerUpdated?.Invoke(currentTime, maxTime);
         }
     }
 }

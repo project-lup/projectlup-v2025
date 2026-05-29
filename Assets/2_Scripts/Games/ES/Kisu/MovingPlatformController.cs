@@ -14,15 +14,14 @@ namespace LUP.ES
         public bool isInteracting { get; private set; } = false;
         public float currentInteractionTime { get; private set; } = 0f;
 
-        [Header("참조")]
-        private InteractionUIController interactionUI;
+        private EventBroker eventBroker;
 
         public bool InterruptsOnMove => true;
         public bool CanInteract() => !isInteracting;
 
         void Start()
         {
-            interactionUI = GetComponent<InteractionUIController>();
+            eventBroker = FindAnyObjectByType<EventBroker>();
             //HideInteractionPrompt();
         }
 
@@ -31,7 +30,6 @@ namespace LUP.ES
             // 상호작용 시작, 타이머 UI 표시
             isInteracting = true;
             currentInteractionTime = interactionDuration;
-            ShowInteractionTimerUI();
             Debug.Log("엘리베이터 상호작용 시작!");
         }
 
@@ -44,12 +42,11 @@ namespace LUP.ES
             }
 
             currentInteractionTime -= deltaTime;
-            interactionUI.UpdateInteractionTimerUI(interactionDuration, currentInteractionTime);
+            eventBroker.UpdateInteractionTimer(interactionDuration - currentInteractionTime, interactionDuration);
 
             if (currentInteractionTime <= 0f)
             {
                 isInteracting = false;
-                HideInteractionTimerUI();
 
                 // 타이머 완료 시 실제 엘리베이터 이동
                 if (platform != null)
@@ -67,25 +64,5 @@ namespace LUP.ES
             currentInteractionTime = 0f;
         }
 
-        public void ShowInteractionPrompt()
-        {
-            if (!isInteracting)
-                interactionUI.ShowInteractionPrompt();
-        }
-
-        public void HideInteractionPrompt()
-        {
-            interactionUI.HideInteractionPrompt();
-        }
-
-        public void ShowInteractionTimerUI()
-        {
-            interactionUI.ShowInteractionTimerUI();
-        }
-
-        public void HideInteractionTimerUI()
-        {
-            interactionUI.HideInteractionTimerUI();
-        }
     }
 }

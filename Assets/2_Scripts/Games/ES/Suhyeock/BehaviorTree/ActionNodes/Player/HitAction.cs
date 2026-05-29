@@ -16,7 +16,9 @@ namespace LUP.ES
             blackboard.healthComponent.isHit = false;
             blackboard.eventBroker.CloseLootDisplay();
             blackboard.eventBroker.HandleIventoryVisibility(false);
-            blackboard.playerOverheadUI.UpdateHPUI();
+            //blackboard.playerOverheadUI.UpdateHPUI();
+
+            blackboard.eventBroker.UpdatePlayerHP(blackboard.healthComponent.HP, blackboard.healthComponent.MaxHP);
             if (blackboard.animator != null)
             {
                 blackboard.animator.SetBool("IsInteracting", false);

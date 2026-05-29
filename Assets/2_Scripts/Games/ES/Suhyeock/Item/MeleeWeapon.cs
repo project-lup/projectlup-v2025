@@ -63,11 +63,10 @@ namespace LUP.ES
                 if (angle < data.attackAngle * 0.5f)
                 {
                     Debug.Log("In Angle");
-                    HealthComponent healthComponent = target.GetComponent<HealthComponent>();
-                    if (healthComponent)
+                    if (target.TryGetComponent(out IDamageable damageableTarget))
                     {
                         Debug.Log("Melee Attack");
-                        healthComponent.TakeDamage(data.damage);
+                        damageableTarget.TakeDamage(data.damage);
                     }
                 }
             }

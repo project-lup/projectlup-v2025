@@ -15,32 +15,43 @@ namespace LUP.ES
 
         private Image InteractionTimerUIImage;
         private Image InteractionTimerImage;
-
         private Image InteractionPromptImage;
+
         private Camera MainCamera;
+        private EventBroker eventBroker;
+        private Transform currentTargetTransform;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             InteractionCanvas = GameObject.FindWithTag("InteractionCanvas");
             MainCamera = Camera.main;
+            eventBroker = FindAnyObjectByType<EventBroker>();
+
+            // ? [추가] EventBroker 구독 (UI 갱신을 외부에서 수신)
+            if (eventBroker != null)
+            {
+                eventBroker.OnInteractionPromptStateChanged += HandlePromptState;
+                eventBroker.OnInteractionTimerUpdated += HandleTimerUpdate;
+            }
+
             InitUI();
         }
 
-        private void FixedUpdate()
+        private void OnDestroy()
         {
-            if (InteractionPromptImage.IsActive() == true)
+            if (eventBroker != null)
             {
-                Vector3 ScreenPostion = MainCamera.WorldToScreenPoint(transform.position);
-                ScreenPostion.y += YOffset;
-                InteractionPromptImage.rectTransform.position = ScreenPostion;
+                eventBroker.OnInteractionPromptStateChanged -= HandlePromptState;
+                eventBroker.OnInteractionTimerUpdated -= HandleTimerUpdate;
             }
         }
+
         void InitUI()
         {
             GameObject UIInstance1 = Instantiate(InteractionPromptPrefab, InteractionCanvas.transform);
             InteractionPromptImage = UIInstance1.GetComponent<Image>();
-            HideInteractionPrompt();
+            InteractionPromptImage.gameObject.SetActive(false);
 
             GameObject UIInstance2 = Instantiate(InteractionTimerPrefab, InteractionCanvas.transform);
             InteractionTimerUIImage = UIInstance2.GetComponent<Image>();
@@ -48,34 +59,59 @@ namespace LUP.ES
             Transform child = UIInstance2.transform.Find("InteractionTimer");
             InteractionTimerImage = child.GetComponent<Image>();
             InteractionTimerImage.fillAmount = 1;
-            HideInteractionTimerUI();
-
-        }
-
-        public void UpdateInteractionTimerUI(float interactionDuration, float currentTime)
-        {
-            InteractionTimerImage.fillAmount = currentTime / interactionDuration;
-            //Debug.Log(InteractionTimerImage.fillAmount);
-        }
-
-        public void ShowInteractionPrompt()
-        {
-            InteractionPromptImage.gameObject.SetActive(true);
-        }
-
-        public void HideInteractionPrompt()
-        {
-            InteractionPromptImage.gameObject.SetActive(false);
-        }
-
-        public void ShowInteractionTimerUI()
-        {
-            InteractionTimerUIImage.gameObject.SetActive(true);
-        }
-
-        public void HideInteractionTimerUI()
-        {
             InteractionTimerUIImage.gameObject.SetActive(false);
+
+        }
+
+        // [추가] EventBroker에서 프롬프트 켜기/끄기 신호가 올 때 실행됨
+        private void HandlePromptState(bool isVisible, Transform targetTransform)
+        {
+            if (isVisible)
+            {
+                currentTargetTransform = targetTransform;
+                InteractionPromptImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                currentTargetTransform = null;
+                InteractionPromptImage.gameObject.SetActive(false);
+                InteractionTimerUIImage.gameObject.SetActive(false); // 타겟이 사라지면 타이머도 강제 종료
+            }
+        }
+
+        // [추가] EventBroker에서 타이머 갱신 신호가 올 때 실행됨
+        private void HandleTimerUpdate(float currentTime, float maxTime)
+        {
+            if (maxTime <= 0) return;
+
+            // 타이머가 진행 중일 때만 UI 켜기
+            if (currentTime > 0 && currentTime < maxTime)
+            {
+                InteractionTimerUIImage.gameObject.SetActive(true);
+                InteractionTimerImage.fillAmount = currentTime / maxTime;
+            }
+            else
+            {
+                InteractionTimerUIImage.gameObject.SetActive(false);
+            }
+        }
+
+        private void LateUpdate()
+        {
+            // 타겟이 존재하고 프롬프트가 켜져 있을 때만 위치 추적
+            if (currentTargetTransform != null && InteractionPromptImage.gameObject.activeSelf)
+            {
+                Vector3 ScreenPostion = MainCamera.WorldToScreenPoint(currentTargetTransform.position);
+                ScreenPostion.y += YOffset;
+
+                InteractionPromptImage.rectTransform.position = ScreenPostion;
+
+                // 타이머 UI가 켜져있다면 동일한 위치(또는 살짝 위)로 따라가게 설정
+                if (InteractionTimerUIImage.gameObject.activeSelf)
+                {
+                    InteractionTimerUIImage.rectTransform.position = ScreenPostion;
+                }
+            }
         }
     }
 }

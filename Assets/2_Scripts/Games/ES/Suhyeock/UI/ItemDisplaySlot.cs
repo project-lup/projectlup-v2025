@@ -20,6 +20,14 @@ namespace LUP.ES
         {
             acquireButton.onClick.AddListener(AcquireItemToInventory);
         }
+
+        private void OnDestroy()
+        {
+            if (acquireButton != null)
+            {
+                acquireButton.onClick.RemoveListener(AcquireItemToInventory);
+            }
+        }
         public void SetInventory(Inventory inventory)
         {
             this.inventory = inventory;

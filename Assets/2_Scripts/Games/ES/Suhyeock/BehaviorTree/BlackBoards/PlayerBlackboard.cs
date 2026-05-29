@@ -37,8 +37,7 @@ namespace LUP.ES
         public bool isInteractionButtonPressed = false;
         [HideInInspector]
         public bool isReloadButtonPressed = false;
-        [HideInInspector]
-        public PlayerOverheadUI playerOverheadUI;
+
         [HideInInspector]
         public WeaponEquip weaponEquip;
         [HideInInspector]
