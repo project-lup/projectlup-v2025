@@ -73,10 +73,15 @@ namespace LUP.ES
             
             Selector handleActionsSelector = new Selector(new List<BTNode> { handleReloadSequence, handleAttackSequence });
        
-            MovingCondition movingCondition = new MovingCondition(blackboard);
+            //MovingCondition movingCondition = new MovingCondition(blackboard);
             MoveAction moveAction = new MoveAction(blackboard, characterController);
             UpdateAimDirectionAction updateAimDirectionAction = new UpdateAimDirectionAction(blackboard);
-            Parallel combatParallel = new Parallel(new List<BTNode> { updateAimDirectionAction, handleActionsSelector, moveAction });
+
+            Parallel combatParallel = new Parallel(new List<BTNode> { 
+                updateAimDirectionAction, 
+                handleActionsSelector, 
+                moveAction 
+            });
 
 
             rootNode = new Selector(new List<BTNode>
