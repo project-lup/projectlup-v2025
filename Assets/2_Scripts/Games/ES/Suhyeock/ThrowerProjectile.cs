@@ -12,7 +12,7 @@ namespace LUP.ES
         private BulletObjectPool ownerPool;
         private VFXObjectPool vfxObjectPool;
 
-        [SerializeField] private GameObject explosionPrefab; // 이펙트 프리팹 연결
+        [SerializeField] private string explosionEffectName = "ExplosionEffect"; // 이펙트 프리팹 연결
         //[SerializeField] private float vfxDuration = 2.0f;   // 이펙트가 유지될 시간
         [SerializeField] private float scaleMultiplier = 1.5f; // 크기 보정값 (아래 설명 참고)
 
@@ -69,10 +69,13 @@ namespace LUP.ES
 
         private void SpawnExplosionVFX()
         {
-            if (explosionPrefab != null)
+            if (!string.IsNullOrEmpty(explosionEffectName))
             {
-                GameObject instance = vfxObjectPool.SpawnVFX(explosionPrefab, transform.position);
-                instance.transform.localScale = Vector3.one * scaleMultiplier;
+                GameObject instance = vfxObjectPool.SpawnVFX(explosionEffectName, transform.position);
+                if (instance != null)
+                {
+                    instance.transform.localScale = Vector3.one * scaleMultiplier;
+                }
                 //GameObject vfxInstance = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
                 //vfxInstance.transform.localScale = Vector3.one * radius * scaleMultiplier;

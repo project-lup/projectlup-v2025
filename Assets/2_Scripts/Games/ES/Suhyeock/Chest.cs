@@ -52,7 +52,7 @@ namespace LUP.ES
                 dropItems = itemCenter.GenerateLoot();
             }
 
-            StopOpenFX(); // 기수 추가한 코드
+            StopOpenFX();
 
             eventBroker.OpenLootDisplay(dropItems);
             eventBroker.HandleIventoryVisibility(true);
@@ -79,7 +79,9 @@ namespace LUP.ES
             }
 
             currentTime -= deltaTime;
-            eventBroker.UpdateInteractionTimer(interactionDuration - currentTime, interactionDuration);
+            eventBroker.UpdateInteractionTimer(
+                interactionDuration - currentTime, 
+                interactionDuration);
 
             if (currentTime < 0.0f)
             {
@@ -87,7 +89,6 @@ namespace LUP.ES
             
                 return true;
             }
-
             return false;
         }
 

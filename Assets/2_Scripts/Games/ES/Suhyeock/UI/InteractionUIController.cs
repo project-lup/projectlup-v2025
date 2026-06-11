@@ -24,20 +24,20 @@ namespace LUP.ES
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            InteractionCanvas = GameObject.FindWithTag("InteractionCanvas");
-            MainCamera = Camera.main;
-            eventBroker = FindAnyObjectByType<EventBroker>();
-
-            // ? [추가] EventBroker 구독 (UI 갱신을 외부에서 수신)
+            {
+                InteractionCanvas = GameObject.FindWithTag("InteractionCanvas");
+                MainCamera = Camera.main;
+                eventBroker = FindAnyObjectByType<EventBroker>();
+            }
             if (eventBroker != null)
             {
                 eventBroker.OnInteractionPromptStateChanged += HandlePromptState;
                 eventBroker.OnInteractionTimerUpdated += HandleTimerUpdate;
             }
-
-            InitUI();
+            {
+                InitUI();
+            }
         }
-
         private void OnDestroy()
         {
             if (eventBroker != null)
@@ -79,21 +79,16 @@ namespace LUP.ES
             }
         }
 
-        // [추가] EventBroker에서 타이머 갱신 신호가 올 때 실행됨
         private void HandleTimerUpdate(float currentTime, float maxTime)
         {
             if (maxTime <= 0) return;
-
-            // 타이머가 진행 중일 때만 UI 켜기
             if (currentTime > 0 && currentTime < maxTime)
             {
                 InteractionTimerUIImage.gameObject.SetActive(true);
                 InteractionTimerImage.fillAmount = currentTime / maxTime;
             }
             else
-            {
                 InteractionTimerUIImage.gameObject.SetActive(false);
-            }
         }
 
         private void LateUpdate()

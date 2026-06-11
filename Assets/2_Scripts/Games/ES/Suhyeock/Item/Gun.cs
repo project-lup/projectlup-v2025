@@ -75,9 +75,10 @@ namespace LUP.ES
             }
 
             nextAttackTime = Time.time + weaponItem.data.timeBetAttack;
+            RangedWeaponItemData data = weaponItem.data as RangedWeaponItemData;
+
             GameObject obj = bulletPool.Get();
             Bullet bullet = obj.GetComponent<Bullet>();
-            RangedWeaponItemData data = weaponItem.data as RangedWeaponItemData;
             if (bullet != null)
             {
                 Quaternion shootRotation = aimPivot.rotation;
@@ -88,6 +89,20 @@ namespace LUP.ES
                 return true;
             }
             return false;
+
+            //GameObject obj = Instantiate(bulletPrefab, firePoint.position, aimPivot.rotation);
+            //Bullet bullet = obj.GetComponent<Bullet>();
+
+            //if (bullet != null)
+            //{
+            //    // 수정된 로직이므로 ownerPool(풀 매니저) 자리에 임시로 null을 넘깁니다.
+            //    bullet.Init(null, firePoint.position, aimPivot.rotation, data.range, data.damage, data.bulletSpeed);
+            //}
+
+            //SoundManager.Instance.PlaySFX("ARShot", gameObject);
+            //magAmmo--;
+            //cameraScript.Shake(0.08f, 0.03f);
+            //return true;
         }
 
         public override bool CanAttack()

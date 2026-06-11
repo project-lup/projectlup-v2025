@@ -8,7 +8,7 @@ namespace LUP.ES
     {
         [Header("Open FX")] // 기수 추가한 코드
         private VFXObjectPool vfxObjectPool;
-        public GameObject extractionFxPrefab; // 기수 추가한 코드
+        public string extractionFxName = "ExtractionOpenFX";// 기수 추가한 코드
         public Transform fxAnchor;  // 기수 추가한 코드
 
         private GameObject fxInstance;  // 기수 추가한 코드
@@ -132,9 +132,13 @@ namespace LUP.ES
 
         void PlayOpenFX()
         {
-            if (fxInstance != null || vfxObjectPool == null) return;
-            fxInstance = vfxObjectPool.SpawnVFX(extractionFxPrefab, transform.position, true);
-            fxInstance.transform.localScale = Vector3.one * 0.5f;
+            if (fxInstance != null || vfxObjectPool == null || string.IsNullOrEmpty(extractionFxName)) return;
+            fxInstance = vfxObjectPool.SpawnVFX(extractionFxName, transform.position, true);
+            if (fxInstance != null)
+            {
+                fxInstance.transform.localScale = Vector3.one * 0.5f;
+            }
+
             //fxInstance = Instantiate(extractionFxPrefab, fxAnchor.position, fxAnchor.rotation);
 
             //fxInstance.transform.localScale *= 0.5f;
@@ -151,8 +155,12 @@ namespace LUP.ES
         // 기수 추가한 코드
         void StopOpenFX()
         {
-            if (fxSystems == null || vfxObjectPool == null) return;
-            vfxObjectPool.DespawnVFX(extractionFxPrefab, fxInstance);
+            // 변경: fxSystems 배열 대신 fxInstance 여부로 안전하게 체크
+            if (fxInstance == null || vfxObjectPool == null) return;
+
+            // 변경: 문자열 이름으로 반환
+            vfxObjectPool.DespawnVFX(extractionFxName, fxInstance);
+            fxInstance = null;
 
             fxInstance = null;
             //foreach (var ps in fxSystems)

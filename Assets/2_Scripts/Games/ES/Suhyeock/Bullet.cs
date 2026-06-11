@@ -9,7 +9,7 @@ namespace LUP.ES
         [SerializeField] private ParticleSystem bulletBodyVFX;
         [SerializeField] private GameObject trailPrefab;
         [SerializeField] private float trailFadeTime = 0.5f; // 꼬리가 사라지는 시간
-        [SerializeField] private GameObject hitPrefab;
+        [SerializeField] private string hitEffectName = "HitEffect";
 
         [SerializeField]
         private string targetTag;
@@ -96,12 +96,25 @@ namespace LUP.ES
         private void Deactivate()
         {
             if (isDeactivating) return;
-            StartCoroutine(DeactivateRoutine());
-            if (vfxObjectPool != null)
+            isDeactivating = true;
+            if (vfxObjectPool != null && !string.IsNullOrEmpty(hitEffectName))
             {
-                vfxObjectPool.SpawnVFX(hitPrefab, transform.position);
+                vfxObjectPool.SpawnVFX(hitEffectName, transform.position);
             }
-            SoundManager.Instance.PlaySFX("GunHit",gameObject);
+            SoundManager.Instance.PlaySFX("GunHit", gameObject);
+            StartCoroutine(DeactivateRoutine());
+
+            //if (hitPrefab != null)
+            //{
+            //    GameObject vfx = Instantiate(hitPrefab, transform.position, Quaternion.identity);
+            //    // 1초 뒤에 파티클 오브젝트를 파괴하여 메모리 해제 부하 유발
+            //    Destroy(vfx, 1.0f);
+            //}
+
+            //SoundManager.Instance.PlaySFX("GunHit", gameObject);
+
+            //// 2. 오브젝트 풀에 반납(DeactivateRoutine)하지 않고 즉시 파괴 (Garbage 생성)
+            //Destroy(gameObject);
         }
 
         private IEnumerator DeactivateRoutine()

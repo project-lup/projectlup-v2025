@@ -16,7 +16,6 @@ namespace LUP.ES
         public Action<float, float> OnPlayerHPUpdated;
 
         public Action<bool, Transform> OnInteractionPromptStateChanged; // 프롬프트 켜기/끄기 및 대상 위치
-        public Action<float, float> OnInteractionTimerUpdated;
 
         // 기수 추가한 코드
         public Action ExtractionSuccess;
@@ -66,6 +65,7 @@ namespace LUP.ES
             OnInteractionPromptStateChanged?.Invoke(isVisible, targetTransform);
         }
 
+        public Action<float, float> OnInteractionTimerUpdated;
         public void UpdateInteractionTimer(float currentTime, float maxTime)
         {
             OnInteractionTimerUpdated?.Invoke(currentTime, maxTime);

@@ -45,9 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prewarmSettings:
-  - vfxPrefab: {fileID: 1835174905073365006, guid: adfd6c86cf180e64aaaa1bece2395926, type: 3}
+  - effectName: HitEffect
+    vfxPrefab: {fileID: 1835174905073365006, guid: adfd6c86cf180e64aaaa1bece2395926, type: 3}
     initialCount: 10
-  - vfxPrefab: {fileID: 9169863999176627214, guid: d80674d25b4036a43a9e0b72ed9f4fad, type: 3}
+  - effectName: ExplosionEffect
+    vfxPrefab: {fileID: 9169863999176627214, guid: d80674d25b4036a43a9e0b72ed9f4fad, type: 3}
     initialCount: 3
-  - vfxPrefab: {fileID: 7478731271839673279, guid: cde38135640cf684f8f168ecc901c9a3, type: 3}
+  - effectName: ExtractionOpenFX
+    vfxPrefab: {fileID: 7478731271839673279, guid: cde38135640cf684f8f168ecc901c9a3, type: 3}
     initialCount: 1

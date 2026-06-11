@@ -20,6 +20,8 @@ namespace LUP.ES
         private RectTransform uiRect;
         private Camera mainCamera;
         private PlayerBlackboard blackboard;
+        private float lastHpRatio = -1f;
+        private Tween currentHpTween;
 
         private void Awake()
         {
@@ -90,7 +92,13 @@ namespace LUP.ES
         {
             if (maxHP <= 0) return; // 방어 코드
             float hpRatio = currentHP / maxHP;
-            hpSlider.DOValue(hpRatio, 0.2f).SetEase(Ease.OutCubic);
+            if (Mathf.Abs(lastHpRatio - hpRatio) > 0.001f)
+            {
+                lastHpRatio = hpRatio;
+
+                currentHpTween?.Kill(); // 만약 이전 애니메이션이 덜 끝났다면 취소
+                currentHpTween = hpSlider.DOValue(hpRatio, 0.2f).SetEase(Ease.OutCubic);
+            }
         }
 
 

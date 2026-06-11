@@ -28,6 +28,11 @@ namespace LUP.ES
         void Update()
         {
             rootNode.Evaluate();
+
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                System.GC.Collect();
+            }
         }
         private void SetupBehaviorTree()
         {

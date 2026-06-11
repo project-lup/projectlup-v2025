@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace LUP.ES
     [System.Serializable]
     public struct VFXPoolSetting
     {
+        public string effectName;
         public GameObject vfxPrefab;
         public int initialCount;
     }
@@ -16,7 +18,8 @@ namespace LUP.ES
         [Header("Pre-warm Settings")]
         public List<VFXPoolSetting> prewarmSettings = new List<VFXPoolSetting>();
 
-        private Dictionary<GameObject, Queue<GameObject>> poolDict = new Dictionary<GameObject, Queue<GameObject>>();
+        private Dictionary<int, Queue<GameObject>> poolDict = new Dictionary<int, Queue<GameObject>>();
+        private Dictionary<int, GameObject> prefabDict = new Dictionary<int, GameObject>();
 
         private void Start()
         {
@@ -27,42 +30,33 @@ namespace LUP.ES
         {
             foreach (var setting in prewarmSettings)
             {
-                if (setting.vfxPrefab == null || setting.initialCount <= 0) continue;
+                if (setting.vfxPrefab == null || setting.initialCount <= 0 || string.IsNullOrEmpty(setting.effectName)) continue;
 
-                if (!poolDict.ContainsKey(setting.vfxPrefab))
+                int hashKey = Animator.StringToHash(setting.effectName);
+
+                if (!poolDict.ContainsKey(hashKey))
                 {
-                    poolDict[setting.vfxPrefab] = new Queue<GameObject>();
+                    poolDict[hashKey] = new Queue<GameObject>();
+                    prefabDict[hashKey] = setting.vfxPrefab; // 프리팹 원본 캐싱
                 }
 
                 for (int i = 0; i < setting.initialCount; i++)
                 {
                     GameObject vfx = Instantiate(setting.vfxPrefab, transform);
                     vfx.SetActive(false);
-                    poolDict[setting.vfxPrefab].Enqueue(vfx);
+                    poolDict[hashKey].Enqueue(vfx);
                 }
             }
         }
 
-        public GameObject SpawnVFX(GameObject prefab, Vector3 position, bool bLoop = false, float duration = 1.0f)
+        public GameObject SpawnVFX(string effectName, Vector3 position, bool bLoop = false, float duration = 0f)
         {
-            if (prefab == null) return null;
+            if (string.IsNullOrEmpty(effectName)) return null;
+            int hashKey = Animator.StringToHash(effectName);
+            if (!poolDict.ContainsKey(hashKey)) return null;
 
-            if (!poolDict.ContainsKey(prefab))
-            {
-                poolDict[prefab] = new Queue<GameObject>();
-            }
-
-            GameObject vfx = null;
-
-            if (poolDict[prefab].Count > 0)
-            {
-                vfx = poolDict[prefab].Dequeue();
-            }
-            else
-            {
-                vfx = Instantiate(prefab, transform);
-            }
-
+            GameObject vfx = poolDict[hashKey].Count > 0 ?
+                poolDict[hashKey].Dequeue() : Instantiate(prefabDict[hashKey], transform);
             vfx.transform.position = position;
             vfx.SetActive(true);
 
@@ -71,28 +65,17 @@ namespace LUP.ES
             {
                 var main = mainPS.main;
                 main.loop = bLoop;
-
-                mainPS.Play(true); // true: 자식 파티클까지 모두 재생
-
-                if (!bLoop)
-                {
-                    StartCoroutine(ReturnRoutine(prefab, vfx, mainPS));
-                }
-
+                mainPS.Play(true);
             }
-            else
-            {
-                if (!bLoop)
-                {
-                    StartCoroutine(ReturnRoutine(prefab, vfx, null));
-                }
-            }
+            if (!bLoop) StartCoroutine(ReturnRoutine(hashKey, vfx, mainPS, duration));
             return vfx;
         }
 
-        public void DespawnVFX(GameObject prefabKey, GameObject vfx)
+        public void DespawnVFX(string effectName, GameObject vfx)
         {
-            if (vfx == null || prefabKey == null) return;
+            if (string.IsNullOrEmpty(effectName) || vfx == null) return;
+
+            int hashKey = Animator.StringToHash(effectName);
 
             ParticleSystem mainPS = vfx.GetComponent<ParticleSystem>();
             if (mainPS != null)
@@ -102,28 +85,27 @@ namespace LUP.ES
 
             vfx.SetActive(false);
 
-            if (poolDict.ContainsKey(prefabKey))
+            if (poolDict.ContainsKey(hashKey))
             {
-                poolDict[prefabKey].Enqueue(vfx);
+                poolDict[hashKey].Enqueue(vfx);
             }
         }
 
-        private IEnumerator ReturnRoutine(GameObject prefabKey, GameObject vfx, ParticleSystem ps)
+        private IEnumerator ReturnRoutine(int hashKey, GameObject vfx, ParticleSystem ps, float duration)
         {
-            if (ps != null)
+            if (duration > 0f) yield return new WaitForSeconds(duration);
+            else if (ps != null)
             {
-                yield return new WaitWhile(() => ps.IsAlive(true));
+                while (ps.IsAlive(true))
+                    yield return null;
             }
             else
-            {
                 yield return new WaitForSeconds(1.0f);
-            }
 
             vfx.SetActive(false);
-            poolDict[prefabKey].Enqueue(vfx);
+            if (poolDict.ContainsKey(hashKey))
+                poolDict[hashKey].Enqueue(vfx);
         }
-
-
     }
-    
+ 
 }
