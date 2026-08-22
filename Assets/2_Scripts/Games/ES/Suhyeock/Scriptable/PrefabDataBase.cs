@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 namespace LUP.ES
@@ -9,11 +9,11 @@ namespace LUP.ES
         [System.Serializable]
         public class ItemPrefabEntry
         {
-            [ReadOnly] public int id;              // ÀÚµ¿ ÀÔ·ÂµÊ
-            [ReadOnly] public string name;         // ÀÚµ¿ ÀÔ·ÂµÊ
-            public GameObject prefab;   // Á÷Á¢ ¿¬°áÇÒ °÷
-            public Vector3 positionOffset; // À§Ä¡ º¸Á¤°ª
-            public Vector3 rotationOffset; // È¸Àü º¸Á¤°ª
+            [ReadOnly] public int id;
+            [ReadOnly] public string name;
+            public GameObject prefab;
+            public Vector3 positionOffset;
+            public Vector3 rotationOffset;
         }
 
         //public ItemDataBase itemDataBase;
@@ -25,27 +25,21 @@ namespace LUP.ES
         public List<ItemPrefabEntry> prefabList = new List<ItemPrefabEntry>();
 
 
-        // ¹«±â µî ÇÁ¸®ÆÕÀÌ ÇÊ¿äÇÑ ¾ÆÀÌÅÛ Å¸ÀÔ ÇÊÅÍ
-        // ½ÃÆ®¿¡ ÀûÇôÀÖ´Â ItemType ¹®ÀÚ¿­°ú ÀÏÄ¡ÇØ¾ß ÇÕ´Ï´Ù.
         private readonly List<string> weaponTypeStrings = new List<string>()
         {
             "Weapon",
             "RangedWeapon",
             "MeleeWeapon",
             "ThrowingWeapon" 
-            // ¿¢¼¿¿¡ "Sniper"³ª "Pistol" °°Àº Å¸ÀÔÀÌ º°µµ·Î ÀÖ´Ù¸é ¿©±â Ãß°¡ÇØ¾ß ÇÕ´Ï´Ù.
         };
 
-        // =========================================================
-        // ÀÎ½ºÆåÅÍ ¿ìÅ¬¸¯ ¸Ş´º¿¡ "Sync IDs from ItemDB" ¹öÆ°À» ¸¸µì´Ï´Ù.
-        // =========================================================
         [ContextMenu("Sync IDs from ItemDB")]
         public void SyncIds()
         {
 
             if (itemLoader == null)
             {
-                Debug.LogError("Item Loader°¡ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù! ÀÎ½ºÆåÅÍ¿¡¼­ ¿¬°áÇØÁÖ¼¼¿ä.");
+                Debug.LogError("Item Loaderê°€ ì—°ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤! ì¸ìŠ¤í™í„°ì—ì„œ ì—°ê²°í•´ì£¼ì„¸ìš”.");
                 return;
             }
 
@@ -53,7 +47,7 @@ namespace LUP.ES
 
             if (sourceList == null || sourceList.Count == 0)
             {
-                Debug.LogError("·Î´õ¿¡ µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù. ·Î´õ ¿¡¼Â¿¡¼­ 'Load' ¹öÆ°À» ¸ÕÀú ´­·¯ÁÖ¼¼¿ä.");
+                Debug.LogError("ë¡œë”ì— ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤. ë¡œë” ì—ì…‹ì—ì„œ 'Load' ë²„íŠ¼ì„ ë¨¼ì € ëˆŒëŸ¬ì£¼ì„¸ìš”.");
                 return;
 
             }
@@ -61,29 +55,24 @@ namespace LUP.ES
             int newCount = 0;
             int removeCount = 0;
 
-            // 1. ¼Ò½º µ¥ÀÌÅÍ¸¦ ±â¹İÀ¸·Î "¹«±â ¸®½ºÆ®"¿¡ ÀÖ¾î¾ß ÇÒ IDµéÀ» ¼öÁı
             HashSet<int> validWeaponIds = new HashSet<int>();
 
             foreach (var staticData in sourceList)
             {
-                // (1) ¹«±â Å¸ÀÔÀÎÁö È®ÀÎ
                 if (IsWeapon(staticData.ItemType))
                 {
-                    validWeaponIds.Add(staticData.ItemID); // À¯È¿ÇÑ ¹«±â ID·Î µî·Ï
+                    validWeaponIds.Add(staticData.ItemID);
 
-                    // (2) ¸®½ºÆ®¿¡ Ãß°¡ ¶Ç´Â °»½Å
                     ItemPrefabEntry existingEntry = prefabList.Find(x => x.id == staticData.ItemID);
 
                     if (existingEntry != null)
                     {
-                        // ÀÌ¹Ì Á¸ÀçÇÏ¸é ÀÌ¸§¸¸ µ¿±âÈ­
                         if (existingEntry.name != staticData.ItemName)
                             existingEntry.name = staticData.ItemName;
                         updateCount++;
                     }
                     else
                     {
-                        // ¾øÀ¸¸é »õ·Î Ãß°¡
                         prefabList.Add(new ItemPrefabEntry
                         {
                             id = staticData.ItemID,
@@ -97,11 +86,8 @@ namespace LUP.ES
                 }
             }
 
-            // 2. [Ã»¼Ò ·ÎÁ÷] ´õ ÀÌ»ó ¹«±â°¡ ¾Æ´Ñ ¾ÆÀÌÅÛÀº ¸®½ºÆ®¿¡¼­ Á¦°Å
-            // (µÚ¿¡¼­ºÎÅÍ Áö¿ö¾ß ÀÎµ¦½º ¿¡·¯°¡ ¾È ³³´Ï´Ù)
             for (int i = prefabList.Count - 1; i >= 0; i--)
             {
-                // ÇöÀç ¸®½ºÆ®¿¡ ÀÖ´Â ID°¡, ¹æ±İ ¼öÁıÇÑ À¯È¿ ¹«±â ID ¸ñ·Ï¿¡ ¾ø´Ù¸é? -> Á¦°Å
                 if (!validWeaponIds.Contains(prefabList[i].id))
                 {
                     prefabList.RemoveAt(i);
@@ -109,65 +95,26 @@ namespace LUP.ES
                 }
             }
 
-            Debug.Log($"[PrefabDB] µ¿±âÈ­ ¿Ï·á! (°»½Å: {updateCount}, ½Å±Ô: {newCount}, Á¦°ÅµÊ: {removeCount})");
+            Debug.Log($"[PrefabDB] ë™ê¸°í™” ì™„ë£Œ! (ê°±ì‹ : {updateCount}, ì‹ ê·œ: {newCount}, ì œê±°ë¨: {removeCount})");
 
             #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
             #endif
             
-            //if (itemDataBase == null)
-            //{
-            //    Debug.LogError("¸ÕÀú Source Item Data Base Ç×¸ñ¿¡ 'ItemDataBase' ÆÄÀÏÀ» ¿¬°áÇØÁÖ¼¼¿ä!");
-            //    return;
-            //}
-
-            //// ItemDataBaseÀÇ ¸ğµç ¾ÆÀÌÅÛÀ» ¼øÈ¸
-            //// ÁÖÀÇ: »ç¿ëÀÚ°¡ Á¦°øÇÑ ÄÚµåÀÇ º¯¼ö¸íÀÌ 'items'¶ó°í °¡Á¤ (privateÀÌ¸é publicÀ¸·Î ¹Ù²ãÁÖ¼¼¿ä)
-            //// ¸¸¾à privateÀÌ¶ó¸é ItemDataBase¿¡ public Getter¸¦ ¸¸µé¾î¾ß ÇÕ´Ï´Ù.
-
-            //// *ÆíÀÇ»ó ItemDataBaseÀÇ items ¸®½ºÆ®°¡ publicÀÌ¶ó°í °¡Á¤ÇÏ°í ÀÛ¼ºÇÕ´Ï´Ù.*
-            //// *private¶ó¸é [SerializeField]¸¦ ºÙÀÌ°Å³ª publicÀ¸·Î º¯°æÇØÁÖ¼¼¿ä.*
-
-            //foreach (BaseItemData itemData in itemDataBase.items) // »ç¿ëÀÚÀÇ DB ¸®½ºÆ® Á¢±Ù
-            //{
-            //    if (itemData.itemType != ItemType.Weapon)
-            //        continue;
-            //    // ÀÌ¹Ì ¸®½ºÆ®¿¡ ÇØ´ç ID°¡ ÀÖ´ÂÁö È®ÀÎ
-            //    ItemPrefabEntry existingEntry = prefabList.Find(x => x.id == itemData.ID);
-
-            //    if (existingEntry != null)
-            //    {
-            //        // ÀÌ¹Ì ÀÖÀ¸¸é ÀÌ¸§¸¸ ÃÖ½ÅÈ­ (º¸±â ÆíÇÏ°Ô)
-            //        existingEntry.name = itemData.Name;
-            //    }
-            //    else
-            //    {
-            //        // ¾øÀ¸¸é »õ·Î Ãß°¡
-            //        prefabList.Add(new ItemPrefabEntry
-            //        {
-            //            id = itemData.ID,
-            //            name = itemData.Name,
-            //            prefab = null // ÇÁ¸®ÆÕÀº ºñ¿öµÒ
-            //        });
-            //    }
-            //}
         }
 
         private bool IsWeapon(string typeStr)
         {
             if (string.IsNullOrEmpty(typeStr)) return false;
 
-            // ¸®½ºÆ®¿¡ ÀÖ´Â ¹®ÀÚ¿­°ú Á¤È®È÷ ÀÏÄ¡ÇÏ°Å³ª Æ÷ÇÔÇÏ´ÂÁö È®ÀÎ
             foreach (var weaponType in weaponTypeStrings)
             {
-                // StringComparison.OrdinalIgnoreCase : ´ë¼Ò¹®ÀÚ ±¸ºĞ ¾øÀÌ ºñ±³ (RangedWeapon == rangedweapon)
                 if (string.Equals(typeStr, weaponType, System.StringComparison.OrdinalIgnoreCase))
                     return true;
             }
             return false;
         }
 
-        // ·±Å¸ÀÓ¿¡ ÇÁ¸®ÆÕÀ» °¡Á®¿À´Â ÇÔ¼ö
         public GameObject GetPrefab(int id)
         {
             ItemPrefabEntry entry = prefabList.Find(x => x.id == id);

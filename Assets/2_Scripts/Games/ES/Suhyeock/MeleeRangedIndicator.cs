@@ -1,4 +1,4 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 namespace LUP.ES
 {
@@ -7,7 +7,7 @@ namespace LUP.ES
         private MeleeWeapon meleeWeapon;
         private Transform playerTransform;
         public float heightOffset = 0.1f;
-        public int segments = 50;        // µ’±Ÿ ¡§µµ
+        public int segments = 50;        // Îë•Í∑º Ï†ïÎèÑ
         public Color meshColor = new Color(0, 0.5f, 0, 0.5f);
 
         private Mesh mesh;

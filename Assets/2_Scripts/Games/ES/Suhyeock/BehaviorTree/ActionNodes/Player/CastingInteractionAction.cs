@@ -1,4 +1,4 @@
-using UnityEngine;
+癤퓎sing UnityEngine;
 
 namespace LUP.ES
 {
@@ -22,12 +22,10 @@ namespace LUP.ES
                 return NodeState.Failure;
             }
 
-            // 기수 추가한 코드
             if (blackboard.interactingObject is ExtractionPoint)
             {
                 return NodeState.Failure;
             }
-            // 기수 추가한 코드if(blackboard.interactingObject.InterruptsOnMove) 여기만
             if (blackboard.interactingObject.InterruptsOnMove)
             {
                 if (blackboard.rightJoystick.Horizontal != 0 || blackboard.rightJoystick.Vertical != 0 ||

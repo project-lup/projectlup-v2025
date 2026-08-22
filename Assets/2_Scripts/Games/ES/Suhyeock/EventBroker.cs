@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,26 +6,25 @@ namespace LUP.ES
 {
     public class EventBroker : MonoBehaviour
     {
-        public Action<bool> OnGameFinished;
+        public event Action<bool> OnGameFinished;
 
-        public Action<bool> OnInventoryVisibilityChanged;
-        public Action<List<Item>> OnOpenLootDisplay;
-        public Action OnCloseLootDisplay;
+        public event Action<bool> OnInventoryVisibilityChanged;
+        public event Action<List<Item>> OnOpenLootDisplay;
+        public event Action OnCloseLootDisplay;
 
-        public Action<float, float> OnReloadTimeUpdate;
-        public Action<float, float> OnPlayerHPUpdated;
+        public event Action<float, float> OnReloadTimeUpdate;
+        public event Action<float, float> OnPlayerHPUpdated;
 
-        public Action<bool, Transform> OnInteractionPromptStateChanged; // ÇÁ·ÒÇÁÆ® ÄÑ±â/²ô±â ¹× ´ë»ó À§Ä¡
+        public event Action<bool, Transform> OnInteractionPromptStateChanged; // í”„ë¡¬í”„íŠ¸ ì¼œê¸°/ë„ê¸° ë° ëŒ€ìƒ ìœ„ì¹˜
 
-        // ±â¼ö Ãß°¡ÇÑ ÄÚµå
-        public Action ExtractionSuccess;
+        public event Action ExtractionSuccess;
         private bool isGameFinished = false;
 
         public void ReportGameFinish(bool isSuccess)
         {
-            if (isGameFinished) return;  // ±â¼ö Ãß°¡ÇÑ ÄÚµå
+            if (isGameFinished) return;
 
-            isGameFinished = true;       // ±â¼ö Ãß°¡ÇÑ ÄÚµå
+            isGameFinished = true;
             OnGameFinished?.Invoke(isSuccess);
         }
 
@@ -48,7 +47,6 @@ namespace LUP.ES
             OnReloadTimeUpdate?.Invoke(time, reloadTime);
         }
 
-        // ±â¼ö Ãß°¡ÇÑ ÄÚµå
         public void OnExtractionSuccess()
         {
             Debug.Log("EventBroker: Extraction Success Triggered!");
@@ -65,7 +63,7 @@ namespace LUP.ES
             OnInteractionPromptStateChanged?.Invoke(isVisible, targetTransform);
         }
 
-        public Action<float, float> OnInteractionTimerUpdated;
+        public event Action<float, float> OnInteractionTimerUpdated;
         public void UpdateInteractionTimer(float currentTime, float maxTime)
         {
             OnInteractionTimerUpdated?.Invoke(currentTime, maxTime);

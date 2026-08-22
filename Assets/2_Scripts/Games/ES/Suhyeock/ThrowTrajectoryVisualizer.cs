@@ -49,17 +49,6 @@ namespace LUP.ES
             impactIndicator.gameObject.SetActive(true);
             ThrowingWeaponData data = weapon.weaponItem.data as ThrowingWeaponData;
 
-            //Vector3 aimDir = weapon.playerTransform.forward;
-            //if (weapon.rightJoystick.Direction != Vector2.zero)
-            //{
-            //    aimDir = new Vector3(weapon.rightJoystick.Direction.x, 0, weapon.rightJoystick.Direction.y);
-            //}
-
-            //float chargeRatio = weapon.currentChargeTime / data.maxChargeTime;
-            //chargeRatio = Mathf.Clamp01(chargeRatio);
-
-            //float currentDistance = Mathf.Lerp(data.minRange, data.range, chargeRatio);
-            //Vector3 targetPos = weapon.playerTransform.position + (aimDir * currentDistance);
             Vector3 targetPos = weapon.CalculateTargetPosition(data);
             targetPos.y = 0f;
 

@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 namespace LUP.ES
 {
     public enum NodeState
     {
-       Running, // ÇöÀç ½ÇÇàÁß
-       Success, // ¼º°ø
-       Failure  // ½ÇÆÐ
+       Running, // í˜„ìž¬ ì‹¤í–‰ì¤‘
+       Success, // ì„±ê³µ
+       Failure  // ì‹¤íŒ¨
     }
 }

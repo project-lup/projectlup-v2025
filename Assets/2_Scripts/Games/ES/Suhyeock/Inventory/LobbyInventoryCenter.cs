@@ -1,4 +1,4 @@
-using LUP;
+癤퓎sing LUP;
 using LUP.RL;
 using NUnit.Framework;
 using System;
@@ -48,10 +48,6 @@ namespace LUP.ES
                 if (item == null)
                     continue;
                 
-                //Item item = null;
-
-                //LUP.ES.Item item = slot.Item as LUP.ES.Item;
-                //if (item == null) continue;
                 if (item.itemType == ItemType.Weapon)
                 {
                     WeaponItemData weaponItemData = item as WeaponItemData;
@@ -105,7 +101,6 @@ namespace LUP.ES
 
             if (slot.IsEmpty) return;
 
-            // 1. 아이템 데이터 가져오기
             Item itemToEquip = slot.item;
 
             if (itemToEquip == null)

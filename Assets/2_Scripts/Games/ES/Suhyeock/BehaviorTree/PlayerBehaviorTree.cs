@@ -1,6 +1,5 @@
-using System.Collections.Generic;
+Ôªøusing System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.U2D;
 
 namespace LUP.ES
 {
@@ -28,15 +27,10 @@ namespace LUP.ES
         void Update()
         {
             rootNode.Evaluate();
-
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                System.GC.Collect();
-            }
         }
         private void SetupBehaviorTree()
         {
-            //1. ªÁ∏¡
+            //1. ÏÇ¨Îßù
             DeadCondition deadCondition = new DeadCondition(blackboard);
             DeathAction deathAction = new DeathAction(blackboard);
 
@@ -45,7 +39,7 @@ namespace LUP.ES
                 deathAction,
             });
 
-            //2. ««∞›Ω√ «‡µø
+            //2. ÌîºÍ≤©Ïãú ÌñâÎèô
             CastingInteractionCondition castingInteractionCondition = new CastingInteractionCondition(blackboard);
 
             HitCondition hitCondition = new HitCondition(blackboard);
@@ -54,7 +48,7 @@ namespace LUP.ES
 
             Sequence handleHitSequence = new Sequence(new List<BTNode> { hitCondition, hitAction, castingInteractionCondition, abortCastingInteractionAction });
 
-            //3. ªÛ»£¿€øÎ
+            //3. ÏÉÅÌò∏ÏûëÏö©
             InteractionButtonPressedCondition interactionButtonPressedCondition = new InteractionButtonPressedCondition(blackboard);
             TryInteractAction tryInteractAction = new TryInteractAction(blackboard, characterController);
             CastingInteractionAction castingInteractionAction = new CastingInteractionAction(blackboard);
@@ -65,7 +59,7 @@ namespace LUP.ES
             });
 
          
-            //4. ¿Á¿Â¿¸, ∞¯∞›, ¿Ãµø
+            //4. Ïû¨Ïû•Ï†Ñ, Í≥µÍ≤©, Ïù¥Îèô
             AttackingCondition attackingCondition = new AttackingCondition(blackboard);
             AttackAction attackAction = new AttackAction(blackboard, characterController);
             Sequence handleAttackSequence = new Sequence(new List<BTNode> { attackingCondition, attackAction });
@@ -76,7 +70,6 @@ namespace LUP.ES
             
             Selector handleActionsSelector = new Selector(new List<BTNode> { handleReloadSequence, handleAttackSequence });
        
-            //MovingCondition movingCondition = new MovingCondition(blackboard);
             MoveAction moveAction = new MoveAction(blackboard, characterController);
             UpdateAimDirectionAction updateAimDirectionAction = new UpdateAimDirectionAction(blackboard);
 

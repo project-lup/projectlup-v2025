@@ -1,4 +1,4 @@
-using DG.Tweening;
+Ôªøusing DG.Tweening;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -12,7 +12,7 @@ namespace LUP.ES
     public class ResultDisplayCenter : MonoBehaviour
     {
         private EventBroker eventBroker;
-        private ItemCenter itemCenter; //≈◊Ω∫∆Æ øÎ
+        private ItemCenter itemCenter; //ÌÖåÏä§Ìä∏ Ïö©
         public GameObject resultPanel;
         public GameObject ItemDisplayContent;
         public GameObject itemSlotPrefab;
@@ -23,7 +23,7 @@ namespace LUP.ES
         private List<Item> items;
 
         private List<GameObject> slotPool = new List<GameObject>();
-        [Header("«Æ∏µ º≥¡§")]
+        [Header("ÌíÄÎßÅ ÏÑ§Ï†ï")]
         public int initialSlotCount = 30;
         private void Start()
         {
@@ -46,7 +46,7 @@ namespace LUP.ES
             for (int i = 0; i < initialSlotCount; i++)
             {
                 GameObject newSlot = Instantiate(itemSlotPrefab, contentParent);
-                newSlot.SetActive(false); // ¿œ¥‹ º˚∞‹µ“
+                newSlot.SetActive(false); // ÏùºÎã® Ïà®Í≤®Îë†
                 slotPool.Add(newSlot);
             }
         }
@@ -63,10 +63,8 @@ namespace LUP.ES
         {
             List<GameObject> activeSlots = new List<GameObject>();
 
-            // 1. « ø‰«— ΩΩ∑‘ »∞º∫»≠ π◊ µ•¿Ã≈Õ ºº∆√ (Instantiate √÷º“»≠)
             for (int i = 0; i < items.Count; i++)
             {
-                // æ»¿¸ ¿Âƒ°: πÃ∏Æ ∏∏µÈæÓµ– «Æ∫∏¥Ÿ æ∆¿Ã≈€¿Ã ∏π¿ª ∂ß∏∏ √ﬂ∞° ª˝º∫
                 if (i >= slotPool.Count)
                 {
                     GameObject newSlot = Instantiate(itemSlotPrefab, contentParent);
@@ -77,31 +75,24 @@ namespace LUP.ES
                 slotObj.SetActive(true);
                 activeSlots.Add(slotObj);
 
-                // æ∆¿Ã≈€ ºº∆√
                 ItemDisplaySlot slot = slotObj.GetComponent<ItemDisplaySlot>();
                 if (slot != null)
                 {
                     slot.SetItem(items[i], items);
                 }
 
-                // ƒµπˆΩ∫ ≈ı∏Ìµµ √ ±‚»≠
                 CanvasGroup canvasGroup = slotObj.GetComponent<CanvasGroup>();
                 if (canvasGroup == null) canvasGroup = slotObj.AddComponent<CanvasGroup>();
                 canvasGroup.alpha = 0f;
 
-                // Ω∫ƒ…¿œ »ÆΩ«»˜ 1∑Œ ∫∏¿Â
                 RectTransform rect = slotObj.GetComponent<RectTransform>();
                 rect.localScale = Vector3.one;
             }
 
-            // ≥≤¿∫ ΩΩ∑‘µÈ¿∫ »ÆΩ««œ∞‘ ∫Ò»∞º∫»≠
             for (int i = items.Count; i < slotPool.Count; i++)
             {
                 slotPool[i].SetActive(false);
             }
-
-            // 2. -----------------------------------------------------------------
-            // ø©±‚º≠∫Œ≈Õ¥¬ ¿€º∫«œºÃ¥¯ [ø¯∫ª ∑π¿Ãæ∆øÙ ∞ªΩ≈ & ΩΩ∂Û¿Ãµ˘ ø¨√‚] ƒ⁄µÂ¿‘¥œ¥Ÿ.
 
             Canvas.ForceUpdateCanvases();
 
@@ -140,67 +131,6 @@ namespace LUP.ES
                     .SetEase(Ease.Linear)
                     .SetUpdate(true);
             }
-
-            //List<GameObject> createdSlots = new List<GameObject>();
-
-            //for (int i = 0; i < items.Count; i++)
-            //{
-            //    GameObject newSlot = Instantiate(itemSlotPrefab, contentParent);
-
-            //    ItemDisplaySlot slot = newSlot.GetComponent<ItemDisplaySlot>();
-
-            //    if (slot != null)
-            //    {
-            //        slot.SetItem(items[i], items);
-            //    }
-
-            //    CanvasGroup canvasGroup = newSlot.GetComponent<CanvasGroup>();
-            //    if (canvasGroup == null) canvasGroup = newSlot.AddComponent<CanvasGroup>();
-
-            //    canvasGroup.alpha = 0f;
-
-            //    createdSlots.Add(newSlot);
-
-
-            //}
-
-            //Canvas.ForceUpdateCanvases();
-
-            //LayoutGroup layoutGroup = contentParent.GetComponent<LayoutGroup>();
-            //if (layoutGroup != null)
-            //{
-            //    layoutGroup.enabled = false;
-            //}
-
-            //for (int i = 0; i < createdSlots.Count; i++)
-            //{
-            //    GameObject slotObj = createdSlots[i];
-            //    RectTransform rect = slotObj.GetComponent<RectTransform>();
-            //    CanvasGroup canvasGroup = slotObj.GetComponent<CanvasGroup>();
-
-            //    Vector2 originalPos = rect.anchoredPosition;
-            //    rect.anchoredPosition = new Vector2(originalPos.x - 200f, originalPos.y);
-
-            //    float delay = i * 0.1f;
-
-            //    var moveTween = rect.DOAnchorPos(originalPos, 0.8f)
-            //        .SetDelay(delay)
-            //        .SetEase(Ease.OutCubic)
-            //        .SetUpdate(true);
-
-            //    if (i == createdSlots.Count - 1)
-            //    {
-            //        moveTween.OnComplete(() =>
-            //        {
-            //            if (layoutGroup != null) layoutGroup.enabled = true;
-            //        });
-            //    }
-
-            //    canvasGroup.DOFade(1f, 0.8f)
-            //        .SetDelay(delay)
-            //        .SetEase(Ease.Linear)
-            //        .SetUpdate(true);
-            //}
         }
 
         private void ShowResult(bool isSuccess)
@@ -240,41 +170,6 @@ namespace LUP.ES
                 resultHeader.color = Color.red;
             }
             resultHeader.text = resultHeadrString.ToString();
-            //Debug.Log("GameFinish");
-            //Time.timeScale = 0f;
-            //StringBuilder resultHeadrString = new StringBuilder();
-            //resultHeadrString.Append("Extraction ");
-            //resultPanel.SetActive(true);
-            //if (isSuccess)
-            //{
-            //    SoundManager.Instance.PlaySFX("SuccessfulEscape");
-            //    resultHeadrString.Append("Complete");
-            //    resultHeader.color = Color.white;
-            //    Inventory inventory = FindAnyObjectByType<Inventory>();
-            //    if (inventory != null)
-            //    {
-            //        items = inventory.GetItems();
-            //        ShowInventoryItems(items);
-            //        ExtractionShooterStage extractionShooterStage = StageManager.Instance.GetCurrentStage() as ExtractionShooterStage;
-
-            //        foreach (Item item in items)
-            //        {
-            //            if (item == null)
-            //                continue;
-            //            if (item.ItemID == 1 || item.ItemID == 4 || item.ItemID == 7)
-            //                continue;
-            //            extractionShooterStage.ESInven.AddItem(item);
-            //        }
-            //    }
-
-            //}
-            //else
-            //{
-            //    SoundManager.Instance.PlaySFX("Escape failed");
-            //    resultHeadrString.Append("Failed");
-            //    resultHeader.color = Color.red;
-            //}
-            //resultHeader.text = resultHeadrString.ToString();
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,7 +37,7 @@ namespace LUP.ES
                 if (!poolDict.ContainsKey(hashKey))
                 {
                     poolDict[hashKey] = new Queue<GameObject>();
-                    prefabDict[hashKey] = setting.vfxPrefab; // ÇÁ¸®ÆÕ ¿øº» Ä³½Ì
+                    prefabDict[hashKey] = setting.vfxPrefab; // í”„ë¦¬íŒ¹ ì›ë³¸ ìºì‹±
                 }
 
                 for (int i = 0; i < setting.initialCount; i++)
@@ -80,7 +80,7 @@ namespace LUP.ES
             ParticleSystem mainPS = vfx.GetComponent<ParticleSystem>();
             if (mainPS != null)
             {
-                mainPS.Stop(true, ParticleSystemStopBehavior.StopEmitting); // ÆÄÆ¼Å¬ ºÎµå·´°Ô Á¤Áö
+                mainPS.Stop(true, ParticleSystemStopBehavior.StopEmitting); // íŒŒí‹°í´ ë¶€ë“œëŸ½ê²Œ ì •ì§€
             }
 
             vfx.SetActive(false);

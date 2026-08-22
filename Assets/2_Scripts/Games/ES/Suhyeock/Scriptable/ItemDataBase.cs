@@ -1,4 +1,4 @@
-using NUnit.Framework;
+ï»¿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -33,7 +33,7 @@ namespace LUP.ES
         {
             if (itemLoader == null)
             {
-                Debug.LogError("[ItemDataBase] ItemLoader°¡ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù!");
+                Debug.LogError("[ItemDataBase] ItemLoaderê°€ ì—°ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤!");
                 return;
             }
             List<ESItemStaticData> sourceList = itemLoader.GetDataList();
@@ -58,7 +58,7 @@ namespace LUP.ES
             }
 
             isInitialized = true;
-            Debug.Log($"[ItemDataBase] ÃÊ±âÈ­ ¿Ï·á. ·ÎµåµÈ ¾ÆÀÌÅÛ ¼ö: {items.Count}");
+            Debug.Log($"[ItemDataBase] ì´ˆê¸°í™” ì™„ë£Œ. ë¡œë“œëœ ì•„ì´í…œ ìˆ˜: {items.Count}");
 
             //for (int i = 0; i < items.Count; i++)
             //{
@@ -71,7 +71,7 @@ namespace LUP.ES
 
         public BaseItemData GetItemByID(int id)
         {
-            // ¾ÆÁ÷ ÃÊ±âÈ­°¡ ¾È µÇ¾î ÀÖ´Ù¸é ÀÚµ¿À¸·Î ÃÊ±âÈ­ ½Ãµµ
+            // ì•„ì§ ì´ˆê¸°í™”ê°€ ì•ˆ ë˜ì–´ ìˆë‹¤ë©´ ìë™ìœ¼ë¡œ ì´ˆê¸°í™” ì‹œë„
             if (!isInitialized || itemDictionary.Count == 0)
             {
                 Initiallize();
@@ -82,7 +82,7 @@ namespace LUP.ES
                 return item;
             }
 
-            Debug.LogWarning($"[ItemDataBase] ID {id} ¾ÆÀÌÅÛÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning($"[ItemDataBase] ID {id} ì•„ì´í…œì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
             return null;
         }
         public int GetItemCount() 
@@ -97,8 +97,6 @@ namespace LUP.ES
             string name = data.ItemName;
             string desc = data.Description;
 
-            // ItemType ¹®ÀÚ¿­¿¡ µû¶ó ÀûÀıÇÑ Å¬·¡½º »ı¼º
-            // (´ë¼Ò¹®ÀÚ ¹«½Ã ºñ±³)
             if (IsType(data.WeaponType, "Ranged"))
             {
                 return new RangedWeaponItemData(
@@ -115,7 +113,6 @@ namespace LUP.ES
             }
             else if (IsType(data.WeaponType, "Melee"))
             {
-                // »ı¼ºÀÚ ÆÄ¶ó¹ÌÅÍ¿¡ ¸Â°Ô µ¥ÀÌÅÍ ¸ÅÇÎ
                 return new MeleeWeaponItemData(id, name, desc, data.IconPath,data.DropChance, data.Damage, data.Range, data.TimeBetAttack, data.AttackAngle);
             }
             else if (IsType(data.WeaponType, "Throwing"))
@@ -124,17 +121,14 @@ namespace LUP.ES
             }
             else if (IsType(data.ItemType, "Armor"))
             {
-                // ArmorSlot µî Enum ÆÄ½ÌÀÌ ÇÊ¿äÇÒ ¼ö ÀÖÀ½. ¿©±â¼­´Â ¿¹½Ã °ª.
                 return new ArmorItemData(id, name, desc, data.IconPath, data.DropChance, (int)data.Damage, ArmorSlot.Body);
             }
             else if (IsType(data.ItemType, "Consumable"))
             {
-                //¼Ò¸ğÇ°Àº ³ªÁß¿¡
                 return new ConsumableItemData(id, name, desc, data.IconPath, data.DropChance, data.Damage, data.Damage, EffectType.Heal, 30f, 3);
             }
-            // ÇÊ¿äÇÑ ´Ù¸¥ Å¸ÀÔµéµµ else if·Î Ãß°¡...
 
-            return null; // Ã³¸®ÇÏÁö ¾Ê´Â Å¸ÀÔ
+            return null;
         }
 
         private bool IsType(string current, string target)

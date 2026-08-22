@@ -5,7 +5,7 @@ namespace LUP.ES
 {
     public class BulletObjectPool : MonoBehaviour
     {
-        private GameObject bullletPrefab;
+        private GameObject bulletPrefab;
         [SerializeField]private int initialSize = 20;
         Queue<GameObject> pool = new Queue<GameObject>();
 
@@ -26,9 +26,9 @@ namespace LUP.ES
             pool.Enqueue(bullet);
         }
 
-        public void Init(GameObject bullletPrefab)
+        public void Init(GameObject bulletPrefab)
         {
-            this.bullletPrefab = bullletPrefab;
+            this.bulletPrefab = bulletPrefab;
             for (int i = 0; i < initialSize; i++)
             {
                 CreateNewBullet();
@@ -37,7 +37,7 @@ namespace LUP.ES
 
         private void CreateNewBullet()
         {
-            GameObject bullet = Instantiate(bullletPrefab);
+            GameObject bullet = Instantiate(bulletPrefab);
             bullet.SetActive(false);
             pool.Enqueue(bullet);
         }

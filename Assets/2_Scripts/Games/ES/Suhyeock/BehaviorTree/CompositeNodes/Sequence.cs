@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 namespace LUP.ES
 {
@@ -23,9 +23,9 @@ namespace LUP.ES
                         return NodeState.Running;
                     case NodeState.Failure:
                         currentIndex = 0;
-                        return NodeState.Failure; // ÇÏ³ª¶óµµ ½ÇÆĞÇÏ¸é ÀüÃ¼ ½ÇÆĞ
+                        return NodeState.Failure; // í•˜ë‚˜ë¼ë„ ì‹¤íŒ¨í•˜ë©´ ì „ì²´ ì‹¤íŒ¨
                     case NodeState.Success:
-                        continue; // ´ÙÀ½ ³ëµå·Î ÀÌµ¿
+                        continue; // ë‹¤ìŒ ë…¸ë“œë¡œ ì´ë™
                 }
             }
 

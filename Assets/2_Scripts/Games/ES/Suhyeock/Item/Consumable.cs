@@ -1,14 +1,14 @@
-using System.Drawing;
+ï»¿using System.Drawing;
 using UnityEngine;
 
 namespace LUP.ES
 {
     public class Consumable : Item
     {
-        public float effectDuration;  // È¿°ú Áö¼Ó ½Ã°£
-        public float useTime;         // »ç¿ë¿¡ °É¸®´Â ½Ã°£
-        public EffectType effectType;     // ¹ßµ¿ÇÒ È¿°úÀÇ Á¾·ù
-        public float effectValue;     // È¿°úÀÇ Å©±â
+        public float effectDuration;  // íš¨ê³¼ ì§€ì† ì‹œê°„
+        public float useTime;         // ì‚¬ìš©ì— ê±¸ë¦¬ëŠ” ì‹œê°„
+        public EffectType effectType;     // ë°œë™í•  íš¨ê³¼ì˜ ì¢…ë¥˜
+        public float effectValue;     // íš¨ê³¼ì˜ í¬ê¸°
         public int stackSize;
 
         public Consumable(ConsumableItemData itemData) : base(itemData)

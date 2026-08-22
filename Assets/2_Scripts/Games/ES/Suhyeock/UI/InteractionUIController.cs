@@ -1,4 +1,4 @@
-using UnityEngine;
+癤퓎sing UnityEngine;
 using UnityEngine.UI;
 
 namespace LUP.ES
@@ -63,7 +63,6 @@ namespace LUP.ES
 
         }
 
-        // [추가] EventBroker에서 프롬프트 켜기/끄기 신호가 올 때 실행됨
         private void HandlePromptState(bool isVisible, Transform targetTransform)
         {
             if (isVisible)
@@ -75,7 +74,7 @@ namespace LUP.ES
             {
                 currentTargetTransform = null;
                 InteractionPromptImage.gameObject.SetActive(false);
-                InteractionTimerUIImage.gameObject.SetActive(false); // 타겟이 사라지면 타이머도 강제 종료
+                InteractionTimerUIImage.gameObject.SetActive(false);
             }
         }
 
@@ -93,15 +92,12 @@ namespace LUP.ES
 
         private void LateUpdate()
         {
-            // 타겟이 존재하고 프롬프트가 켜져 있을 때만 위치 추적
             if (currentTargetTransform != null && InteractionPromptImage.gameObject.activeSelf)
             {
                 Vector3 ScreenPostion = MainCamera.WorldToScreenPoint(currentTargetTransform.position);
                 ScreenPostion.y += YOffset;
 
                 InteractionPromptImage.rectTransform.position = ScreenPostion;
-
-                // 타이머 UI가 켜져있다면 동일한 위치(또는 살짝 위)로 따라가게 설정
                 if (InteractionTimerUIImage.gameObject.activeSelf)
                 {
                     InteractionTimerUIImage.rectTransform.position = ScreenPostion;

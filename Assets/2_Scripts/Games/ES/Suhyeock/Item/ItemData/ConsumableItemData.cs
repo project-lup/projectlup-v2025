@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 namespace LUP.ES
@@ -11,10 +11,10 @@ namespace LUP.ES
     [Serializable]
     public class ConsumableItemData : BaseItemData
     {
-        public float effectDuration;  // È¿°ú Áö¼Ó ½Ã°£
-        public float useTime;         // »ç¿ë¿¡ °É¸®´Â ½Ã°£
-        public EffectType effectType;     // ¹ßµ¿ÇÒ È¿°úÀÇ Á¾·ù
-        public float effectValue;     // È¿°úÀÇ Å©±â
+        public float effectDuration;  // íš¨ê³¼ ì§€ì† ì‹œê°„
+        public float useTime;         // ì‚¬ìš©ì— ê±¸ë¦¬ëŠ” ì‹œê°„
+        public EffectType effectType;     // ë°œë™í•  íš¨ê³¼ì˜ ì¢…ë¥˜
+        public float effectValue;     // íš¨ê³¼ì˜ í¬ê¸°
 
 
         public ConsumableItemData(int id, string name, string description, string iconName, float dropChance, float effectDuration, float useTime, EffectType effectType, float effectValue, int stackSize) : base(id, name, description,iconName, stackSize, dropChance)

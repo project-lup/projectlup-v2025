@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.AI;
 
 namespace LUP.ES
@@ -37,10 +37,9 @@ namespace LUP.ES
                 }
             }
 
-            // À¯È¿ÇÑ À§Ä¡¸¦ Ã£¾Ò´Ù¸é »ı¼º
             if (validPositionFound)
             {
-                // ¹Ù´Ú À§Ä¡ + ³ôÀÌ º¸Á¤(yOffset)
+                // ë°”ë‹¥ ìœ„ì¹˜ + ë†’ì´ ë³´ì •(yOffset)
                 Instantiate(itemBoxPrefab, bestPosition + Vector3.up * offsetY, Quaternion.identity);
             }
             else

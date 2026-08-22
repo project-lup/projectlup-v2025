@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 namespace LUP.ES
@@ -8,8 +8,8 @@ namespace LUP.ES
     public class RangedWeaponItemData : WeaponItemData
     {
         public float bulletSpeed;
-        public int magCapacity; // ÅºÃ¢ ¿ë·®
-        public float reloadTime; // ÀçÀåÀü ¼Ò¿ä ½Ã°£
+        public int magCapacity; // íƒ„ì°½ ìš©ëŸ‰
+        public float reloadTime; // ìž¬ìž¥ì „ ì†Œìš” ì‹œê°„
 
         public RangedWeaponItemData(int id, string name, string description, string iconName, float dropChance,float damage, float range, float timeBetAttack, float bulletSpeed, int magCapacity, float reloadTime) : base(id, name, description, iconName, dropChance, damage, range, timeBetAttack)
         {

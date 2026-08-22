@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 
 namespace LUP.ES
@@ -8,7 +8,7 @@ namespace LUP.ES
         [Header("VFX")]
         [SerializeField] private ParticleSystem bulletBodyVFX;
         [SerializeField] private GameObject trailPrefab;
-        [SerializeField] private float trailFadeTime = 0.5f; // ²¿¸®°¡ »ç¶óÁö´Â ½Ã°£
+        [SerializeField] private float trailFadeTime = 0.5f; // ê¼¬ë¦¬ê°€ ì‚¬ë¼ì§€ëŠ” ì‹œê°„
         [SerializeField] private string hitEffectName = "HitEffect";
 
         [SerializeField]
@@ -71,8 +71,8 @@ namespace LUP.ES
                 {
                     if (trail != null)
                     {
-                        trail.Clear(); // ÀÜ»ó Áö¿ì±â
-                        trail.emitting = true; // ´Ù½Ã ±×¸®±â ½ÃÀÛ
+                        trail.Clear(); // ì”ìƒ ì§€ìš°ê¸°
+                        trail.emitting = true; // ë‹¤ì‹œ ê·¸ë¦¬ê¸° ì‹œì‘
                     }
                 }
             }
@@ -103,24 +103,12 @@ namespace LUP.ES
             }
             SoundManager.Instance.PlaySFX("GunHit", gameObject);
             StartCoroutine(DeactivateRoutine());
-
-            //if (hitPrefab != null)
-            //{
-            //    GameObject vfx = Instantiate(hitPrefab, transform.position, Quaternion.identity);
-            //    // 1ÃÊ µÚ¿¡ ÆÄÆ¼Å¬ ¿ÀºêÁ§Æ®¸¦ ÆÄ±«ÇÏ¿© ¸Ş¸ğ¸® ÇØÁ¦ ºÎÇÏ À¯¹ß
-            //    Destroy(vfx, 1.0f);
-            //}
-
-            //SoundManager.Instance.PlaySFX("GunHit", gameObject);
-
-            //// 2. ¿ÀºêÁ§Æ® Ç®¿¡ ¹İ³³(DeactivateRoutine)ÇÏÁö ¾Ê°í Áï½Ã ÆÄ±« (Garbage »ı¼º)
-            //Destroy(gameObject);
         }
 
         private IEnumerator DeactivateRoutine()
         {
             isDeactivating = true;
-            bulletCollider.enabled = false; // Ãæµ¹ ²ô±â
+            bulletCollider.enabled = false; // ì¶©ëŒ ë„ê¸°
 
             if (bulletBodyVFX != null)
             {
@@ -133,15 +121,13 @@ namespace LUP.ES
                 {
                     if (trail != null)
                     {
-                        trail.emitting = false; // ²¿¸® ²÷±â
+                        trail.emitting = false; // ê¼¬ë¦¬ ëŠê¸°
                     }
                 }
             }
 
-            // 3. ²¿¸®°¡ »ç¶óÁú ¶§±îÁö ´ë±â
             yield return new WaitForSeconds(trailFadeTime);
 
-            // 4. ¹İ³³
             ownerPool.Return(gameObject);
         }
     }

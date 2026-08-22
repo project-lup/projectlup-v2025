@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+癤퓎sing System.Collections.Generic;
 using UnityEngine;
 
 namespace LUP.ES
@@ -33,8 +33,13 @@ namespace LUP.ES
         {
             if (other.TryGetComponent(out IInteractable interactable))
             {
-                eventBroker.CloseLootDisplay();
                 nearbyInteractables.Remove(interactable);
+
+                if (interactable == currentNearest)
+                {
+                    eventBroker.CloseLootDisplay();
+                    currentNearest = null;
+                }
             }
         }
 
@@ -42,19 +47,16 @@ namespace LUP.ES
         {
             IInteractable nearest = GetNearestInteractable();
 
-            // 타겟이 바뀌었을 때만 EventBroker에 방송합니다 (최적화)
             if (nearest != currentNearest)
             {
                 currentNearest = nearest;
 
                 if (currentNearest != null && currentNearest.CanInteract())
                 {
-                    // 타겟이 존재하면 "UI 켜라!" 방송
                     eventBroker.UpdateInteractionPrompt(true, currentNearest.transform);
                 }
                 else
                 {
-                    // 타겟이 범위에서 벗어났거나, 상호작용 불가능해지면 "UI 꺼라!" 방송
                     eventBroker.UpdateInteractionPrompt(false);
                 }
             }
@@ -86,7 +88,6 @@ namespace LUP.ES
             return nearest;
         }
 
-        // 기수 추가한 코드
         public bool IsObjectNearby(IInteractable target)
         {
             return nearbyInteractables.Contains(target);

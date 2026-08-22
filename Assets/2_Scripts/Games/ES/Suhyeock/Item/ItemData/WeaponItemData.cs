@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 namespace LUP.ES
@@ -16,7 +16,7 @@ namespace LUP.ES
         public WeaponType weaponType;
         public float damage;
         public float range;
-        public float timeBetAttack; // °ø°Ý °£°Ý
+        public float timeBetAttack; // ê³µê²© ê°„ê²©
 
 
         public WeaponItemData(int id, string name, string description, string iconName, float dropChacne, float damage, float range, float timeBetAttack) : base(id, name, description, iconName, 1, dropChacne)

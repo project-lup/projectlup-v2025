@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 namespace LUP.ES
 {
@@ -9,10 +9,10 @@ namespace LUP.ES
         public float damage = 20f;
         public float distance = 10f;
 
-        public int startAmmoRemain = 100; // Ã³À½¿¡ ÁÖ¾îÁú ÀüÃ¼ Åº¾à
-        public int magCapacity = 30; // ÅºÃ¢ ¿ë·®
+        public int startAmmoRemain = 100; // ì²˜ìŒì— ì£¼ì–´ì§ˆ ì „ì²´ íƒ„ì•½
+        public int magCapacity = 30; // íƒ„ì°½ ìš©ëŸ‰
 
-        public float timeBetFire = 0.12f; // ÃÑ¾Ë ¹ß»ç °£°İ
-        public float reloadTime = 1.5f; // ÀçÀåÀü ¼Ò¿ä ½Ã°£
+        public float timeBetFire = 0.12f; // ì´ì•Œ ë°œì‚¬ ê°„ê²©
+        public float reloadTime = 1.5f; // ì¬ì¥ì „ ì†Œìš” ì‹œê°„
     }
 }

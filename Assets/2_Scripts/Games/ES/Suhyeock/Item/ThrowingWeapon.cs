@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 namespace LUP.ES
 {
     public class ThrowingWeapon : Weapon
     {
-        public ItemDataBase itemDataBase; //ÀÓ½Ã
-        public int selectedWeaponId = 10; //ÀÓ½Ã
+        public ItemDataBase itemDataBase; //ì„ì‹œ
+        public int selectedWeaponId = 10; //ì„ì‹œ
         private float nextAttackTime = 0f;
         public GameObject projectilePrefab;
         [HideInInspector]
@@ -161,13 +161,13 @@ namespace LUP.ES
         {
             Vector3 distance = target - origin;
             Vector3 distanceXZ = distance;
-            distanceXZ.y = 0; // ¼öÆò °Å¸®
+            distanceXZ.y = 0; // ìˆ˜í‰ ê±°ë¦¬
 
-            // ¼öÆò ¼Óµµ = ¼öÆò °Å¸® / ½Ã°£
+            // ìˆ˜í‰ ì†ë„ = ìˆ˜í‰ ê±°ë¦¬ / ì‹œê°„
             float sXZ = distanceXZ.magnitude;
             float Vxz = sXZ / time;
 
-            // ¼öÁ÷ ¼Óµµ = (¼öÁ÷ °Å¸® / ½Ã°£) + (0.5 * Áß·Â * ½Ã°£)
+            // ìˆ˜ì§ ì†ë„ = (ìˆ˜ì§ ê±°ë¦¬ / ì‹œê°„) + (0.5 * ì¤‘ë ¥ * ì‹œê°„)
             float Vy = (distance.y / time) + (0.5f * Mathf.Abs(Physics.gravity.y) * time);
  
             Vector3 result = distanceXZ.normalized * Vxz;

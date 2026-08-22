@@ -1,4 +1,4 @@
-using NUnit.Framework;
+ï»¿using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +26,7 @@ namespace LUP.ES
 
             foreach (BaseItemData item in itemDataBase.items)
             {
-                if (item.dropChance > 0) // È®·üÀÌ 0ÀÎ ¾ÆÀÌÅÛ(¿î¿µÀÚ¿ë µî)Àº Á¦¿Ü
+                if (item.dropChance > 0) // í™•ë¥ ì´ 0ì¸ ì•„ì´í…œ(ìš´ì˜ììš© ë“±)ì€ ì œì™¸
                 {
                     droppableItems.Add(item);
                 }
@@ -54,7 +54,7 @@ namespace LUP.ES
 
         private bool IsDropSuccessful(float chancePercentage)
         {
-            // 0.0 ~ 100.0 »çÀÌÀÇ ·£´ı °ª »ı¼º
+            // 0.0 ~ 100.0 ì‚¬ì´ì˜ ëœë¤ ê°’ ìƒì„±
             float randomValue = Random.Range(0f, 100f);
             return randomValue <= chancePercentage;
         }

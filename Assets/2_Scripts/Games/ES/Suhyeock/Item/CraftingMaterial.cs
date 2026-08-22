@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 namespace LUP.ES
 {
     public class CraftingMaterial : Item
     {
         public MaterialTier tier;
-        public int stackSize;     //ÇÑ ½½·Ô¿¡ ÃÖ´ë·Î ½×À» ¼ö ÀÖ´Â °³¼ö
+        public int stackSize;     //í•œ ìŠ¬ë¡¯ì— ìµœëŒ€ë¡œ ìŒ“ì„ ìˆ˜ ìˆëŠ” ê°œìˆ˜
 
         public CraftingMaterial(MaterialItemData itemData) : base(itemData)
         {

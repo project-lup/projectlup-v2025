@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using LUP;
 
@@ -7,8 +7,8 @@ namespace LUP.ES
 
     public class Gun : Weapon, IReloadable
     {
-        public ItemDataBase itemDataBase; //ÀÓ½Ã
-        public int selectedWeaponId = 1; //ÀÓ½Ã
+        public ItemDataBase itemDataBase; //ì„ì‹œ
+        public int selectedWeaponId = 1; //ì„ì‹œ
 
         //public EventBroker eventBroker;
         //public GunData gunData;
@@ -95,7 +95,7 @@ namespace LUP.ES
 
             //if (bullet != null)
             //{
-            //    // ¼öÁ¤µÈ ·ÎÁ÷ÀÌ¹Ç·Î ownerPool(Ç® ¸Å´ÏÀú) ÀÚ¸®¿¡ ÀÓ½Ã·Î nullÀ» ³Ñ±é´Ï´Ù.
+            //    // ìˆ˜ì •ëœ ë¡œì§ì´ë¯€ë¡œ ownerPool(í’€ ë§¤ë‹ˆì €) ìë¦¬ì— ì„ì‹œë¡œ nullì„ ë„˜ê¹ë‹ˆë‹¤.
             //    bullet.Init(null, firePoint.position, aimPivot.rotation, data.range, data.damage, data.bulletSpeed);
             //}
 

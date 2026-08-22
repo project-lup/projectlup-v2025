@@ -1,11 +1,11 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 namespace LUP.ES
 {
     public class EnemyGun : MonoBehaviour
     {
-        public ItemDataBase itemDataBase; //¿”Ω√
-        public int selectedWeaponId = 4; //¿”Ω√
+        public ItemDataBase itemDataBase;
+        public int selectedWeaponId = 4;
         public WeaponItem weapon;
         public GameObject bulletPrefab;
         private BulletObjectPool bulletPool;

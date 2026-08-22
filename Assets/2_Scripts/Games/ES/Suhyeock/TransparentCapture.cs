@@ -1,44 +1,44 @@
-using UnityEngine;
-using System.IO; // ÆÄÀÏ ÀúÀåÀ» À§ÇØ ÇÊ¿ä
+ï»¿using UnityEngine;
+using System.IO; // íŒŒì¼ ì €ì¥ì„ ìœ„í•´ í•„ìš”
 
 public class TransparentCapture : MonoBehaviour
 {
-    public int width = 256;  // ÀÌ¹ÌÁö °¡·Î Å©±â
-    public int height = 256; // ÀÌ¹ÌÁö ¼¼·Î Å©±â
+    public int width = 256;  // ì´ë¯¸ì§€ ê°€ë¡œ í¬ê¸°
+    public int height = 256; // ì´ë¯¸ì§€ ì„¸ë¡œ í¬ê¸°
 
-    // ÄÄÆ÷³ÍÆ® ¿ìÅ¬¸¯ ¸Ş´º¿¡ ¹öÆ°À» ¸¸µå´Â ±â´ÉÀÔ´Ï´Ù.
+    // ì»´í¬ë„ŒíŠ¸ ìš°í´ë¦­ ë©”ë‰´ì— ë²„íŠ¼ì„ ë§Œë“œëŠ” ê¸°ëŠ¥ì…ë‹ˆë‹¤.
     [ContextMenu("Capture Image")]
     public void Capture()
     {
-        // 1. Ä«¸Ş¶ó °¡Á®¿À±â
+        // 1. ì¹´ë©”ë¼ ê°€ì ¸ì˜¤ê¸°
         Camera cam = GetComponent<Camera>();
 
-        // 2. ÀÓ½Ã ·»´õ ÅØ½ºÃ³(ÇÊ¸§) ¸¸µé±â
+        // 2. ì„ì‹œ ë Œë” í…ìŠ¤ì²˜(í•„ë¦„) ë§Œë“¤ê¸°
         RenderTexture rt = new RenderTexture(width, height, 24);
-        cam.targetTexture = rt; // Ä«¸Ş¶ó°¡ ÀÌ ÇÊ¸§¿¡ ±×¸²À» ±×¸®°Ô ¼³Á¤
+        cam.targetTexture = rt; // ì¹´ë©”ë¼ê°€ ì´ í•„ë¦„ì— ê·¸ë¦¼ì„ ê·¸ë¦¬ê²Œ ì„¤ì •
 
-        // 3. ÅØ½ºÃ³(»çÁø) »ı¼º
+        // 3. í…ìŠ¤ì²˜(ì‚¬ì§„) ìƒì„±
         Texture2D screenShot = new Texture2D(width, height, TextureFormat.ARGB32, false);
 
-        // 4. ÃÔ¿µ
+        // 4. ì´¬ì˜
         cam.Render();
 
-        // 5. ÇÈ¼¿ Á¤º¸ ÀĞ¾î¿À±â
+        // 5. í”½ì…€ ì •ë³´ ì½ì–´ì˜¤ê¸°
         RenderTexture.active = rt;
         screenShot.ReadPixels(new Rect(0, 0, width, height), 0, 0);
         screenShot.Apply();
 
-        // 6. Ä«¸Ş¶ó ¿ø»óº¹±¸
+        // 6. ì¹´ë©”ë¼ ì›ìƒë³µêµ¬
         cam.targetTexture = null;
         RenderTexture.active = null;
-        DestroyImmediate(rt); // ÀÓ½Ã ÇÊ¸§ »èÁ¦
+        DestroyImmediate(rt); // ì„ì‹œ í•„ë¦„ ì‚­ì œ
 
-        // 7. PNG·Î º¯È¯ ÈÄ ÀúÀå
+        // 7. PNGë¡œ ë³€í™˜ í›„ ì €ì¥
         byte[] bytes = screenShot.EncodeToPNG();
         string filename = "Screenshot_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png";
-        string path = Application.dataPath + "/Resources/Image/ES/" + filename; // Assets Æú´õ¿¡ ÀúÀå
+        string path = Application.dataPath + "/Resources/Image/ES/" + filename; // Assets í´ë”ì— ì €ì¥
 
         File.WriteAllBytes(path, bytes);
-        Debug.Log("ÀúÀå ¿Ï·á: " + path);
+        Debug.Log("ì €ì¥ ì™„ë£Œ: " + path);
     }
 }

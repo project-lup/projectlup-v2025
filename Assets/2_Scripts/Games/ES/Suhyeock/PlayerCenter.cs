@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 namespace LUP.ES
@@ -22,7 +22,7 @@ namespace LUP.ES
 
         private void Awake()
         {
-            // °ÔÀÓ ½ÃÀÛ ½Ã ¸®½ºÆ®¸¦ µñ¼Å³Ê¸®·Î º¯È¯ (ÃÖÀûÈ­)
+            // ê²Œì„ ì‹œì‘ ì‹œ ë¦¬ìŠ¤íŠ¸ë¥¼ ë”•ì…”ë„ˆë¦¬ë¡œ ë³€í™˜ (ìµœì í™”)
             playerDictionary = new Dictionary<int, GameObject>();
 
             foreach (var data in playerList)

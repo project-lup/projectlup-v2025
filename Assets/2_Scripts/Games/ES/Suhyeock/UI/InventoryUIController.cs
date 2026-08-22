@@ -1,4 +1,4 @@
-using DG.Tweening;
+ï»¿using DG.Tweening;
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
@@ -90,17 +90,17 @@ namespace LUP.ES
 
         public void OnInventorySlotClicked(int slotIndex)
         {
-            // 1. À¯È¿¼º °Ë»ç
+            // 1. ìœ íš¨ì„± ê²€ì‚¬
             if (slotIndex < 0 || slotIndex >= inventory.slots.Count) return;
 
             InventorySlot slotData = inventory.slots[slotIndex];
 
-            // 2. ºó ½½·ÔÀÌ¸é ¾Æ¹«°Íµµ ¾È ÇÔ
+            // 2. ë¹ˆ ìŠ¬ë¡¯ì´ë©´ ì•„ë¬´ê²ƒë„ ì•ˆ í•¨
             if (slotData.IsEmpty) return;
 
-            Debug.Log($"½½·Ô Å¬¸¯µÊ: {slotIndex}¹ø, ¾ÆÀÌÅÛ: {slotData.item.baseItem.Name}");
+            Debug.Log($"ìŠ¬ë¡¯ í´ë¦­ë¨: {slotIndex}ë²ˆ, ì•„ì´í…œ: {slotData.item.baseItem.Name}");
 
-            // 3. ÀÎº¥Åä¸®¿¡°Ô ÀåÂø ¿äÃ»
+            // 3. ì¸ë²¤í† ë¦¬ì—ê²Œ ì¥ì°© ìš”ì²­
             inventory.EquipItem(slotIndex);
         }
 

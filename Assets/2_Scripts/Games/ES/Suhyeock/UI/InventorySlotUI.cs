@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 namespace LUP.ES
@@ -22,7 +22,7 @@ namespace LUP.ES
 
             if (slotButton == null) slotButton = GetComponent<Button>();
 
-            slotButton.onClick.RemoveAllListeners(); // Áßº¹ ¿¬°á ¹æÁö
+            slotButton.onClick.RemoveAllListeners(); // ì¤‘ë³µ ì—°ê²° ë°©ì§€
             slotButton.onClick.AddListener(() => OnClickSlot());
         }
 

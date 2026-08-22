@@ -1,0 +1,109 @@
+- generic [ref=f3e2]:
+  - generic [ref=f3e3]:
+    - generic [ref=f3e4]: Portfolio Slide Revision · projectLUP
+    - heading "“적 행동 트리” 2페이지 분할안 — 40 / 40-1" [level=1] [ref=f3e5]
+    - paragraph [ref=f3e6]: 기존 40페이지 하나에 트리 다이어그램과 새 리팩터링 설명을 다 넣기엔 자리가 부족합니다. 39페이지(플레이어 BT)도 이미 별도 페이지인 것처럼, 40페이지는 트리 구조 자체를, 40-1페이지는 새로 추가한 설계 개선(중복 제거)을 각각 전담하도록 나눴습니다.
+  - generic [ref=f3e7]:
+    - generic [ref=f3e8]: 40페이지 · 유지 (소폭 수정)
+    - generic [ref=f3e10]:
+      - generic [ref=f3e11]: "40"
+      - generic [ref=f3e12]: 유니티 팀 프로젝트 · projectLUP
+      - heading "적 행동 트리" [level=2] [ref=f3e13]
+      - paragraph [ref=f3e14]: 사망과 피격을 최우선 처리하고, 공격범위/감지범위/공격/이동/순찰 순서로 우선순위 처리했습니다.
+      - generic [ref=f3e15]:
+        - generic [ref=f3e16]: Selector · Root
+        - generic [ref=f3e18]:
+          - generic [ref=f3e19]:
+            - generic [ref=f3e20]: SequenceHandleDeath
+            - generic [ref=f3e21]: Dead
+            - generic [ref=f3e22]: Death
+          - generic [ref=f3e23]:
+            - generic [ref=f3e24]: SequenceHandleHit
+            - generic [ref=f3e25]: Hit
+            - generic [ref=f3e26]: Hit
+          - generic [ref=f3e27]:
+            - generic [ref=f3e28]: SequenceOutOfRangeReturn
+            - generic [ref=f3e29]: TooFarFromHome
+            - generic [ref=f3e30]: ReturnToInitial
+          - generic [ref=f3e31]:
+            - generic [ref=f3e32]: SequenceHandleAttack
+            - generic [ref=f3e33]: TargetInAttackRange
+            - generic [ref=f3e34]:
+              - generic [ref=f3e35]: Sequence · Attack
+              - generic [ref=f3e36]: TurnToPlayer
+              - generic [ref=f3e37]: Attack
+              - generic [ref=f3e38]: Wait(1s)
+          - generic [ref=f3e39]:
+            - generic [ref=f3e40]: SequenceHandleMove
+            - generic [ref=f3e41]: TargetInDetectionRange
+            - generic [ref=f3e42]: Chase
+          - generic [ref=f3e43]:
+            - generic [ref=f3e44]: SequencePatrol
+            - generic [ref=f3e45]: FindRandomLocation
+            - generic [ref=f3e46]: MoveToTarget
+            - generic [ref=f3e47]: Wait(1s)
+      - generic [ref=f3e48]:
+        - generic [ref=f3e49]: EnemyBehaviorTreeBase.cs ← 파일명만 갱신 (기존엔 Melee/Ranged 각 파일)
+        - generic [ref=f3e50]: "rootNode = new Selector(new List<BTNode> { handleDeathSequence, handleHitSequence, outOfRangeReturnSequence, handleAttackSequence, handleMoveSequence, patrolSequence });"
+      - generic [ref=f3e51]:
+        - generic [ref=f3e52]: •
+        - generic [ref=f3e53]:
+          - text: 트리 구조·다이어그램은 리팩터링 전과 동일하게 유지 — 코드 스크린샷의 파일명만
+          - code [ref=f3e54]: EnemyBehaviorTreeBase.cs
+          - text: 로 바꾸면 됩니다. Melee/Ranged 세부 차이는 다음 페이지에서 다룹니다.
+    - generic [ref=f3e55]: 다음 페이지에서 이어짐 →
+    - generic [ref=f3e59]: 40-1페이지 · 신규 추가
+    - generic [ref=f3e61]:
+      - generic [ref=f3e62]: 40-1
+      - generic [ref=f3e63]: 유니티 팀 프로젝트 · projectLUP
+      - heading "적 행동 트리 공통 로직을 추상화해 Melee / Ranged 중복 제거" [level=2] [ref=f3e64]:
+        - text: 적 행동 트리
+        - generic [ref=f3e65]: 공통 로직을 추상화해 Melee / Ranged 중복 제거
+      - paragraph [ref=f3e66]: Melee와 Ranged 적은 사망·피격·귀환·추격·패트롤 로직이 완전히 동일해 베이스 클래스로 추출하고, 공격 방식만 하위 클래스가 재정의하도록 리팩터링했습니다.
+      - generic [ref=f3e67]:
+        - generic [ref=f3e68]:
+          - generic [ref=f3e69]:
+            - generic [ref=f3e70]:
+              - text: EnemyBehaviorTreeBase
+              - generic [ref=f3e71]: <<abstract>>
+            - generic [ref=f3e72]:
+              - generic [ref=f3e73]: "# rootNode : BTNode"
+              - generic [ref=f3e74]: "# blackboard : EnemyBlackboard"
+            - generic [ref=f3e75]:
+              - generic [ref=f3e76]: + Start(), Update()
+              - generic [ref=f3e77]: + BuildAttackSequence()
+          - generic [ref=f3e80]:
+            - generic [ref=f3e82]:
+              - generic [ref=f3e83]: MeleeEnemyBehaviorTree
+              - generic [ref=f3e84]: + BuildAttackSequence()
+            - generic [ref=f3e87]:
+              - generic [ref=f3e88]: RangedEnemyBehaviorTree
+              - generic [ref=f3e89]:
+                - generic [ref=f3e90]: + BuildAttackSequence()
+                - generic [ref=f3e91]: + TurnToPlayer()
+        - generic [ref=f3e92]:
+          - generic [ref=f3e93]: EnemyBehaviorTreeBase.cs
+          - generic [ref=f3e94]: "private void SetupBehaviorTree() { // 1~3. 죽음/피격/귀환 (공통 3개 시퀀스) ... // 4. 공격 — 하위 클래스가 재정의 Sequence handleAttackSequence = BuildAttackSequence(); // 5~6. 추격/패트롤 (공통) ... rootNode = new Selector(new List<BTNode> { handleDeathSequence, handleHitSequence, outOfRangeReturnSequence, handleAttackSequence, handleMoveSequence, patrolSequence }); } protected abstract Sequence BuildAttackSequence();"
+      - generic [ref=f3e95]:
+        - generic [ref=f3e96]:
+          - generic [ref=f3e97]: MeleeEnemyBehaviorTree.cs
+          - generic [ref=f3e98]: "protected override Sequence BuildAttackSequence() { TargetInAttackRangeCondition targetInAttackRangeCondition = new TargetInAttackRangeCondition(blackboard); TurnToPlayerAction turnToPlayerAction = new TurnToPlayerAction(blackboard); EnemyAttackAction enemyAttackAction = new EnemyAttackAction(blackboard); Sequence attackSequence = new Sequence(new List<BTNode> { turnToPlayerAction, enemyAttackAction, new WaitAction(2.0f) }); return new Sequence(new List<BTNode>{ targetInAttackRangeCondition, attackSequence }); }"
+        - generic [ref=f3e99]:
+          - generic [ref=f3e100]: RangedEnemyBehaviorTree.cs
+          - generic [ref=f3e101]: "protected override Sequence BuildAttackSequence() { TargetInAttackRangeCondition targetInAttackRangeCondition = new TargetInAttackRangeCondition(blackboard); RangedEnemyAttackAction rangedEnemyAttackAction = new RangedEnemyAttackAction(rangedBlackboard, 5); Sequence attackSequence = new Sequence(new List<BTNode> { rangedEnemyAttackAction, new WaitAction(2.0f) }); return new Sequence(new List<BTNode>{ targetInAttackRangeCondition, attackSequence }); }"
+      - generic [ref=f3e102]:
+        - generic [ref=f3e103]: ✓
+        - generic [ref=f3e104]:
+          - text: "포인트: 개인 프로젝트(Crown Rush)의"
+          - code [ref=f3e105]: EnemyBase
+          - text: /
+          - code [ref=f3e106]: SlidingPieceEnemy
+          - text: 와 동일한 템플릿 메서드 패턴입니다. 팀 프로젝트에서도 같은 설계 원칙을 재사용했다는 걸 보여주는 근거가 됩니다.
+  - generic [ref=f3e107]:
+    - generic [ref=f3e108]: 함께 확인할 것 — 44페이지 (별도)
+    - paragraph [ref=f3e109]:
+      - text: EventBroker.cs 스크린샷의
+      - code [ref=f3e110]: public Action<float, float> OnInteractionTimerUpdated;
+      - text: 도 지금은
+      - code [ref=f3e111]: public event Action<float, float> OnInteractionTimerUpdated;
+      - text: 로 바뀌어 있어 함께 갱신이 필요합니다. (본 40/40-1 분할과는 별개 작업)

@@ -1,0 +1,112 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - generic [ref=f1e4]: Portfolio Slide Revision · projectLUP
+    - heading "“???�동 ?�리” 2?�이지 분할????40 / 40-1" [level=1] [ref=f1e5]
+    - paragraph [ref=f1e6]: 기존 40?�이지 ?�나???�리 ?�이?�그?�과 ??리팩?�링 ?�명?????�기???�리가 부족합?�다. 39?�이지(?�레?�어 BT)???��? 별도 ?�이지??것처?? 40?�이지???�리 구조 ?�체�? 40-1?�이지???�로 추�????�계 개선(중복 ?�거)??각각 ?�담?�도�??�눴?�니??
+  - generic [ref=f1e7]:
+    - generic [ref=f1e8]: 40?�이지 · ?��? (?�폭 ?�정)
+    - generic [ref=f1e10]:
+      - generic [ref=f1e11]: "40"
+      - generic [ref=f1e12]: "?�니???� ?�로?�트 · projectLUP"
+      - heading "???�동 ?�리" [level=2] [ref=f1e13]
+      - paragraph [ref=f1e14]: "?�망�??�격??최우??처리?�고, 공격범위/감�?범위/공격/?�동/?�찰 ?�서�??�선?�위 처리?�습?�다."
+      - generic [ref=f1e15]:
+        - generic [ref=f1e16]: Selector · Root
+        - generic [ref=f1e18]:
+          - generic [ref=f1e19]:
+            - generic [ref=f1e20]: SequenceHandleDeath
+            - generic [ref=f1e21]: Dead
+            - generic [ref=f1e22]: Death
+          - generic [ref=f1e23]:
+            - generic [ref=f1e24]: SequenceHandleHit
+            - generic [ref=f1e25]: Hit
+            - generic [ref=f1e26]: Hit
+          - generic [ref=f1e27]:
+            - generic [ref=f1e28]: SequenceOutOfRangeReturn
+            - generic [ref=f1e29]: TooFarFromHome
+            - generic [ref=f1e30]: ReturnToInitial
+          - generic [ref=f1e31]:
+            - generic [ref=f1e32]: SequenceHandleAttack
+            - generic [ref=f1e33]: TargetInAttackRange
+            - generic [ref=f1e34]:
+              - generic [ref=f1e35]: Sequence · Attack
+              - generic [ref=f1e36]: TurnToPlayer
+              - generic [ref=f1e37]: Attack
+              - generic [ref=f1e38]: Wait(1s)
+          - generic [ref=f1e39]:
+            - generic [ref=f1e40]: SequenceHandleMove
+            - generic [ref=f1e41]: TargetInDetectionRange
+            - generic [ref=f1e42]: Chase
+          - generic [ref=f1e43]:
+            - generic [ref=f1e44]: SequencePatrol
+            - generic [ref=f1e45]: FindRandomLocation
+            - generic [ref=f1e46]: MoveToTarget
+            - generic [ref=f1e47]: Wait(1s)
+      - generic [ref=f1e48]:
+        - generic [ref=f1e49]: EnemyBehaviorTreeBase.cs ???�일명만 갱신 (기존??Melee/Ranged �??�일)
+        - generic [ref=f1e50]: "rootNode = new Selector(new List<BTNode> { handleDeathSequence, handleHitSequence, outOfRangeReturnSequence, handleAttackSequence, handleMoveSequence, patrolSequence });"
+      - generic [ref=f1e51]:
+        - generic [ref=f1e52]: •
+        - generic [ref=f1e53]:
+          - text: "?�리 구조·?�이?�그?��? 리팩?�링 ?�과 ?�일?�게 ?��? ??코드 ?�크린샷???�일명만"
+          - code [ref=f1e54]: EnemyBehaviorTreeBase.cs
+          - text: �?바꾸�??�니?? Melee/Ranged ?��? 차이???�음 ?�이지?�서 ?�룹?�다.
+    - generic [ref=f1e55]: "?�음 ?�이지?�서 ?�어�???/span>"
+    - generic [ref=f1e58]: 40-1?�이지 · ?�규 추�?
+    - generic [ref=f1e60]:
+      - generic [ref=f1e61]: 40-1
+      - generic [ref=f1e62]: "?�니???� ?�로?�트 · projectLUP"
+      - heading "???�동 ?�리 공통 로직??추상?�해 Melee / Ranged 중복 ?�거" [level=2] [ref=f1e63]:
+        - text: "???�동 ?�리"
+        - generic [ref=f1e64]: 공통 로직??추상?�해 Melee / Ranged 중복 ?�거
+      - paragraph [ref=f1e65]: Melee?� Ranged ?��? ?�망·?�격·귀?�·추격·패?�롤 로직???�전???�일??베이???�래?�로 추출?�고, 공격 방식�??�위 ?�래?��? ?�정?�하?�록 리팩?�링?�습?�다.
+      - generic [ref=f1e66]:
+        - generic [ref=f1e67]:
+          - generic [ref=f1e68]:
+            - generic [ref=f1e69]:
+              - text: EnemyBehaviorTreeBase
+              - generic [ref=f1e70]: <<abstract>>
+            - generic [ref=f1e71]:
+              - generic [ref=f1e72]: "# rootNode : BTNode"
+              - generic [ref=f1e73]: "# blackboard : EnemyBlackboard"
+            - generic [ref=f1e74]:
+              - generic [ref=f1e75]: + Start(), Update()
+              - generic [ref=f1e76]: + BuildAttackSequence()
+          - generic [ref=f1e79]:
+            - generic [ref=f1e81]:
+              - generic [ref=f1e82]: MeleeEnemyBehaviorTree
+              - generic [ref=f1e83]: + BuildAttackSequence()
+            - generic [ref=f1e86]:
+              - generic [ref=f1e87]: RangedEnemyBehaviorTree
+              - generic [ref=f1e88]:
+                - generic [ref=f1e89]: + BuildAttackSequence()
+                - generic [ref=f1e90]: + TurnToPlayer()
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]:
+            - generic [ref=f1e93]: EnemyBehaviorTreeBase.cs
+            - generic [ref=f1e94]:
+              - text: "private void SetupBehaviorTree() { // 1. 죽음 ~ 3. 최�? ?�동거리 ?�인 (공통 3�??�퀀??조립) ..."
+              - generic [ref=f1e95]: "// 4. 공격 ???�위 ?�래?��? ?�정??/span> Sequence handleAttackSequence = BuildAttackSequence(); // 5. 추격, 6. ?�트�?(공통) ... rootNode = new Selector(new List<BTNode> { handleDeathSequence, handleHitSequence, outOfRangeReturnSequence, handleAttackSequence, handleMoveSequence, patrolSequence, }); } protected abstract Sequence BuildAttackSequence();"
+          - generic [ref=f1e96]:
+            - generic [ref=f1e97]:
+              - generic [ref=f1e98]: MeleeEnemyBehaviorTree.cs
+              - generic [ref=f1e99]: "protected override Sequence BuildAttackSequence() { TargetInAttackRangeCondition targetInAttackRangeCondition = new TargetInAttackRangeCondition(blackboard); TurnToPlayerAction turnToPlayerAction = new TurnToPlayerAction(blackboard); EnemyAttackAction enemyAttackAction = new EnemyAttackAction(blackboard); Sequence attackSequence = new Sequence(new List<BTNode> { turnToPlayerAction, enemyAttackAction, new WaitAction(2.0f) }); return new Sequence(new List<BTNode> { targetInAttackRangeCondition, attackSequence }); }"
+            - generic [ref=f1e100]:
+              - generic [ref=f1e101]: RangedEnemyBehaviorTree.cs
+              - generic [ref=f1e102]: "protected override Sequence BuildAttackSequence() { TargetInAttackRangeCondition targetInAttackRangeCondition = new TargetInAttackRangeCondition(blackboard); RangedEnemyAttackAction rangedEnemyAttackAction = new RangedEnemyAttackAction(rangedBlackboard, 5); Sequence attackSequence = new Sequence(new List<BTNode> { rangedEnemyAttackAction, new WaitAction(2.0f) }); return new Sequence(new List<BTNode> { targetInAttackRangeCondition, attackSequence }); }"
+      - generic [ref=f1e103]:
+        - generic [ref=f1e104]: ✓
+        - generic [ref=f1e105]:
+          - text: "?�인?? 개인 ?�로?�트(Crown Rush)??"
+          - code [ref=f1e106]: EnemyBase
+          - text: /
+          - code [ref=f1e107]: SlidingPieceEnemy
+          - text: "?� ?�일???�플�?메서???�턴?�니?? ?� ?�로?�트?�서??같�? ?�계 ?�칙???�사?�했?�는 �?보여주는 근거가 ?�니??"
+  - generic [ref=f1e108]:
+    - generic [ref=f1e109]: "?�께 ?�인??�???44?�이지 (별도)"
+    - paragraph [ref=f1e110]:
+      - text: EventBroker.cs ?�크린샷??
+      - code [ref=f1e111]: public Action<float, float> OnInteractionTimerUpdated;
+      - text: "?? 지금�?"
+      - code [ref=f1e112]: public event Action<float, float> OnInteractionTimerUpdated;
+      - text: �?바뀌어 ?�어 ?�께 갱신???�요?�니?? (�?40/40-1 분할과는 별개 ?�업)

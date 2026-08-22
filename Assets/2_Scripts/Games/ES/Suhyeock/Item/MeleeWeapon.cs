@@ -1,12 +1,12 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 namespace LUP.ES
 {
 
     public class MeleeWeapon : Weapon
     {
-        public ItemDataBase itemDataBase; //ÀÓ½Ã
-        public int selectedWeaponId = 5; //ÀÓ½Ã
+        public ItemDataBase itemDataBase; //ìž„ì‹œ
+        public int selectedWeaponId = 5; //ìž„ì‹œ
         public LayerMask targetLayer;
         private float nextAttackTime = 0f;
         [HideInInspector]
@@ -82,15 +82,6 @@ namespace LUP.ES
             }
             return true;
         }
-
-        //private void OnDrawGizmos()
-        //{
-        //    if (Application.isPlaying)
-        //    {
-        //        Gizmos.color = Color.red;
-        //        Gizmos.DrawWireSphere(playerTransform.position, weaponItem.data.range);
-        //    }
-        //}
     }
 
 }

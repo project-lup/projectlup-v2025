@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 namespace LUP.ES
 {
@@ -39,14 +39,14 @@ namespace LUP.ES
             }
             currentLeftHandWeight = Mathf.Lerp(currentLeftHandWeight, targetWeight, Time.deltaTime * 10.0f);
 
-            // ÇöÀç ¹«±â¿¡ ¿Ş¼Õ ±×¸³ À§Ä¡°¡ ¼³Á¤µÇ¾î ÀÖ´Ù¸é
+            // í˜„ì¬ ë¬´ê¸°ì— ì™¼ì† ê·¸ë¦½ ìœ„ì¹˜ê°€ ì„¤ì •ë˜ì–´ ìˆë‹¤ë©´
             if (blackboard.weapon.leftHandGrip != null)
             {
-                // 1. ¿Ş¼Õ IK °¡ÁßÄ¡ ¼³Á¤ (À§Ä¡, È¸Àü µû·Î ¼³Á¤ °¡´É)
+                // 1. ì™¼ì† IK ê°€ì¤‘ì¹˜ ì„¤ì • (ìœ„ì¹˜, íšŒì „ ë”°ë¡œ ì„¤ì • ê°€ëŠ¥)
                 animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, currentLeftHandWeight);
                 animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, currentLeftHandWeight);
 
-                // 2. ¿Ş¼ÕÀ» ¹«±âÀÇ 'LeftHandGrip' À§Ä¡·Î ÀÌµ¿ ¹× È¸Àü
+                // 2. ì™¼ì†ì„ ë¬´ê¸°ì˜ 'LeftHandGrip' ìœ„ì¹˜ë¡œ ì´ë™ ë° íšŒì „
                 animator.SetIKPosition(AvatarIKGoal.LeftHand, blackboard.weapon.leftHandGrip.position);
                 animator.SetIKRotation(AvatarIKGoal.LeftHand, blackboard.weapon.leftHandGrip.rotation);
             }

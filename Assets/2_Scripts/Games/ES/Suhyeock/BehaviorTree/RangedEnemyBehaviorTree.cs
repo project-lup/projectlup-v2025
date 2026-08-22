@@ -1,73 +1,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace LUP.ES
-{ 
-    public class RangedEnemyBehaviorTree : MonoBehaviour
+{
+    public class RangedEnemyBehaviorTree : EnemyBehaviorTreeBase
     {
-        private BTNode rootNode;
-        private RangedEnemyBlackboard blackboard;
+        private RangedEnemyBlackboard rangedBlackboard;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        protected override void Start()
         {
-            blackboard = GetComponent<RangedEnemyBlackboard>();
-            SetupBehaviorTree();
+            rangedBlackboard = GetComponent<RangedEnemyBlackboard>();
+            base.Start();
         }
 
-        // Update is called once per frame
-        void Update()
+        protected override void Update()
         {
-            if(blackboard.isDetected == true && blackboard.healthComponent.isDead == false)
+            if (blackboard.isDetected == true && blackboard.healthComponent.isDead == false)
             {
                 TurnToPlayer();
             }
-            rootNode.Evaluate();
+            base.Update();
         }
 
-        
-
-        private void SetupBehaviorTree()
+        protected override Sequence BuildAttackSequence()
         {
+            TargetInAttackRangeCondition targetInAttackRangeCondition 
+                = new TargetInAttackRangeCondition(blackboard);
+            RangedEnemyAttackAction rangedEnemyAttackAction 
+                = new RangedEnemyAttackAction(rangedBlackboard, 5);
+            Sequence attackSequence = new Sequence(new List<BTNode> 
+                { rangedEnemyAttackAction, new WaitAction(2.0f) });
 
-            DeadCondition deadCondition = new DeadCondition(blackboard);
-            EnemyDeathAction deathAction = new EnemyDeathAction(blackboard);
-            Sequence handleDeathSequence = new Sequence(new List<BTNode> { deadCondition, deathAction });
-
-            HitCondition hitCondition = new HitCondition(blackboard);
-            EnemyHitAction enemyHitAction = new EnemyHitAction(blackboard);
-            Sequence handleHitSequence = new Sequence(new List<BTNode> { hitCondition, enemyHitAction });
-
-            TooFarFromHomeCondition tooFarFromHomeCondition = new TooFarFromHomeCondition(blackboard);
-            ReturnToInitialPositionAction returnToInitialPositionAction = new ReturnToInitialPositionAction(blackboard);
-            Sequence OutOfRangeReturnSequence = new Sequence(new List<BTNode> { tooFarFromHomeCondition, returnToInitialPositionAction });
-
-            TargetInAttackRangeCondition targetInAttackRangeCondition = new TargetInAttackRangeCondition(blackboard);
-
-
-            RangedEnemyAttackAction rangedEnemyAttackAction = new RangedEnemyAttackAction(blackboard, 5);
-            Sequence attackSequence = new Sequence(new List<BTNode> { rangedEnemyAttackAction, new WaitAction(2.0f) });
-            Sequence handleAttackSequence = new Sequence(new List<BTNode> { targetInAttackRangeCondition, attackSequence });
-
-            TargetInDetectionRangeCondition targetInDetectionRangeCondition = new TargetInDetectionRangeCondition(blackboard);
-            ChaseTargetAction chaseTargetAction = new ChaseTargetAction(blackboard);
-            Sequence handleMoveSequence = new Sequence(new List<BTNode> { targetInDetectionRangeCondition, chaseTargetAction });
-
-            FindRandomLocationAction findRandomLocationAction = new FindRandomLocationAction(blackboard);
-            MoveToTargetAction moveToTargetAction = new MoveToTargetAction(blackboard);
-            Sequence patrolSequence = new Sequence(new List<BTNode> { findRandomLocationAction, moveToTargetAction, new WaitAction(3.0f) });
-
-
-            rootNode = new Selector(new List<BTNode>
-            {
-                handleDeathSequence,
-                handleHitSequence,
-                OutOfRangeReturnSequence,
-                handleAttackSequence,
-                handleMoveSequence,
-                patrolSequence,
-            });
+            return new Sequence(new List<BTNode> { targetInAttackRangeCondition, attackSequence });
         }
 
         void TurnToPlayer()
@@ -79,12 +43,9 @@ namespace LUP.ES
             direction.y = 0;
             direction.Normalize();
 
-            float angleToTarget = Vector3.Angle(enemyTransform.forward, direction);
-
             Quaternion targetRotation = Quaternion.LookRotation(direction);
 
             enemyTransform.rotation = Quaternion.RotateTowards(enemyTransform.rotation, targetRotation, 700.0f * Time.deltaTime);
         }
     }
 }
-

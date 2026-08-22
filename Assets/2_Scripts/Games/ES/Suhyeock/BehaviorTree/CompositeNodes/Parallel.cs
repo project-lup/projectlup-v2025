@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 namespace LUP.ES
 {
@@ -24,8 +24,8 @@ namespace LUP.ES
                 }
             }
 
-            // ÀÚ½Ä Áß ÇÏ³ª¶óµµ ½ÇÇà ÁßÀÌ¸é Running
-            // ±×·¸Áö ¾ÊÀ¸¸é Success
+            // ìì‹ ì¤‘ í•˜ë‚˜ë¼ë„ ì‹¤í–‰ ì¤‘ì´ë©´ Running
+            // ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ Success
             return anyRunning ? NodeState.Running : NodeState.Success;
         }
 

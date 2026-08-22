@@ -1,19 +1,17 @@
-using DG.Tweening;
-using NUnit.Framework;
+癤퓎sing DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
-//using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 namespace LUP.ES
 {
     public class Chest : MonoBehaviour, IInteractable
     {
-        [Header("Open FX")] // 기수 추가한 코드
-        public GameObject openFxPrefab; // 기수 추가한 코드
-        public Transform fxAnchor;  // 기수 추가한 코드
+        [Header("Open FX")]
+        public GameObject openFxPrefab;
+        public Transform fxAnchor;
 
-        private GameObject fxInstance;  // 기수 추가한 코드
-        private ParticleSystem[] fxSystems; // 기수 추가한 코드
+        private GameObject fxInstance;
+        private ParticleSystem[] fxSystems;
 
         private EventBroker eventBroker;
         public ItemCenter itemCenter;
@@ -25,7 +23,7 @@ namespace LUP.ES
         private bool isInteracting = false;
         [Header("Animation")]
         [SerializeField] private Animator chestAnimator;
-        public bool InterruptsOnMove => true;  // 기수 추가한 코드
+        public bool InterruptsOnMove => true;
 
         private List<Item> dropItems = new List<Item>();
         public bool CanInteract() => !isInteracting;
@@ -71,7 +69,7 @@ namespace LUP.ES
                     return true;
                 }
 
-                PlayOpenFX(); // 기수 추가한 코드
+                PlayOpenFX();
 
                 isInteracting = true;
                 currentTime = interactionDuration;
@@ -96,14 +94,13 @@ namespace LUP.ES
         {
             isInteracting = false;
 
-            StopOpenFX(); // 기수 추가한 코드
+            StopOpenFX();
 
             currentTime = 0.0f;
             eventBroker.UpdateInteractionTimer(0f, interactionDuration);
         }
 
-        // 기수 추가한 코드
-        void PlayOpenFX() 
+        void PlayOpenFX()
         {
             if (fxInstance != null) return;
 
@@ -118,7 +115,6 @@ namespace LUP.ES
             }
         }
 
-        // 기수 추가한 코드
         void StopOpenFX()
         {
             if (fxSystems == null) return;

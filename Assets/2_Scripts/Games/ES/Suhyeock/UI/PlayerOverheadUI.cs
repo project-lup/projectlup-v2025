@@ -1,4 +1,4 @@
-using DG.Tweening;
+ï»¿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -90,13 +90,13 @@ namespace LUP.ES
         }
         public void UpdateHPUI(float currentHP, float maxHP)
         {
-            if (maxHP <= 0) return; // ¹æ¾î ÄÚµå
+            if (maxHP <= 0) return; // ë°©ì–´ ì½”ë“œ
             float hpRatio = currentHP / maxHP;
             if (Mathf.Abs(lastHpRatio - hpRatio) > 0.001f)
             {
                 lastHpRatio = hpRatio;
 
-                currentHpTween?.Kill(); // ¸¸¾à ÀÌÀü ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ´ú ³¡³µ´Ù¸é Ãë¼Ò
+                currentHpTween?.Kill(); // ë§Œì•½ ì´ì „ ì• ë‹ˆë©”ì´ì…˜ì´ ëœ ëë‚¬ë‹¤ë©´ ì·¨ì†Œ
                 currentHpTween = hpSlider.DOValue(hpRatio, 0.2f).SetEase(Ease.OutCubic);
             }
         }
